@@ -37,6 +37,14 @@ class Table():
                 return [row[i] for row in self._internal_table[1:]]
         raise ValueError('Column not found')
 
+    def available_rows(self):
+        '''Get a list of row labels in table.'''
+        return [row[0] for row in self._internal_table if row[0] != '']
+
+    def available_columns(self):
+        '''Get a list of column labels in table.'''
+        return [column for column in self._internal_table[0] if column != '']
+
     def __getitem__(self, key):
         '''Returns the row or column linked to the given key, accessed using
         subscript notation.'''
