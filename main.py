@@ -1,3 +1,5 @@
+import random
+import re
 from itertools import takewhile
 
 from table import Table
@@ -40,6 +42,26 @@ def load_rules(filename):
         rules[rule[0]] = rule[1:]
 
     return rules
+
+def apply_rule(word, rule):
+    '''Applies rule in the form (target, replacement, environment) to the word.
+    Environment is in the form of string like 'a_c', where the underscore is
+    taken by the target and replacement.'''
+    target, replacement, environment = rule
+
+    # Create target and replacement strings
+    target_string = environment.replace('_', target)
+    replacement_string = environment.replace('_', replacement)
+
+    # Delete special characters from replacement string that may be present
+    # in the environment
+    if replacement_string[0] == '^':
+        replacement_string = replacement_string[1:]
+    if replacement_string[-1] == '$':
+        replacement_string = replacement_string[:-1]
+
+    # Return the modified word
+    return re.sub(target_string, replacement_string, word)
 
 def main():
     rules = load_rules('rules.txt')
