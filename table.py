@@ -45,6 +45,21 @@ class Table():
         '''Get a list of column labels in table.'''
         return [column for column in self._internal_table[0] if column != '']
 
+    def members(self):
+        '''Returns a set of all unique members of the table that aren't:
+            * a row or column label
+            * None
+            * an empty string.
+        '''
+        valid = []
+
+        for row in self._internal_table[1:]:
+            for item in row[1:]:
+                if item is not None and item != '':
+                    valid.append(item)
+
+        return set(valid)
+
     def voiced(self, item):
         '''Return True if item is voiced.'''
 
