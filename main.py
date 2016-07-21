@@ -7,6 +7,7 @@ import rules
 from table import Table
 
 VOWELS = Table('vowels.csv')
+available_rules = [rules.sonorization, rules.degemination]
 
 def get_substitutions(category):
     '''Given a category, e.g. V (vowel) or plosive, return a list of members.'''
@@ -92,14 +93,29 @@ def apply_rule(word, rule):
     # Return the modified word
     return re.sub(target_string, replacement_string, word)
 
+def step(inventory, word_list):
+    '''Given a phonetic inventory and a list of words, apply one step of evolution
+    and return the inventory and word list.'''
+
+    # Apply a random change to the inventory until it's deemed valid
+    random_rule = random.choice(available_rules)
+    valid, rule_list, representation = random_rule(inventory)
+
+    while not valid:
+        random_rule = random.choice(available_rules)
+        valid, rule_list, representation = random_rule(inventory)
+
+    # Delete the change so it isn't used again
+    available_rules.remove(random_rule)
+
+    print(representation)
+
 def main():
     #rules = load_rules('rules.txt')
     inventory = Table('pulmonicinventory.csv')
-    _, rule_list, _ = rules.sonorization(inventory)
 
-    for rule in rule_list:
-        print(expand_rule(rule))
-        print('')
+    while len(available_rules) > 0:
+        step(inventory, [])
 
 if __name__ == '__main__':
     main()
