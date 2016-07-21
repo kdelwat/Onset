@@ -63,6 +63,14 @@ class Table():
 
         return False
 
+    def __contains__(self, item):
+        '''Returns True if the item is present in the table, otherwise false.'''
+        for row in self._internal_table:
+            for value in row:
+                if item == value: return True
+
+        return False
+
     def __getitem__(self, key):
         '''Returns the row or column linked to the given key, accessed using
         subscript notation.'''
