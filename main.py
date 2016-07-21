@@ -23,7 +23,7 @@ def expand_rule(rule):
 
     # If there are no substitutions to make, the rule is fine as-is
     if '[' not in env:
-        return rule
+        return [rule]
 
     # Isolate the required substitution
     category = env[env.find('[')+1:env.find(']')]
@@ -108,7 +108,12 @@ def step(inventory, word_list):
     # Delete the change so it isn't used again
     available_rules.remove(random_rule)
 
-    print(representation)
+    # Create a list to hold every fully-expanded rule
+    all_rules = []
+    for rule in rule_list:
+        all_rules.extend(expand_rule(rule))
+
+    print(all_rules)
 
 def main():
     #rules = load_rules('rules.txt')
