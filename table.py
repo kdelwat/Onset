@@ -45,6 +45,24 @@ class Table():
         '''Get a list of column labels in table.'''
         return [column for column in self._internal_table[0] if column != '']
 
+    def voiced(self, item):
+        '''Return True if item is voiced.'''
+
+        for column in self.available_columns():
+            if column[0] == 'v':
+                if item in self[column]: return True
+
+        return False
+
+    def unvoiced(self, item):
+        '''Return True if item is unvoiced.'''
+
+        for column in self.available_columns():
+            if column[0] == 'u':
+                if item in self[column]: return True
+
+        return False
+
     def __getitem__(self, key):
         '''Returns the row or column linked to the given key, accessed using
         subscript notation.'''
