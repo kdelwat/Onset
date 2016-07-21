@@ -6,6 +6,22 @@ from table import Table
 
 PULMONIC = Table('pulmonic.csv')
 
+def rule(f):
+    '''A decorator for all rule functions which checks to ensure rules are
+    applicable to current inventory.'''
+    def wrapper(*args, **kwargs):
+        rules, representation = f(*args, **kwargs)
+
+        # If the length of the rules list is 0, there are no applicable rules, so
+        # return False.
+        if len(rules) == 0:
+            return False, None, None
+        else:
+            return True, rules, representation
+
+    return wrapper
+
+@rule
 def sonorization(inventory):
     '''Implements the sonorization, or voicing, sound change, in which plosives are
     converted to their voiced equivalent.'''
@@ -24,12 +40,8 @@ def sonorization(inventory):
 
     representation = 'Sonorization: [unvoiced plosive]/[voiced plosive]/'+ environments[0]
 
-    # If the length of the rules list is 0, there are no applicable rules, so
-    # return False.
-    if len(rules) == 0:
-        return False, None, None
-    else:
-        return True, rules, representation
+
+    return rules, representation
 
 def load_rules(filename):
     '''Loads a list of rules, in the following format:
