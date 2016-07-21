@@ -1,6 +1,7 @@
 import random
 import re
 from itertools import takewhile
+from pprint import pprint
 
 from table import Table
 
@@ -40,6 +41,30 @@ def sonorization(inventory):
 
     representation = 'Sonorization: [unvoiced plosive]/[voiced plosive]/'+ environments[0]
 
+    return rules, representation
+
+@rule
+def degemination(inventory):
+    '''Implements the degemination sound change, in which doubled plosives are
+    converted to singular.'''
+
+    candidates = []
+    targets = []
+
+    for phoneme in PULMONIC['plosive']:
+        candidates.append(phoneme + phoneme)
+        candidates.append(phoneme + phoneme + 'ʰ')
+        targets.append(phoneme)
+        targets.append(phoneme + 'ʰ')
+
+    available_environments = ['^_', 'V_V']
+
+    environments = [random.choice(available_environments)] * len(candidates)
+
+    # Zip together the candidates, targets, and environments into a list of rules.
+    rules = [rule for rule in zip(candidates, targets, environments)]
+
+    representation = 'Degemination: [geminated plosive]/[plosive]/'+ environments[0]
 
     return rules, representation
 
@@ -103,7 +128,9 @@ def apply_rule(word, rule):
 def main():
     rules = load_rules('rules.txt')
     inventory = Table('pulmonicinventory.csv')
-    print(sonorization(inventory))
+    pprint(sonorization(inventory))
+    pprint(degemination(inventory))
 
 if __name__ == '__main__':
     main()
+
