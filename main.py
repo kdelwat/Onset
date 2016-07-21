@@ -2,6 +2,7 @@ import random
 import re
 from itertools import takewhile
 from pprint import pprint
+from itertools import combinations_with_replacement
 
 import rules
 from table import Table
@@ -42,7 +43,20 @@ def expand_rule(rule):
 
     # Handle non-identical substitutions
     else:
-        pass
+        # Isolate the required substitution
+        category = env[env.find('(')+1:env.find(')')]
+
+        # Get pairs of possible substitutions, e.g. ('a', 'b')
+        substitution_pairs = combinations_with_replacement(get_substitutions(category), 2)
+
+        # Make substitutions
+        rules = []
+        for pair in substitution_pairs:
+            first, second = pair
+            rule = (target, replacement, env.replace('(' + category + ')', first, 1).replace('(' + category + ')', second, 1))
+            rules.append(rule)
+            rule = (target, replacement, env.replace('(' + category + ')', second, 1).replace('(' + category + ')', first, 1))
+            rules.append(rule)
 
     return rules
 
