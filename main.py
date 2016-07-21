@@ -1,5 +1,4 @@
 import random
-import re
 from itertools import takewhile
 from pprint import pprint
 from itertools import combinations_with_replacement
@@ -70,15 +69,24 @@ def apply_rule(word, rule):
     target_string = environment.replace('_', target)
     replacement_string = environment.replace('_', replacement)
 
-    # Delete special characters from replacement string that may be present
-    # in the environment
+    # Handle environments involving the beginning and end of lines. Delete
+    # special characters from replacement string that may be present in the
+    # environment. This bit's really filthy, sorry.
     if replacement_string[0] == '^':
         replacement_string = replacement_string[1:]
-    if replacement_string[-1] == '$':
+        if word[:len(replacement_string)] == target_string[1:]:
+            return replacement_string + word[len(replacement_string):]
+        else:
+            return word
+    elif replacement_string[-1] == '$':
         replacement_string = replacement_string[:-1]
-
-    # Return the modified word
-    return re.sub(target_string, replacement_string, word)
+        if word[-len(replacement_string):] == target_string[:-1]:
+            return word[:-len(replacement_string)] + replacement_string
+        else:
+            return word
+    # Otherwise, handle standard substitutions. Much nicer.
+    else:
+        return word.replace(target_string, replacement_string)
 
 def step(inventory, word_list):
     '''Given a phonetic inventory and a list of words, apply one step of evolution
