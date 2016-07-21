@@ -1,6 +1,4 @@
 import random
-from itertools import takewhile
-from pprint import pprint
 from itertools import combinations_with_replacement
 
 import rules
