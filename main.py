@@ -121,14 +121,18 @@ def step(inventory, word_list):
         modified_words.append(word)
 
     print(representation)
-    print(modified_words)
+    return inventory, modified_words
 
 def main():
     #rules = load_rules('rules.txt')
     inventory = Table('pulmonicinventory.csv')
+    words = ['ppotato', 'paraddʰise']
+    print(words)
 
     while len(available_rules) > 0:
-        step(inventory, ['ppotato', 'paraddʰise'])
+        inventory, words = step(inventory, words)
+        print(inventory, words)
+        print('')
 
 if __name__ == '__main__':
     main()
