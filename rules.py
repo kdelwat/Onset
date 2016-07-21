@@ -49,10 +49,11 @@ def degemination(inventory):
     targets = []
 
     for phoneme in PULMONIC['plosive']:
-        candidates.append(phoneme + phoneme)
-        candidates.append(phoneme + phoneme + 'ʰ')
-        targets.append(phoneme)
-        targets.append(phoneme + 'ʰ')
+        if phoneme != '':
+            candidates.append(phoneme + phoneme)
+            candidates.append(phoneme + phoneme + 'ʰ')
+            targets.append(phoneme)
+            targets.append(phoneme + 'ʰ')
 
     available_environments = ['^_', '[V]_[V]']
 
