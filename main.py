@@ -6,6 +6,35 @@ from pprint import pprint
 import rules
 from table import Table
 
+VOWELS = Table('vowels.csv')
+
+def get_substitutions(category):
+    '''Given a category, e.g. V (vowel) or plosive, return a list of members.'''
+    if category == 'V':
+        return VOWELS.members()
+
+def expand_rule(rule):
+    '''Given the rule (target, replacement, environment), expands the rule into a
+    list of rules where each environment contains no special instructions. For
+    example, an environment 'V_V' would be converted to the list 'a_a', 'o_o',
+    etc.'''
+    target, replacement, env = rule
+
+    # If there are no substitutions to make, the rule is fine as-is
+    if '[' not in env:
+        return rule
+
+    # Isolate the required substitution
+    category = env[env.find('[')+1:env.find(']')]
+
+    # Make substitutions
+    rules = []
+    for substitution in get_substitutions(category):
+        rule = (target, replacement, env.replace('[' + category + ']', substitution))
+        rules.append(rule)
+
+    return rules
+
 def load_rules(filename):
     '''Loads a list of rules, in the following format:
 
@@ -66,8 +95,11 @@ def apply_rule(word, rule):
 def main():
     #rules = load_rules('rules.txt')
     inventory = Table('pulmonicinventory.csv')
-    pprint(rules.sonorization(inventory))
-    pprint(rules.degemination(inventory))
+    _, rule_list, _ = rules.sonorization(inventory)
+
+    for rule in rule_list:
+        print(expand_rule(rule))
+        print('')
 
 if __name__ == '__main__':
     main()

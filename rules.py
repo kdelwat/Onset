@@ -28,7 +28,7 @@ def sonorization(inventory):
     candidates = ['p', 't', 'ʈ', 'c', 'k', 'q']
     targets = ['b', 'd', 'ɖ', 'ɟ', 'g', 'ɢ']
 
-    available_environments = ['^_', 'V_V']
+    available_environments = ['^_', '[V]_[V]']
 
     environments = [random.choice(available_environments)] * len(candidates)
 
@@ -54,7 +54,7 @@ def degemination(inventory):
         targets.append(phoneme)
         targets.append(phoneme + 'ʰ')
 
-    available_environments = ['^_', 'V_V']
+    available_environments = ['^_', '[V]_[V]']
 
     environments = [random.choice(available_environments)] * len(candidates)
 
