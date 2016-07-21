@@ -17,22 +17,32 @@ def get_substitutions(category):
 def expand_rule(rule):
     '''Given the rule (target, replacement, environment), expands the rule into a
     list of rules where each environment contains no special instructions. For
-    example, an environment 'V_V' would be converted to the list 'a_a', 'o_o',
-    etc.'''
+    example, an environment '[V]_[V]' would be converted to the list 'a_a', 'o_o',
+    etc. The following substitutions apply:
+        * [x] [x]: all substitutions from x must be the same
+        * (x) (x): all substitutions from x may be different.
+    Only zero, one, or two substitutions may be made.'''
     target, replacement, env = rule
 
     # If there are no substitutions to make, the rule is fine as-is
-    if '[' not in env:
+    if '[' not in env and '(' not in env:
         return [rule]
 
-    # Isolate the required substitution
-    category = env[env.find('[')+1:env.find(']')]
 
-    # Make substitutions
-    rules = []
-    for substitution in get_substitutions(category):
-        rule = (target, replacement, env.replace('[' + category + ']', substitution))
-        rules.append(rule)
+    # Handle identical substitutions
+    if '[' in env:
+        # Isolate the required substitution
+        category = env[env.find('[')+1:env.find(']')]
+
+        # Make substitutions
+        rules = []
+        for substitution in get_substitutions(category):
+            rule = (target, replacement, env.replace('[' + category + ']', substitution))
+            rules.append(rule)
+
+    # Handle non-identical substitutions
+    else:
+        pass
 
     return rules
 
