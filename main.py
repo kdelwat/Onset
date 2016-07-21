@@ -113,14 +113,22 @@ def step(inventory, word_list):
     for rule in rule_list:
         all_rules.extend(expand_rule(rule))
 
-    print(all_rules)
+    # Apply all rules to all words
+    modified_words = []
+    for word in word_list:
+        for rule in all_rules:
+            word = apply_rule(word, rule)
+        modified_words.append(word)
+
+    print(representation)
+    print(modified_words)
 
 def main():
     #rules = load_rules('rules.txt')
     inventory = Table('pulmonicinventory.csv')
 
     while len(available_rules) > 0:
-        step(inventory, [])
+        step(inventory, ['ppotato', 'paraddʰise'])
 
 if __name__ == '__main__':
     main()
