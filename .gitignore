@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# csv lockfiles
+.~lock.*.csv#
+
+# profiler outputs
+*.lprof
