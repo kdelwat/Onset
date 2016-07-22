@@ -63,30 +63,24 @@ def apply_rule(word, rule):
     taken by the target and replacement.'''
     target, replacement, environment = rule
 
-    # Create target and replacement strings
-    target_string = environment.replace('_', target)
-    replacement_string = environment.replace('_', replacement)
-
-    # Handle environments involving the beginning and end of lines. Delete
-    # special characters from replacement string that may be present in the
-    # environment. This bit's really filthy, sorry.
-    if replacement_string[0] == '^':
-        tar = target_string[1:]
-        repl = replacement_string[1:]
-
-        if word[:len(tar)] == tar:
-            return repl + word[len(tar):]
+    # Initial substitutions
+    if environment[0] == '^':
+        if word[:len(target)] == target:
+            return replacement + word[len(target):]
         else:
             return word
-    elif replacement_string[-1] == '$':
-        tar = target_string[:-1]
-        repl = replacement_string[:-1]
-        if word[-len(tar):] == tar:
-            return word[:-len(tar)] + repl
+    # Final substitutions
+    elif environment[-1] == '$':
+        if word[-len(target):] == target:
+            return word[:-len(target)] + replacement
         else:
             return word
-    # Otherwise, handle standard substitutions. Much nicer.
+    # Other substitutions
     else:
+        # Create target and replacement strings
+        target_string = environment.replace('_', target)
+        replacement_string = environment.replace('_', replacement)
+
         return word.replace(target_string, replacement_string)
 
 def step(inventory, word_list):
