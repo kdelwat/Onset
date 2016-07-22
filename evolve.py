@@ -71,15 +71,18 @@ def apply_rule(word, rule):
     # special characters from replacement string that may be present in the
     # environment. This bit's really filthy, sorry.
     if replacement_string[0] == '^':
-        replacement_string = replacement_string[1:]
-        if word[:len(replacement_string)] == target_string[1:]:
-            return replacement_string + word[len(replacement_string):]
+        tar = target_string[1:]
+        repl = replacement_string[1:]
+
+        if word[:len(tar)] == tar:
+            return repl + word[len(tar):]
         else:
             return word
     elif replacement_string[-1] == '$':
-        replacement_string = replacement_string[:-1]
-        if word[-len(replacement_string):] == target_string[:-1]:
-            return word[:-len(replacement_string)] + replacement_string
+        tar = target_string[:-1]
+        repl = replacement_string[:-1]
+        if word[-len(tar):] == tar:
+            return word[:-len(tar)] + repl
         else:
             return word
     # Otherwise, handle standard substitutions. Much nicer.
