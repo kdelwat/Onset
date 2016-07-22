@@ -92,11 +92,11 @@ def step(inventory, word_list):
 
     # Apply a random change to the inventory until it's deemed valid
     random_rule = random.choice(available_rules)
-    valid, rule_list, representation = random_rule(inventory)
+    valid, rule_list, representation = random_rule(inventory, word_list)
 
     while not valid:
         random_rule = random.choice(available_rules)
-        valid, rule_list, representation = random_rule(inventory)
+        valid, rule_list, representation = random_rule(inventory, word_list)
 
     # Delete the change so it isn't used again
     available_rules.remove(random_rule)

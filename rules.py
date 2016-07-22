@@ -4,6 +4,11 @@ from table import Table
 
 PULMONIC = Table('pulmonic.csv')
 
+def in_words(search, word_list):
+    '''Returns True if search string is in any of the words in word_list, else
+    returns False.'''
+    return any(search in word for word in word_list)
+
 def rule(f):
     '''A decorator for all rule functions which checks to ensure rules are
     applicable to current inventory.'''
@@ -20,7 +25,7 @@ def rule(f):
     return wrapper
 
 @rule
-def sonorization(inventory):
+def sonorization(inventory, word_list):
     '''Implements the sonorization, or voicing, sound change, in which plosives are
     converted to their voiced equivalent.'''
 
@@ -41,7 +46,7 @@ def sonorization(inventory):
     return rules, representation
 
 @rule
-def degemination(inventory):
+def degemination(inventory, word_list):
     '''Implements the degemination sound change, in which doubled plosives are
     converted to singular.'''
 
@@ -60,7 +65,7 @@ def degemination(inventory):
     environments = [random.choice(available_environments)] * len(candidates)
 
     # Zip together the candidates, targets, and environments into a list of rules.
-    rules = [rule for rule in zip(candidates, targets, environments)]
+    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
     representation = 'Degemination: [geminated plosive]/[plosive]/'+ environments[0]
 
