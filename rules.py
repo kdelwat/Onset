@@ -25,7 +25,7 @@ def rule(f):
     return wrapper
 
 @rule
-def sonorization(inventory, word_list):
+def sonorization(word_list):
     '''Implements the sonorization, or voicing, sound change, in which plosives are
     converted to their voiced equivalent.'''
 
@@ -39,14 +39,14 @@ def sonorization(inventory, word_list):
 
     # Zip together the candidates, targets, and environments into a list of rules.
     # Include only those rules which are relevant to the given inventory.
-    rules = [rule for rule in zip(candidates, targets, environments) if rule[0] in inventory[0]]
+    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
     representation = 'Sonorization: [unvoiced plosive]/[voiced plosive]/'+ environments[0]
 
     return rules, representation
 
 @rule
-def degemination(inventory, word_list):
+def degemination(word_list):
     '''Implements the degemination sound change, in which doubled plosives are
     converted to singular.'''
 

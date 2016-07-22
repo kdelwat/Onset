@@ -83,17 +83,17 @@ def apply_rule(word, rule):
 
         return word.replace(target_string, replacement_string)
 
-def step(inventory, word_list):
+def step(word_list):
     '''Given a phonetic inventory and a list of words, apply one step of evolution
     and return the inventory and word list.'''
 
     # Apply a random change to the inventory until it's deemed valid
     random_rule = random.choice(available_rules)
-    valid, rule_list, representation = random_rule(inventory, word_list)
+    valid, rule_list, representation = random_rule(word_list)
 
     while not valid:
         random_rule = random.choice(available_rules)
-        valid, rule_list, representation = random_rule(inventory, word_list)
+        valid, rule_list, representation = random_rule(word_list)
 
     # Delete the change so it isn't used again
     available_rules.remove(random_rule)
@@ -113,10 +113,9 @@ def step(inventory, word_list):
     print(representation)
     return modified_words
 
-def evolve(inventory, words, generations):
+def evolve(words, generations):
     '''Evolves the language specified by:
 
-        inventory: tuple of Tables (pulmonic, nonpulmonic, vowels)
         words: list strings
 
     for the given number of generations. One sound change is applied per
@@ -127,6 +126,6 @@ def evolve(inventory, words, generations):
         if len(available_rules) == 0:
             break
 
-        words = step(inventory, words)
+        words = step(words)
         print(words)
         print('')
