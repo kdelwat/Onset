@@ -68,5 +68,4 @@ def degemination(inventory, word_list):
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
     representation = 'Degemination: [geminated plosive]/[plosive]/'+ environments[0]
-    print(rules)
     return rules, representation
