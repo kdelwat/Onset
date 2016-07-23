@@ -1,5 +1,6 @@
 import csv
 
+
 class Table():
     '''A Table is an object which represents a 2-dimensional CSV file. Both rows
     and columns can be accessed via their key as in a dictionary. This means that

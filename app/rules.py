@@ -4,10 +4,12 @@ from app.table import Table
 
 PULMONIC = Table('app/data/pulmonic.csv')
 
+
 def in_words(search, word_list):
     '''Returns True if search string is in any of the words in word_list, else
     returns False.'''
     return any(search in word for word in word_list)
+
 
 def rule(f):
     '''A decorator for all rule functions which checks to ensure rules are
@@ -24,6 +26,7 @@ def rule(f):
 
     return wrapper
 
+
 @rule
 def sonorization(word_list):
     '''Implements the sonorization, or voicing, sound change, in which plosives are
@@ -37,13 +40,17 @@ def sonorization(word_list):
 
     environments = [random.choice(available_environments)] * len(candidates)
 
-    # Zip together the candidates, targets, and environments into a list of rules.
-    # Include only those rules which are relevant to the given inventory.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
+    # Zip together the candidates, targets, and environments into a list of
+    # rules. Include only those rules which are relevant to the given
+    # inventory.
+    rules = [rule for rule in zip(
+        candidates, targets, environments) if in_words(rule[0], word_list)]
 
-    representation = ['Sonorization', 'unvoiced plosive', 'voiced plosive', environments[0]]
+    representation = ['Sonorization', 'unvoiced plosive', 'voiced plosive',
+                      environments[0]]
 
     return rules, representation
+
 
 @rule
 def degemination(word_list):
@@ -64,8 +71,11 @@ def degemination(word_list):
 
     environments = [random.choice(available_environments)] * len(candidates)
 
-    # Zip together the candidates, targets, and environments into a list of rules.
+    # Zip together the candidates, targets, and environments into a list of
+    # rules.
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
-    representation = ['Degemination', 'geminated plosive', 'plosive', environments[0]]
+    representation = ['Degemination', 'geminated plosive', 'plosive',
+                      environments[0]]
+
     return rules, representation

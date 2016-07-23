@@ -7,10 +7,12 @@ from app.table import Table
 VOWELS = Table('app/data/vowels.csv')
 available_rules = []
 
+
 def get_substitutions(category):
     '''Given a category, e.g. V (vowel) or plosive, return a list of members.'''
     if category == 'V':
         return VOWELS.members()
+
 
 def expand_rule(rule):
     '''Given the rule (target, replacement, environment), expands the rule into a
@@ -26,7 +28,6 @@ def expand_rule(rule):
     if '[' not in env and '(' not in env:
         return [rule]
 
-
     # Handle identical substitutions
     if '[' in env:
         # Isolate the required substitution
@@ -35,7 +36,8 @@ def expand_rule(rule):
         # Make substitutions
         rules_list = []
         for substitution in get_substitutions(category):
-            rule = (target, replacement, env.replace('[' + category + ']', substitution))
+            rule = (target, replacement, env.replace('[' + category + ']',
+                    substitution))
             rules_list.append(rule)
 
     # Handle non-identical substitutions
@@ -56,6 +58,7 @@ def expand_rule(rule):
             rules_list.append(rule)
 
     return rules_list
+
 
 def apply_rule(word, rule):
     '''Applies rule in the form (target, replacement, environment) to the word.
@@ -82,6 +85,7 @@ def apply_rule(word, rule):
         replacement_string = environment.replace('_', replacement)
 
         return word.replace(target_string, replacement_string)
+
 
 def step(word_list):
     '''Given a phonetic inventory and a list of words, apply one step of evolution
@@ -112,6 +116,7 @@ def step(word_list):
         modified_words.append(word)
 
     return representation, modified_words
+
 
 def evolve(words, generations):
     '''Evolves the language specified by:
