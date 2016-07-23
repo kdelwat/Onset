@@ -31,15 +31,79 @@
         list.appendChild(item);
       }
       return list
-    }
+    };
+    
+    // When the window is loaded, save the automatic panel heights.
+    window.onload = function set_panels(){
+      save_info();
+      resize_panels();
+    };
+    
+    window.onresize = resize_panels;
+    
+    function save_info(){
+        window.info_height = $('#info_panel').height();
+        window.word_height = $('#word_panel').height();
+        window.settings_height = $('#settings_panel').height();
+    };
+    
+    // If the panels are side-by-side, resize them to all be the height
+    // of the words panel. Otherwise, set them back to the automatic heights.
+    function resize_panels(){
+        if ( $(window).width() > 768) {
+          $('#info_panel').height(window.word_height);
+          $('#settings_panel').height(window.word_height);  
+        } else {
+          $('#info_panel').height(window.info_height);
+          $('#word_panel').height(window.word_height);
+          $('#settings_panel').height(window.settings_height);
+        }
+        
+    };
     </script>
+
   </head>
   <body>
-    <h1>Hello!</h1>
-    Enter words: <textarea id="word_list" name="word_list">Enter words</textarea>
-    Enter generations: <input type="number" name="generations">
-    <p><span id="rules"></p>
-    <p><span id="words"></p>
-    <div><a id="evolvetrigger" href="#">evolve</a></div>
+    <div class="container">
+      <div class="row">
+        
+        <!-- The information panel -->
+        <div class="col-md-4">
+          <div class="panel panel-default" id="info_panel">
+            <div class="panel-body">
+              <h1>Hello!</h1>
+            </div>
+          </div>
+        </div>
+        
+        <!-- The word list panel -->
+        <div class="col-md-4">
+          <div class="panel panel-default" id="word_panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Words</h3>
+            </div>
+            <div class="panel-body">
+              <textarea id="word_list" name="word_list">Enter words</textarea>
+            </div>
+          </div>
+        </div>
+        
+        <!-- The settings panel -->
+        <div class="col-md-4">
+          <div class="panel panel-default" id="settings_panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Settings</h3>
+            </div>
+            <div class="panel-body">
+              Enter generations: <input type="number" name="generations">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div><a id="evolvetrigger" href="#">evolve</a></div>
+      <p><span id="rules"></p>
+      <p><span id="words"></p>
+    </div>
   </body>
 </html>
