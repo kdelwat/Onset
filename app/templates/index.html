@@ -22,6 +22,8 @@
           show_alert_box(evolved['error']);
         } else {
           $('#alert_area').hide();
+          document.getElementById('rules').innerHTML = "";
+          document.getElementById('words').innerHTML = "";
           document.getElementById('rules').appendChild(join_array(evolved['rules']));
           document.getElementById('words').appendChild(join_array(evolved['words']));
         }
@@ -123,8 +125,8 @@
 
       <hr>
 
-      <p><span id="rules"></p>
-      <p><span id="words"></p>
+      <div id="rules"></div>
+      <div id="words"></div>
     </div>
   </body>
 </html>
