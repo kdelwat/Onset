@@ -42,7 +42,6 @@
     window.onresize = resize_panels;
     
     function save_info(){
-        window.info_height = $('#info_panel').height();
         window.word_height = $('#word_panel').height();
         window.settings_height = $('#settings_panel').height();
     };
@@ -51,10 +50,8 @@
     // of the words panel. Otherwise, set them back to the automatic heights.
     function resize_panels(){
         if ( $(window).width() > 768) {
-          $('#info_panel').height(window.word_height);
           $('#settings_panel').height(window.word_height);  
         } else {
-          $('#info_panel').height(window.info_height);
           $('#word_panel').height(window.word_height);
           $('#settings_panel').height(window.settings_height);
         }
@@ -69,15 +66,12 @@
         
         <!-- The information panel -->
         <div class="col-md-4">
-          <div class="panel panel-default" id="info_panel">
-            <div class="panel-body">
               <h1>LangEvolve</h1>
 
               <p>LangEvolve is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <emph>Evolve!</emph> to see it in action.</p>
 
               <div><a id="evolvetrigger" href="#" class="btn btn-primary center-block">Evolve!</a></div>
-            </div>
-          </div>
+              <br> 
         </div>
         
         <!-- The word list panel -->
