@@ -71,7 +71,11 @@
         <div class="col-md-4">
           <div class="panel panel-default" id="info_panel">
             <div class="panel-body">
-              <h1>Hello!</h1>
+              <h1>LangEvolve</h1>
+
+              <p>LangEvolve is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <emph>Evolve!</emph> to see it in action.</p>
+
+              <div><a id="evolvetrigger" href="#" class="btn btn-primary center-block">Evolve!</a></div>
             </div>
           </div>
         </div>
@@ -83,7 +87,7 @@
               <h3 class="panel-title">Words</h3>
             </div>
             <div class="panel-body">
-              <textarea id="word_list" name="word_list">Enter words</textarea>
+              <textarea id="word_list" name="word_list" style="width: 100% !important" rows=20 >Enter words</textarea>
             </div>
           </div>
         </div>
@@ -95,13 +99,19 @@
               <h3 class="panel-title">Settings</h3>
             </div>
             <div class="panel-body">
-              Enter generations: <input type="number" name="generations">
+              <form>
+                <div class="form-group">
+                  <label for="generations">Generations</label>
+                  <input type="number" class="form-control" id = "generations" name="generations" value="5">
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
-      <div><a id="evolvetrigger" href="#">evolve</a></div>
+      <hr>
+
       <p><span id="rules"></p>
       <p><span id="words"></p>
     </div>
