@@ -88,15 +88,16 @@ def step(word_list):
     and return the inventory and word list.'''
 
     # Apply a random change to the inventory until it's deemed valid
-    random_rule = random.choice(available_rules)
-    valid, rule_list, representation = random_rule(word_list)
+    random.shuffle(available_rules)
 
-    while not valid:
-        random_rule = random.choice(available_rules)
+    for random_rule in available_rules:
         valid, rule_list, representation = random_rule(word_list)
-
-    # Delete the change so it isn't used again
-    available_rules.remove(random_rule)
+        if valid:
+            # Delete the change so it isn't used again
+            available_rules.remove(random_rule)
+            break
+    else:
+        raise ValueError('No valid rules found')
 
     # Create a list to hold every fully-expanded rule
     all_rules = []
@@ -126,7 +127,12 @@ def evolve(words, generations):
         if len(available_rules) == 0:
             break
 
-        representation, words = step(words)
+        try:
+            representation, words = step(words)
+        # If there aren't any valid rules, break out
+        except ValueError:
+            break
+
         rule_reprs.append(representation)
 
     return rule_reprs, words
