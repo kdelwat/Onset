@@ -97,3 +97,6 @@ ENV/
 # JavaScript and CSS
 *.css
 *.js
+
+# VS Code files
+.vscode/
