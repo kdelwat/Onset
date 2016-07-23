@@ -35,11 +35,13 @@
       $('#alert_area').show();
     }
 
-    // Joins an array of text into a list element 
+    // Joins an array of text into a list group 
     function join_array(a) {
       var list = document.createElement('ul');
+      list.className = "list-group";
       for (var i = 0; i < a.length; i++) {
         var item = document.createElement('li');
+        item.className = "list-group-item";
         item.appendChild(document.createTextNode(a[i]));
         list.appendChild(item);
       }
