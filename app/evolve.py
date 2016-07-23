@@ -5,7 +5,7 @@ import app.rules as rules
 from app.table import Table
 
 VOWELS = Table('app/data/vowels.csv')
-available_rules = [rules.sonorization, rules.degemination]
+available_rules = []
 
 def get_substitutions(category):
     '''Given a category, e.g. V (vowel) or plosive, return a list of members.'''
@@ -121,6 +121,8 @@ def evolve(words, generations):
     for the given number of generations. One sound change is applied per
     generation. If there are no further valid rules, end before the end of
     generations.'''
+    global available_rules
+    available_rules = [rules.sonorization, rules.degemination]
 
     rule_reprs = []
     for _ in range(generations):
