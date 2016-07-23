@@ -24,8 +24,8 @@
           $('#alert_area').hide();
           document.getElementById('rules').innerHTML = "";
           document.getElementById('words').innerHTML = "";
-          document.getElementById('rules').appendChild(join_array(evolved['rules']));
-          document.getElementById('words').appendChild(join_array(evolved['words']));
+          document.getElementById('rules').appendChild(join_array(evolved['rules'], 'Sound change rules'));
+          document.getElementById('words').appendChild(join_array(evolved['words'], 'Evolved words'));
         }
                          }).fail(function() {
                               $(words).text("Error occurred")});
@@ -35,17 +35,39 @@
       $('#alert_area').show();
     }
 
-    // Joins an array of text into a list group 
-    function join_array(a) {
+    // Joins an array of text into a list group within a titled panel 
+    function join_array(a, title) {
       var list = document.createElement('ul');
       list.className = "list-group";
+
       for (var i = 0; i < a.length; i++) {
         var item = document.createElement('li');
         item.className = "list-group-item";
         item.appendChild(document.createTextNode(a[i]));
         list.appendChild(item);
       }
-      return list
+      
+      return build_panel(list, title)
+    };
+    
+    // Creates a panel with given title and contents
+    function build_panel(contents, title) {
+      var panel = document.createElement('div');
+      panel.className = "panel panel-default";
+      var titleDiv = document.createElement('div');
+      titleDiv.className = "panel-heading";
+      var heading = document.createElement('h3');
+      heading.className = "panel-title";
+      heading.appendChild(document.createTextNode(title));
+      
+      var body = document.createElement('div');
+      body.className = "panel-body";
+      body.appendChild(contents);
+      
+      titleDiv.appendChild(heading);
+      panel.appendChild(titleDiv);
+      panel.appendChild(body);
+      return panel
     };
     
     // When the window is loaded, save the automatic panel heights.
@@ -126,9 +148,14 @@
       </div>
 
       <hr>
-
-      <div id="rules"></div>
-      <div id="words"></div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div id="rules"></div>
+        </div>
+        <div class="col-md-6">
+          <div id="words"></div>
+        </div>
     </div>
   </body>
 </html>
