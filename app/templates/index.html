@@ -16,12 +16,23 @@
     function evolve() {
       var args = {words: $('textarea[name="word_list"]').val(),
                   generations: $('input[name="generations"]').val()}
+
       $.post('/evolve', args).done(function(evolved) {
-        document.getElementById('rules').appendChild(join_array(evolved['rules']));
-        document.getElementById('words').appendChild(join_array(evolved['words']));
+        if (evolved['error'] != 0) {
+          show_alert_box(evolved['error']);
+        } else {
+          $('#alert_area').hide();
+          document.getElementById('rules').appendChild(join_array(evolved['rules']));
+          document.getElementById('words').appendChild(join_array(evolved['words']));
+        }
                          }).fail(function() {
                               $(words).text("Error occurred")});
                          };
+    function show_alert_box(alert_text) {
+      $('#alert_message').text(alert_text);
+      $('#alert_area').show();
+    }
+
     // Joins an array of text into a list element 
     function join_array(a) {
       var list = document.createElement('ul');
@@ -62,6 +73,12 @@
   </head>
   <body>
     <div class="container">
+      <!-- Area for alerts -->
+      <div id="alert_area" class="alert alert-warning alert-dismissable" role="alert" style="display: none">
+        <button type="button" class="close" onclick="$('#alert_area').hide();">&times;</button>
+        <p id="alert_message">Error</p>
+      </div>
+
       <div class="row">
         
         <!-- The information panel -->

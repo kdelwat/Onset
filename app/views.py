@@ -14,4 +14,4 @@ def evolver():
 
     rules, words = evolve.evolve(words, generations)
 
-    return jsonify({'rules':rules, 'words':words})
+    return jsonify({'rules':rules, 'words':words, 'error':0})
