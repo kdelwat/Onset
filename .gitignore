@@ -93,3 +93,7 @@ ENV/
 
 # profiler outputs
 *.lprof
+
+# JavaScript and CSS
+*.css
+*.js
