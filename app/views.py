@@ -1,4 +1,4 @@
-from flask import render_template, jsonify
+from flask import render_template, jsonify, request
 from app import app
 from app import evolve
 
@@ -9,7 +9,9 @@ def index():
 
 @app.route('/evolve', methods=['POST'])
 def evolver():
-    words = ['ppotato', 'paraddʰise']
-    rules, words = evolve.evolve(words, 5)
+    words = request.form['words'].split()
+    generations = int(request.form['generations'])
+
+    rules, words = evolve.evolve(words, generations)
 
     return jsonify({'rules':rules, 'words':words})

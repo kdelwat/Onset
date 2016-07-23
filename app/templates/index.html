@@ -14,7 +14,9 @@
     
     // Request the evolved language from Flask and display it
     function evolve() {
-      $.post('/evolve', {}).done(function(evolved) {
+      var args = {words: $('textarea[name="word_list"]').val(),
+                  generations: $('input[name="generations"]').val()}
+      $.post('/evolve', args).done(function(evolved) {
         document.getElementById('rules').appendChild(join_array(evolved['rules']));
         document.getElementById('words').appendChild(join_array(evolved['words']));
                          }).fail(function() {
@@ -34,6 +36,8 @@
   </head>
   <body>
     <h1>Hello!</h1>
+    Enter words: <textarea id="word_list" name="word_list">Enter words</textarea>
+    Enter generations: <input type="number" name="generations">
     <p><span id="rules"></p>
     <p><span id="words"></p>
     <div><a id="evolvetrigger" href="#">evolve</a></div>
