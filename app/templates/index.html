@@ -24,7 +24,7 @@
           $('#alert_area').hide();
           document.getElementById('rules').innerHTML = "";
           document.getElementById('words').innerHTML = "";
-          document.getElementById('rules').appendChild(join_array(evolved['rules'], 'Sound change rules'));
+          document.getElementById('rules').appendChild(join_rules_array(evolved['rules'], 'Sound change rules'));
           document.getElementById('words').appendChild(join_array(evolved['words'], 'Evolved words'));
         }
                          }).fail(function() {
@@ -34,7 +34,21 @@
       $('#alert_message').text(alert_text);
       $('#alert_area').show();
     }
-
+    
+    // Joins an array of rules into a list group within a titled panel 
+    function join_rules_array(a, title) {
+      var list = document.createElement('ul');
+      list.className = "list-group";
+      
+      for (var i = 0; i < a.length; i++) {
+        var item = document.createElement('li');
+        item.className = "list-group-item";
+        item.innerHTML = '<strong>' + a[i][0] + '</strong> ' + a[i][1] + ' &#8594; ' + a[i][2] + ' (' + a[i][3] + ')';
+        list.appendChild(item);
+      }
+      return build_panel(list, title)
+    };
+    
     // Joins an array of text into a list group within a titled panel 
     function join_array(a, title) {
       var list = document.createElement('ul');
@@ -60,13 +74,9 @@
       heading.className = "panel-title";
       heading.appendChild(document.createTextNode(title));
       
-      var body = document.createElement('div');
-      body.className = "panel-body";
-      body.appendChild(contents);
-      
       titleDiv.appendChild(heading);
       panel.appendChild(titleDiv);
-      panel.appendChild(body);
+      panel.appendChild(contents);
       return panel
     };
     
@@ -149,6 +159,7 @@
 
       <hr>
       
+      <!-- Output area -->
       <div class="row">
         <div class="col-md-6">
           <div id="rules"></div>
@@ -156,6 +167,7 @@
         <div class="col-md-6">
           <div id="words"></div>
         </div>
+      </div>
     </div>
   </body>
 </html>

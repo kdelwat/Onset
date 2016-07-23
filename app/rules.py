@@ -41,7 +41,7 @@ def sonorization(word_list):
     # Include only those rules which are relevant to the given inventory.
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
-    representation = 'Sonorization: [unvoiced plosive]/[voiced plosive]/'+ environments[0]
+    representation = ['Sonorization', 'unvoiced plosive', 'voiced plosive', environments[0]]
 
     return rules, representation
 
@@ -67,5 +67,5 @@ def degemination(word_list):
     # Zip together the candidates, targets, and environments into a list of rules.
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
 
-    representation = 'Degemination: [geminated plosive]/[plosive]/'+ environments[0]
+    representation = ['Degemination', 'geminated plosive', 'plosive', environments[0]]
     return rules, representation
