@@ -10,7 +10,11 @@ def index():
 @app.route('/evolve', methods=['POST'])
 def evolver():
     words = request.form['words'].split()
-    generations = int(request.form['generations'])
+
+    try:
+        generations = int(request.form['generations'])
+    except ValueError:
+        return jsonify({'error':'Error: Generations must be an integer'})
 
     rules, words = evolve.evolve(words, generations)
 
