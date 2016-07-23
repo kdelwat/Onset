@@ -1,10 +1,10 @@
 import random
 from itertools import combinations_with_replacement
 
-import rules
-from table import Table
+import app.rules as rules
+from app.table import Table
 
-VOWELS = Table('vowels.csv')
+VOWELS = Table('app/data/vowels.csv')
 available_rules = [rules.sonorization, rules.degemination]
 
 def get_substitutions(category):
@@ -110,8 +110,7 @@ def step(word_list):
             word = apply_rule(word, rule)
         modified_words.append(word)
 
-    print(representation)
-    return modified_words
+    return representation, modified_words
 
 def evolve(words, generations):
     '''Evolves the language specified by:
@@ -122,10 +121,12 @@ def evolve(words, generations):
     generation. If there are no further valid rules, end before the end of
     generations.'''
 
+    rule_reprs = []
     for _ in range(generations):
         if len(available_rules) == 0:
             break
 
-        words = step(words)
-        print(words)
-        print('')
+        representation, words = step(words)
+        rule_reprs.append(representation)
+
+    return rule_reprs, words

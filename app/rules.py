@@ -1,8 +1,8 @@
 import random
 
-from table import Table
+from app.table import Table
 
-PULMONIC = Table('pulmonic.csv')
+PULMONIC = Table('app/data/pulmonic.csv')
 
 def in_words(search, word_list):
     '''Returns True if search string is in any of the words in word_list, else
