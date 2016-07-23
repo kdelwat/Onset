@@ -33,10 +33,10 @@ def expand_rule(rule):
         category = env[env.find('[')+1:env.find(']')]
 
         # Make substitutions
-        rules = []
+        rules_list = []
         for substitution in get_substitutions(category):
             rule = (target, replacement, env.replace('[' + category + ']', substitution))
-            rules.append(rule)
+            rules_list.append(rule)
 
     # Handle non-identical substitutions
     else:
@@ -47,15 +47,15 @@ def expand_rule(rule):
         substitution_pairs = combinations_with_replacement(get_substitutions(category), 2)
 
         # Make substitutions
-        rules = []
+        rules_list = []
         for pair in substitution_pairs:
             first, second = pair
             rule = (target, replacement, env.replace('(' + category + ')', first, 1).replace('(' + category + ')', second, 1))
-            rules.append(rule)
+            rules_list.append(rule)
             rule = (target, replacement, env.replace('(' + category + ')', second, 1).replace('(' + category + ')', first, 1))
-            rules.append(rule)
+            rules_list.append(rule)
 
-    return rules
+    return rules_list
 
 def apply_rule(word, rule):
     '''Applies rule in the form (target, replacement, environment) to the word.
