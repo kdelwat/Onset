@@ -15,15 +15,27 @@
     // Request the evolved language from Flask and display it
     function evolve() {
       $.post('/evolve', {}).done(function(evolved) {
-                              $(words).text(evolved['words'])
+        document.getElementById('rules').appendChild(join_array(evolved['rules']));
+        document.getElementById('words').appendChild(join_array(evolved['words']));
                          }).fail(function() {
                               $(words).text("Error occurred")});
                          };
+    // Joins an array of text into a list element 
+    function join_array(a) {
+      var list = document.createElement('ul');
+      for (var i = 0; i < a.length; i++) {
+        var item = document.createElement('li');
+        item.appendChild(document.createTextNode(a[i]));
+        list.appendChild(item);
+      }
+      return list
+    }
     </script>
   </head>
   <body>
     <h1>Hello!</h1>
-    <p><span id="words">something</p>
+    <p><span id="rules"></p>
+    <p><span id="words"></p>
     <div><a id="evolvetrigger" href="#">evolve</a></div>
   </body>
 </html>
