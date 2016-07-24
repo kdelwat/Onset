@@ -271,7 +271,7 @@ def approximant_elision(word_list):
     '''Implements elision of approximants, in which approximants are deleted.'''
 
     candidates = PULMONIC['approximant']
-    targets = ['∅'] * len(candidates)
+    targets = [''] * len(candidates)
 
     available_environments = ['(V)_(V)', '^_', '_$']
 
