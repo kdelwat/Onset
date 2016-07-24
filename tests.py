@@ -1,6 +1,6 @@
 import unittest
 
-from evolve import apply_rule
+from app.evolve import apply_rule
 
 class TestApplyRule(unittest.TestCase):
 
@@ -23,6 +23,9 @@ class TestApplyRule(unittest.TestCase):
         self.assertEqual(apply_rule('abcde', ('c', 'xyz', 'a_')), 'abcde')
         self.assertEqual(apply_rule('abcde', ('c', 'xyz', 'a_d')), 'abcde')
 
+        # Deletion
+        self.assertEqual(apply_rule('abcde', ('c', '', '_')), 'abde')
+
     def test_beginning(self):
         # Should be substitution
         self.assertEqual(apply_rule('abcde', ('a', 'x', '^_')), 'xbcde')
@@ -32,12 +35,19 @@ class TestApplyRule(unittest.TestCase):
         # Shouldn't be substitution
         self.assertEqual(apply_rule('abcde', ('b', 'x', '^_')), 'abcde')
 
+        # Deletion
+        self.assertEqual(apply_rule('abcde', ('a', '', '^_')), 'bcde')
+        self.assertEqual(apply_rule('abcde', ('a', '', '^_b')), 'bcde')
+
     def test_beginning_multi(self):
         self.assertEqual(apply_rule('abcde', ('ab', 'x', '^_')), 'xcde')
         self.assertEqual(apply_rule('abcde', ('ab', 'x', '^_c')), 'xcde')
 
         self.assertEqual(apply_rule('abcde', ('a', 'xyz', '^_')), 'xyzbcde')
         self.assertEqual(apply_rule('abcde', ('a', 'xyz', '^_b')), 'xyzbcde')
+
+        # Deletion
+        self.assertEqual(apply_rule('abcde', ('ab', '', '^_')), 'cde')
 
     def test_ending(self):
         # Should be substitution
@@ -48,6 +58,9 @@ class TestApplyRule(unittest.TestCase):
         # Shouldn't be substitution
         self.assertEqual(apply_rule('abcde', ('d', 'x', '_$')), 'abcde')
 
+        # Deletion
+        self.assertEqual(apply_rule('abcde', ('e', '', '_$')), 'abcd')
+
     def test_ending_multi(self):
         # Should be substitution
         self.assertEqual(apply_rule('abcde', ('de', 'x', '_$')), 'abcx')
@@ -55,6 +68,9 @@ class TestApplyRule(unittest.TestCase):
 
         self.assertEqual(apply_rule('abcde', ('e', 'xyz', '_$')), 'abcdxyz')
         self.assertEqual(apply_rule('abcde', ('e', 'xyz', 'd_$')), 'abcdxyz')
+
+        # Deletion
+        self.assertEqual(apply_rule('abcde', ('de', '', '_$')), 'abc')
 
 if __name__=='__main__':
     unittest.main()
