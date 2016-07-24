@@ -127,7 +127,19 @@ def evolve(words, generations):
     generation. If there are no further valid rules, end before the end of
     generations.'''
     global available_rules
-    available_rules = [rules.sonorization, rules.degemination]
+
+    available_rules = [rules.approximation,
+                       rules.sonorization,
+                       rules.deaffrication,
+                       rules.lateral_vocalization,
+                       rules.spirantization,
+                       rules.debuccalization,
+                       rules.palatal_vocalization,
+                       rules.affrication,
+                       rules.degemination,
+                       rules.approximant_elision,
+                       rules.flapping]
+
 
     rule_reprs = []
     for _ in range(generations):
