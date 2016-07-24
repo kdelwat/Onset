@@ -2,7 +2,7 @@ from app import evolve
 
 
 def main():
-    words = ['something']
+    words = ['something', 'else', 'isup']
     rewrite = [('o', 'ə'), ('me', 'm'), ('th', 'θ'), ('ing', 'ɪŋ')]
 
     rules, words = evolve.evolve(words, 5, rewrite)

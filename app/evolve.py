@@ -134,6 +134,25 @@ def rewrite(words, rewrite_rules, target='ipa'):
     return modified
 
 
+def num_different(list1, list2):
+    '''Returns the number of items different in two lists
+    zipped together.'''
+    return len([pair for pair in zip(list1, list2) if pair[0] != pair[1]])
+
+
+def clear_intermediate(steps):
+    '''Deletes steps from a list if the word list hasn't changed from the last
+    step.'''
+
+    cleaned = [steps[0]]
+
+    for step in steps[1:]:
+        if num_different(cleaned[-1][0], step[0]) != 0:
+            cleaned.append(step)
+
+    return cleaned
+
+
 def evolve(words, generations, rewrite_rules):
     '''Evolves the language specified by:
 
@@ -159,7 +178,7 @@ def evolve(words, generations, rewrite_rules):
     # Apply rewrite rules
     words = rewrite(words, rewrite_rules, target='ipa')
 
-    rule_reprs = []
+    steps = [(words, '')]
     for _ in range(generations):
         if len(available_rules) == 0:
             break
@@ -170,8 +189,14 @@ def evolve(words, generations, rewrite_rules):
         except ValueError:
             break
 
-        rule_reprs.append(representation)
+        steps.append((words, representation))
 
-    words = rewrite(words, rewrite_rules, target='plain')
+    # Delete steps which didn't affect any words
+    meaningful_steps = clear_intermediate(steps)
 
-    return rule_reprs, words
+    evolved_words = meaningful_steps[-1][0]
+    rule_reprs = [step[1] for step in meaningful_steps[1:]]
+
+    evolved_words = rewrite(evolved_words, rewrite_rules, target='plain')
+
+    return rule_reprs, evolved_words
