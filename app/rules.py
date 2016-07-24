@@ -275,9 +275,9 @@ def approximant_elision(word_list):
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '']
 
     if in_words('h', word_list):
-        rules.append(('h', '∅', environments[0]))
+        rules.append(('h', '', environments[0]))
     if in_words('ɦ', word_list):
-        rules.append(('ɦ', '∅', environments[0]))
+        rules.append(('ɦ', '', environments[0]))
 
     representation = ['elision', 'approximant', 'nothing',
                       environments[0]]
