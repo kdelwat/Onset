@@ -36,8 +36,9 @@
           document.getElementById('words').appendChild(create_text_area(evolved['words'], 'Evolved words'));
         }
                          }).fail(function() {
-                              $(words).text("Error occurred")});
+                              show_alert_box('An error occured')});
                          };
+
     function show_alert_box(alert_text) {
       $('#alert_message').text(alert_text);
       $('#alert_area').show();
