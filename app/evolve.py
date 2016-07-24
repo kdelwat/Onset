@@ -118,7 +118,23 @@ def step(word_list):
     return representation, modified_words
 
 
-def evolve(words, generations):
+def rewrite(words, rewrite_rules, target='ipa'):
+    '''Rewrite a list of words according to a list of tuple rules of form
+    (plain, ipa), in direction given by target.'''
+    modified = []
+
+    for word in words:
+        for rule in rewrite_rules:
+            if target == 'ipa':
+                word = word.replace(rule[0], rule[1])
+            elif target == 'plain':
+                word = word.replace(rule[1], rule[0])
+        modified.append(word)
+
+    return modified
+
+
+def evolve(words, generations, rewrite_rules):
     '''Evolves the language specified by:
 
         words: list strings
@@ -140,6 +156,8 @@ def evolve(words, generations):
                        rules.approximant_elision,
                        rules.flapping]
 
+    # Apply rewrite rules
+    words = rewrite(words, rewrite_rules, target='ipa')
 
     rule_reprs = []
     for _ in range(generations):
@@ -153,5 +171,7 @@ def evolve(words, generations):
             break
 
         rule_reprs.append(representation)
+
+    words = rewrite(words, rewrite_rules, target='plain')
 
     return rule_reprs, words

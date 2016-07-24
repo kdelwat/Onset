@@ -1,8 +1,11 @@
 from app import evolve
 
+
 def main():
-    words = ['eff', 'reff', 'ppopadom']
-    rules, words = evolve.evolve(words, 5)
+    words = ['something']
+    rewrite = [('o', 'ə'), ('me', 'm'), ('th', 'θ'), ('ing', 'ɪŋ')]
+
+    rules, words = evolve.evolve(words, 5, rewrite)
 
     print(rules)
     print(words)
