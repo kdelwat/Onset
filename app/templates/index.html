@@ -23,7 +23,8 @@
     // Request the evolved language from Flask and display it
     function evolve() {
       var args = {words: $('textarea[name="word_list"]').val(),
-                  generations: $('input[name="generations"]').val()}
+                  generations: $('input[name="generations"]').val(),
+                  transcriptions: $('textarea[name="transcription_list"]').val()}
 
       $.post('/evolve', args).done(function(evolved) {
         if (evolved['error'] != 0) {
@@ -181,6 +182,11 @@
                   <label for="generations">Generations</label>
                   <i class="fa fa-question-circle" data-toggle="tooltip" title="The number of sound change rules to apply during evolution" data-placement="right"></i>
                   <input type="number" class="form-control" id = "generations" name="generations" value="5">
+                </div>
+                <div class="form-group">
+                  <label for="transcriptions">Transcriptions</label>
+                  <i class="fa fa-question-circle" data-toggle="tooltip" title="A list of plain text to IPA transcriptions, seperated by colons" data-placement="right"></i>
+                  <textarea id="transcription_list" name="transcription_list" style="width: 100% !important" rows=5 ></textarea>
                 </div>
               </form>
             </div>
