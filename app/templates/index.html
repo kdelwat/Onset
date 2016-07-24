@@ -4,14 +4,22 @@
 
     <!-- Bootstrap and JQuery files -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+
     <script>
+    // Enable tooltip functionality of Bootstrap
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+
     // Trigger the evolve function when link is clicked
     $(function() {
-      $("#evolvetrigger").click(function(e) {evolve()});      
+      $("#evolvetrigger").click(function(e) {evolve()});
     });
-    
+
     // Request the evolved language from Flask and display it
     function evolve() {
       var args = {words: $('textarea[name="word_list"]').val(),
@@ -34,12 +42,12 @@
       $('#alert_message').text(alert_text);
       $('#alert_area').show();
     }
-    
-    // Joins an array of rules into a list group within a titled panel 
+
+    // Joins an array of rules into a list group within a titled panel
     function join_rules_array(a, title) {
       var list = document.createElement('ul');
       list.className = "list-group";
-      
+
       for (var i = 0; i < a.length; i++) {
         var item = document.createElement('li');
         item.className = "list-group-item";
@@ -48,8 +56,8 @@
       }
       return build_panel(list, title, false)
     };
-    
-    // Joins an array of text into a list group within a titled panel 
+
+    // Joins an array of text into a list group within a titled panel
     function join_array(a, title) {
       var list = document.createElement('ul');
       list.className = "list-group";
@@ -60,10 +68,10 @@
         item.appendChild(document.createTextNode(a[i]));
         list.appendChild(item);
       }
-      
+
       return build_panel(list, title, false)
     };
-    
+
     // Creates a panel with a text area populated from a list
     // of strings.
     function create_text_area(populate, title) {
@@ -71,10 +79,10 @@
       text.innerHTML = populate.join('\n');
       text.style = "width: 100% !important";
       text.rows = populate.length;
-       
+
       return build_panel(text, title, true)
     }
-    
+
     // Creates a panel with given title and contents
     function build_panel(contents, title, body) {
       var panel = document.createElement('div');
@@ -84,7 +92,7 @@
       var heading = document.createElement('h3');
       heading.className = "panel-title";
       heading.appendChild(document.createTextNode(title));
-      
+
       titleDiv.appendChild(heading);
       panel.appendChild(titleDiv);
 
@@ -100,30 +108,30 @@
 
       return panel
     };
-    
+
     // When the window is loaded, save the automatic panel heights.
     window.onload = function set_panels(){
       save_info();
       resize_panels();
     };
-    
+
     window.onresize = resize_panels;
-    
+
     function save_info(){
         window.word_height = $('#word_panel').height();
         window.settings_height = $('#settings_panel').height();
     };
-    
+
     // If the panels are side-by-side, resize them to all be the height
     // of the words panel. Otherwise, set them back to the automatic heights.
     function resize_panels(){
         if ( $(window).width() > 768) {
-          $('#settings_panel').height(window.word_height);  
+          $('#settings_panel').height(window.word_height);
         } else {
           $('#word_panel').height(window.word_height);
           $('#settings_panel').height(window.settings_height);
         }
-        
+
     };
     </script>
 
@@ -137,7 +145,7 @@
       </div>
 
       <div class="row">
-        
+
         <!-- The information panel -->
         <div class="col-md-4">
               <h1>LangEvolve</h1>
@@ -145,9 +153,9 @@
               <p>LangEvolve is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <emph>Evolve!</emph> to see it in action.</p>
 
               <div><a id="evolvetrigger" href="#" class="btn btn-primary center-block">Evolve!</a></div>
-              <br> 
+              <br>
         </div>
-        
+
         <!-- The word list panel -->
         <div class="col-md-4">
           <div class="panel panel-default" id="word_panel">
@@ -159,7 +167,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- The settings panel -->
         <div class="col-md-4">
           <div class="panel panel-default" id="settings_panel">
@@ -170,6 +178,7 @@
               <form>
                 <div class="form-group">
                   <label for="generations">Generations</label>
+                  <i class="fa fa-question-circle" data-toggle="tooltip" title="The number of sound change rules to apply during evolution" data-placement="right"></i>
                   <input type="number" class="form-control" id = "generations" name="generations" value="5">
                 </div>
               </form>
@@ -179,7 +188,7 @@
       </div>
 
       <hr>
-      
+
       <!-- Output area -->
       <div class="row">
         <div class="col-md-6">
