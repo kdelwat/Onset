@@ -23,6 +23,7 @@ def rule(f):
         if len(rules) == 0:
             return False, None, None
         else:
+            random.shuffle(rules)
             return True, rules, representation
 
     return wrapper
@@ -99,8 +100,6 @@ def spirantization(word_list):
     # rules.
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '' and rule[1] != '']
 
-    random.shuffle(rules)
-
     representation = ['spirantization', 'plosive', 'fricative',
                       environments[0]]
 
@@ -149,8 +148,6 @@ def lateral_vocalization(word_list):
     # Zip together the candidates, targets, and environments into a list of
     # rules.
     rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
-
-    random.shuffle(rules)
 
     representation = ['vocalization', 'lateral approximant', 'semivowel/back vowel',
                       environments[0]]
@@ -233,8 +230,6 @@ def affrication(word_list):
     if in_words('tʰ', word_list):
         rules.append(('tʰ', 'ts', environments[0]))
 
-    random.shuffle(rules)
-
     representation = ['affrication', 'plosive', 'affricate',
                       environments[0]]
 
@@ -258,8 +253,6 @@ def deaffrication(word_list):
 
     if in_words('ts', word_list):
         rules.append(('ts', 's', environments[0]))
-
-    random.shuffle(rules)
 
     representation = ['deaffrication', 'affricate', 'fricative',
                       environments[0]]
