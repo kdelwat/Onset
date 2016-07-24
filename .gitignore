@@ -100,3 +100,6 @@ ENV/
 
 # VS Code files
 .vscode/
+
+# FontAwesome files
+*.woff2
