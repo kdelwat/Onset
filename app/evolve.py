@@ -97,8 +97,6 @@ def step(word_list):
     for random_rule in available_rules:
         valid, rule_list, representation = random_rule(word_list)
         if valid:
-            # Delete the change so it isn't used again
-            available_rules.remove(random_rule)
             break
     else:
         raise ValueError('No valid rules found')
@@ -161,6 +159,9 @@ def evolve(words, generations, rewrite_rules):
     for the given number of generations. One sound change is applied per
     generation. If there are no further valid rules, end before the end of
     generations.'''
+
+    attempts_limit = 100
+
     global available_rules
 
     available_rules = [rules.approximation,
@@ -178,25 +179,27 @@ def evolve(words, generations, rewrite_rules):
     # Apply rewrite rules
     words = rewrite(words, rewrite_rules, target='ipa')
 
-    steps = [(words, '')]
-    for _ in range(generations):
-        if len(available_rules) == 0:
-            break
+    rule_reprs = []
+    attempts = 0
+
+    while len(rule_reprs) < generations:
+        attempts += 1
 
         try:
-            representation, words = step(words)
+            representation, new_words = step(words)
         # If there aren't any valid rules, break out
         except ValueError:
             break
 
-        steps.append((words, representation))
+        if num_different(new_words, words) > 0:
+            print(words, new_words, representation)
+            print('')
+            words = new_words
+            rule_reprs.append(representation)
 
-    # Delete steps which didn't affect any words
-    meaningful_steps = clear_intermediate(steps)
+        if attempts > attempts_limit:
+            break
 
-    evolved_words = meaningful_steps[-1][0]
-    rule_reprs = [step[1] for step in meaningful_steps[1:]]
+    words = rewrite(words, rewrite_rules, target='plain')
 
-    evolved_words = rewrite(evolved_words, rewrite_rules, target='plain')
-
-    return rule_reprs, evolved_words
+    return rule_reprs, words
