@@ -174,7 +174,8 @@ def evolve(words, generations, rewrite_rules):
                        rules.affrication,
                        rules.degemination,
                        rules.approximant_elision,
-                       rules.flapping]
+                       rules.flapping,
+                       rules.nasalization]
 
     # Apply rewrite rules
     words = rewrite(words, rewrite_rules, target='ipa')

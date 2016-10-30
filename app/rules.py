@@ -5,6 +5,8 @@ from app.table import Table
 PULMONIC = Table('app/data/pulmonic.csv')
 VOWELS = Table('app/data/vowels.csv')
 
+ALL_VOWELS = VOWELS['close'] + VOWELS['closeclosemid'] + VOWELS['closemid'] + VOWELS['closemidopenmid'] + VOWELS['openmid'] + VOWELS['openmidopen'] + VOWELS['open']
+
 
 def in_words(search, word_list):
     '''Returns True if search string is in any of the words in word_list, else
@@ -281,5 +283,19 @@ def approximant_elision(word_list):
 
     representation = ['elision', 'approximant', 'nothing',
                       environments[0]]
+
+    return rules, representation
+
+@rule
+def nasalization(word_list):
+    '''Implements nasalization of vowels, in which vowels are nasalized following nasal consonants.'''
+
+    rules = []
+    for candidate in PULMONIC['nasal']:
+        for target in ALL_VOWELS:
+            rules.append((target, target + '\u0303', candidate + '_'))
+
+    representation = ['nasalization', 'vowel', 'nasal vowel',
+                      '(nasal consonant_']
 
     return rules, representation
