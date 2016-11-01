@@ -3,11 +3,14 @@ import re
 
 from collections import namedtuple
 
+# Import phoneme tables
+from rules import PULMONIC, VOWELS
+
 Rule = namedtuple('Rule', ['changes', 'environments'])
 
 
 sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
-                    ['^.', 'V.V', '.$'])
+                    ['^.', 'V.V', '.$', '{ubilabial}.'])
 
 
 rules = [sonorization]
@@ -19,11 +22,55 @@ def choose_rule(words, rules):
     '''Returns a sound change rule from rules applicable to the given word
     list.
     '''
-    filtered_rules = filter_rules_by_phonemes(words, rules)
+    expanded_rules = expand_rule_environments(rules)
+    filtered_rules = filter_rules_by_phonemes(words, expanded_rules)
     filtered_rules = filter_rules_by_environments(words, filtered_rules)
 
     return filtered_rules
     # selected_rule = random.choice(filtered_rules)
+
+
+def list_to_category(list):
+    '''Converts a list (of phoneme strings) into a single string which represents a
+    regex category, i.e ['a', 'b', 'c'] becomes '[abc]'.
+    '''
+    return '[' + ''.join(list) + ']'
+
+
+def expand_environment(environment):
+    '''Expand special environment categories in the given string into their full
+    list of phonemes. For example, the environment 'V.V' might be expanded to
+    '[aeiou].[aeiou]'. The categories V and C are special forms, for vowels and
+    consonants, while other categories can be taken from the phonemes table
+    using the form '{label}'.
+    '''
+
+    # Replace special forms
+    environment = environment.replace('V', '[' + ''.join(VOWELS.members()) + ']')
+    environment = environment.replace('C', '[' + ''.join(PULMONIC.members()) + ']')
+
+    # Replace arbitrary categories
+    for category in re.findall('{(.*)}', environment):
+        if category in VOWELS:
+            environment = environment.replace('{' + category + '}', list_to_category(VOWELS[category]))
+        elif category in PULMONIC:
+            environment = environment.replace('{' + category + '}', list_to_category(PULMONIC[category]))
+
+    return environment
+
+
+def expand_rule_environments(rules):
+    '''Given a list of rules, expand special environment categories into their full
+    list of phonemes. For example, the environment 'V.V' might be expanded to
+    '[aeiou].[aeiou]'''
+
+    expanded_rules = []
+
+    for rule in rules:
+        expanded_environments = [expand_environment(environment) for environment in rule.environments]
+        expanded_rules.append(rule._replace(environments=expanded_environments))
+
+    return expanded_rules
 
 
 def intersecting(set_1, set_2):
@@ -81,4 +128,7 @@ def filter_rules_by_environments(words, rules):
     return filtered_rules
 
 if __name__ == '__main__':
-    print(choose_rule(words, rules))
+    # print(choose_rule(words, rules))
+    # print(PULMONIC['ubilabial'])
+    print(expand_rule_environments(rules))
+
