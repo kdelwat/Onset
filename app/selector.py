@@ -17,7 +17,7 @@ rules = [sonorization]
 words = ['oxxaotatop', 'tobapɸcɒ', 'pɸxxtabasco']
 
 
-def choose_rule(words, rules):
+def select_rule(words, rules):
     '''Returns a sound change rule from rules applicable to the given word
     list.
     '''
@@ -110,5 +110,5 @@ def filter_rules_by_environments(words, rules):
     return filtered_rules
 
 if __name__ == '__main__':
-    print(choose_rule(words, rules))
+    print(select_rule(words, rules))
 
