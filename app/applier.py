@@ -5,7 +5,8 @@ from collections import namedtuple
 
 Rule = namedtuple('Rule', ['changes', 'environments'])
 
-sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c':'ɟ', 'k': 'g', 'q': 'ɢ'},
+
+sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
                     ['^.', 'V.V', '.$'])
 
 
@@ -13,23 +14,29 @@ rules = [sonorization]
 
 words = ['otatop', 'tobado', 'xtabasco']
 
+
 def choose_rule(words, rules):
-    '''Returns a sound change rule from rules applicable to the given word list.'''
+    '''Returns a sound change rule from rules applicable to the given word
+    list.
+    '''
     filtered_rules = filter_rules_by_phonemes(words, rules)
     filtered_rules = filter_rules_by_environments(words, filtered_rules)
 
     return filtered_rules
     # selected_rule = random.choice(filtered_rules)
 
+
 def intersecting(set_1, set_2):
     '''Return true if the intersection of the two sets isn't empty, false
-otherwise.
+    otherwise.
     '''
     return (len(set_1.intersection(set_2)) != 0)
 
+
 def filter_rules_by_phonemes(words, rules):
-    '''Returns a list of rules which contain phonemes that are in the given word
-list.
+    '''Returns a If you want to customize the fill column value, use something like
+    this inside the user-init function in your .spacemacs:list of rules which
+    contain phonemes that are in the given word list.
     '''
     word_phonemes = set(''.join(words))
 
@@ -39,14 +46,15 @@ list.
 
 def rule_phonemes(rule):
     '''Returns a set of the target phonemes of the rule, i.e. the phonemes used as
-keys in the changes dictionary.'''
+    keys in the changes dictionary.
+    '''
     return set(rule.changes.keys())
 
 
 def filter_rules_by_environments(words, rules):
     '''Returns a list of rules which apply to at least one word in the given word
-list, taking into account the environments in which the rule applies. The rules
-have all extraneous phoneme pairs removed, for maximum efficiency.
+    list, taking into account the environments in which the rule applies. The
+    rules have all extraneous phoneme pairs removed, for maximum efficiency.
     '''
     filtered_rules = []
 
@@ -56,7 +64,6 @@ have all extraneous phoneme pairs removed, for maximum efficiency.
 
     for rule in rules:
         phonemes = ''.join(rule_phonemes(rule))
-        applicable_environments = []
 
         for environment in rule.environments:
             # Get a set of target phonemes which appear in the environment.
