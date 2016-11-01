@@ -22,7 +22,6 @@ def choose_rule(words, rules):
     list.
     '''
     expanded_rules = expand_rule_environments(rules)
-    #filtered_rules = filter_rules_by_phonemes(words, expanded_rules)
     filtered_rules = filter_rules_by_environments(words, expanded_rules)
 
     return filtered_rules
@@ -71,23 +70,6 @@ def expand_rule_environments(rules):
         expanded_rules.append(rule._replace(environments=expanded_environments))
 
     return expanded_rules
-
-
-def intersecting(set_1, set_2):
-    '''Return true if the intersection of the two sets isn't empty, false
-    otherwise.
-    '''
-    return (len(set_1.intersection(set_2)) != 0)
-
-
-def filter_rules_by_phonemes(words, rules):
-    '''Returns a list of rules which contain phonemes that are in the given word
-    list.
-    '''
-    word_phonemes = set(''.join(words))
-
-    return [rule for rule in rules if intersecting(word_phonemes,
-                                                   set(rule.changes.keys()))]
 
 
 def rule_phonemes(rule):
