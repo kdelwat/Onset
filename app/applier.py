@@ -24,8 +24,7 @@ def choose_rule(words, rules):
     expanded_rules = expand_rule_environments(rules)
     filtered_rules = filter_rules_by_environments(words, expanded_rules)
 
-    return filtered_rules
-    # selected_rule = random.choice(filtered_rules)
+    return random.choice(filtered_rules)
 
 
 def list_to_category(phonemes):
