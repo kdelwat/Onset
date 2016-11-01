@@ -9,13 +9,12 @@ from rules import PULMONIC, VOWELS
 Rule = namedtuple('Rule', ['changes', 'environments'])
 
 
-sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
+sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
                     ['^.', 'V.V', '.$', '{ubilabial}.'])
-
 
 rules = [sonorization]
 
-words = ['otatop', 'tobado', 'xtabasco']
+words = ['oxxaotatop', 'tobapɸcɒ', 'pɸxxtabasco']
 
 
 def choose_rule(words, rules):
@@ -23,18 +22,19 @@ def choose_rule(words, rules):
     list.
     '''
     expanded_rules = expand_rule_environments(rules)
-    filtered_rules = filter_rules_by_phonemes(words, expanded_rules)
-    filtered_rules = filter_rules_by_environments(words, filtered_rules)
+    #filtered_rules = filter_rules_by_phonemes(words, expanded_rules)
+    filtered_rules = filter_rules_by_environments(words, expanded_rules)
 
     return filtered_rules
     # selected_rule = random.choice(filtered_rules)
 
 
-def list_to_category(list):
+def list_to_category(phonemes):
     '''Converts a list (of phoneme strings) into a single string which represents a
-    regex category, i.e ['a', 'b', 'c'] becomes '[abc]'.
+    regex category, i.e ['a', 'b', 'c'] becomes '(a|b|c)'.
     '''
-    return '[' + ''.join(list) + ']'
+    phonemes = [phoneme for phoneme in phonemes if phoneme != '']
+    return '(?:' + '|'.join(phonemes) + ')'
 
 
 def expand_environment(environment):
@@ -46,8 +46,8 @@ def expand_environment(environment):
     '''
 
     # Replace special forms
-    environment = environment.replace('V', '[' + ''.join(VOWELS.members()) + ']')
-    environment = environment.replace('C', '[' + ''.join(PULMONIC.members()) + ']')
+    environment = environment.replace('V', list_to_category(VOWELS.members()))
+    environment = environment.replace('C', list_to_category(PULMONIC.members()))
 
     # Replace arbitrary categories
     for category in re.findall('{(.*)}', environment):
@@ -81,9 +81,8 @@ def intersecting(set_1, set_2):
 
 
 def filter_rules_by_phonemes(words, rules):
-    '''Returns a If you want to customize the fill column value, use something like
-    this inside the user-init function in your .spacemacs:list of rules which
-    contain phonemes that are in the given word list.
+    '''Returns a list of rules which contain phonemes that are in the given word
+    list.
     '''
     word_phonemes = set(''.join(words))
 
@@ -110,11 +109,13 @@ def filter_rules_by_environments(words, rules):
     combined_words = '\n'.join(words)
 
     for rule in rules:
-        phonemes = ''.join(rule_phonemes(rule))
+
+        # Create a regex capture group from target phonemes, in the form '(a|bc|d)'.
+        phonemes_match = '({0})'.format('|'.join(rule_phonemes(rule)))
 
         for environment in rule.environments:
             # Get a set of target phonemes which appear in the environment.
-            regex = environment.replace('.', '([{0}])'.format(phonemes))
+            regex = environment.replace('.', phonemes_match)
             targets = set(re.findall(regex, combined_words, re.MULTILINE))
 
             # If there are targets available, create a new rule with just those
@@ -128,7 +129,5 @@ def filter_rules_by_environments(words, rules):
     return filtered_rules
 
 if __name__ == '__main__':
-    # print(choose_rule(words, rules))
-    # print(PULMONIC['ubilabial'])
-    print(expand_rule_environments(rules))
+    print(choose_rule(words, rules))
 
