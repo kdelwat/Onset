@@ -1,21 +1,24 @@
 import random
+import re
 
 from collections import namedtuple
 
 Rule = namedtuple('Rule', ['changes', 'environments'])
 
 sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c':'ɟ', 'k': 'g', 'q': 'ɢ'},
-                    ['^.', 'V.V'])
+                    ['^.', 'V.V', '.$'])
+
 
 rules = [sonorization]
 
-words = ['potato', 'tobado', 'tabasco']
+words = ['otatop', 'tobado', 'xtabasco']
 
 def choose_rule(words, rules):
     '''Returns a sound change rule from rules applicable to the given word list.'''
     filtered_rules = filter_rules_by_phonemes(words, rules)
-    # filtered_rules = filter_rules_by_environments(words, filtered_rules)
+    filtered_rules = filter_rules_by_environments(words, filtered_rules)
 
+    return filtered_rules
     # selected_rule = random.choice(filtered_rules)
 
 def intersecting(set_1, set_2):
@@ -25,19 +28,50 @@ otherwise.
     return (len(set_1.intersection(set_2)) != 0)
 
 def filter_rules_by_phonemes(words, rules):
-    '''Returns a list of rules which contain phonemes that are present in the given
-word list.
+    '''Returns a list of rules which contain phonemes that are in the given word
+list.
     '''
     word_phonemes = set(''.join(words))
 
     return [rule for rule in rules if intersecting(word_phonemes,
                                                    set(rule.changes.keys()))]
 
+
+def rule_phonemes(rule):
+    '''Returns a set of the target phonemes of the rule, i.e. the phonemes used as
+keys in the changes dictionary.'''
+    return set(rule.changes.keys())
+
+
 def filter_rules_by_environments(words, rules):
     '''Returns a list of rules which apply to at least one word in the given word
-list, taking into account the environments in which the rule applies.
+list, taking into account the environments in which the rule applies. The rules
+have all extraneous phoneme pairs removed, for maximum efficiency.
     '''
-    pass
+    filtered_rules = []
+
+    # Combine the word list into one string, separated by newlines, to speed up
+    # regex search.
+    combined_words = '\n'.join(words)
+
+    for rule in rules:
+        phonemes = ''.join(rule_phonemes(rule))
+        applicable_environments = []
+
+        for environment in rule.environments:
+            # Get a set of target phonemes which appear in the environment.
+            regex = environment.replace('.', '([{0}])'.format(phonemes))
+            targets = set(re.findall(regex, combined_words, re.MULTILINE))
+
+            # If there are targets available, create a new rule with just those
+            # targets and the current environment and add it to the filtered
+            # list.
+            if len(targets) != 0:
+                changes = {target: replacement for target, replacement in
+                           rule.changes.items() if target in targets}
+                filtered_rules.append(Rule(changes, [environment]))
+
+    return filtered_rules
 
 if __name__ == '__main__':
-    choose_rule(words, rules)
+    print(choose_rule(words, rules))
