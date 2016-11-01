@@ -60,8 +60,8 @@ def expand_environment(environment):
 
 def expand_rule_environments(rules):
     '''Given a list of rules, expand special environment categories into their full
-    list of phonemes. For example, the environment 'V.V' might be expanded to
-    '[aeiou].[aeiou]'''
+    list of phonemes. For example, the environment 'V.' might be expanded to
+    '(a|e|i|o|u).'''
 
     expanded_rules = []
 
