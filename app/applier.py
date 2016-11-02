@@ -10,7 +10,7 @@ def apply_rule(words, rule):
 
     # Get the environments before and after the placeholder (.) which will be
     # the spot where phonemes are replaced.
-    before, after = rule.environments[0].split('.')
+    before, after = rule.environments[0][0].split('.')
 
     # Make the substitution for each target - replacement pair in dictionary.
     for target, replacement in rule.changes.items():

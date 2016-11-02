@@ -36,6 +36,9 @@ def expand_environment(environment):
     using the form '{label}'.
     '''
 
+    # Save the original environment for displaying
+    environment_representation = str(environment)
+
     # Replace special forms
     environment = environment.replace('V', list_to_category(VOWELS.members()))
     environment = environment.replace('C', list_to_category(PULMONIC.members()))
@@ -47,7 +50,7 @@ def expand_environment(environment):
         elif category in PULMONIC:
             environment = environment.replace('{' + category + '}', list_to_category(PULMONIC[category]))
 
-    return environment
+    return (environment, environment_representation)
 
 
 def expand_rule_environments(rules):
@@ -89,7 +92,7 @@ def filter_rules_by_environments(words, rules):
 
         for environment in rule.environments:
             # Get a set of target phonemes which appear in the environment.
-            regex = environment.replace('.', phonemes_match)
+            regex = environment[0].replace('.', phonemes_match)
             targets = set(re.findall(regex, combined_words, re.MULTILINE))
 
             # If there are targets available, create a new rule with just those
