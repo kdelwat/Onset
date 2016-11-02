@@ -6,13 +6,19 @@ from collections import namedtuple
 PULMONIC = Table('app/data/pulmonic.csv')
 VOWELS = Table('app/data/vowels.csv')
 
-
-
 ALL_VOWELS = VOWELS['close'] + VOWELS['closeclosemid'] + VOWELS['closemid'] + VOWELS['closemidopenmid'] + VOWELS['openmid'] + VOWELS['openmidopen'] + VOWELS['open']
 
-Rule = namedtuple('Rule', ['changes', 'environments'])
+# A Rule is a namedtuple with the following fields:
+#     name: a string representing the process' name
+#     target: a string representing the process' target
+#     replacement: a string representing the process' replacement
+#     changes: a dictionary of sound changes
+#     environments: a list of environments to apply the rule to
 
-sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
+Rule = namedtuple('Rule', ['name', 'target', 'replacement', 'changes', 'environments'])
+
+sonorization = Rule('sonorization', 'unvoiced plosive', 'voiced plosive',
+                    {'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
                     ['^.', 'V.V', '.$', '{ubilabial}.'])
 
 rules = [sonorization]

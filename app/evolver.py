@@ -3,6 +3,10 @@ import app.applier as applier
 
 from app.rules import rules
 
+def rule_representation(rule):
+    '''Takes a Rule and returns a list of strings which represent it, in the
+    form [name, target, replacement, environment]'''
+    return [rule.name, rule.target, rule.replacement, rule.environments[0]]
 
 def evolve(words, generations=5, rewrite_rules=[]):
     '''Evolves the language specified by:
@@ -23,7 +27,7 @@ def evolve(words, generations=5, rewrite_rules=[]):
         except ValueError:
             break
 
-        changes.append(str(sound_change))
+        changes.append(rule_representation(sound_change))
         print(sound_change)
         words = applier.apply_rule(words, sound_change)
 

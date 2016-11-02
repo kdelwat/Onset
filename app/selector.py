@@ -1,9 +1,11 @@
 import random
 import regex as re
+from collections import namedtuple
 
 # Import phoneme tables
 from app.rules import PULMONIC, VOWELS
 
+Rule = namedtuple('Rule', ['name', 'target', 'replacement', 'changes', 'environments'])
 
 def select_rule(words, rules):
     '''Returns a sound change rule from rules applicable to the given word
@@ -96,6 +98,7 @@ def filter_rules_by_environments(words, rules):
             if len(targets) != 0:
                 changes = {target: replacement for target, replacement in
                            rule.changes.items() if target in targets}
-                filtered_rules.append(Rule(changes, [environment]))
+                filtered_rules.append(Rule(rule.name, rule.target, rule.replacement,
+                                           changes, [environment]))
 
     return filtered_rules
