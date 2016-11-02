@@ -4,7 +4,7 @@ import regex as re
 from collections import namedtuple
 
 # Import phoneme tables
-from rules import PULMONIC, VOWELS
+from app.rules import PULMONIC, VOWELS
 
 Rule = namedtuple('Rule', ['changes', 'environments'])
 
@@ -24,7 +24,10 @@ def select_rule(words, rules):
     expanded_rules = expand_rule_environments(rules)
     filtered_rules = filter_rules_by_environments(words, expanded_rules)
 
-    return random.choice(filtered_rules)
+    if len(filtered_rules) == 0:
+        raise ValueError("No valid rules")
+    else:
+        return random.choice(filtered_rules)
 
 
 def list_to_category(phonemes):

@@ -1,6 +1,6 @@
 from flask import render_template, jsonify, request
 from app import app
-from app import evolve
+from app import evolver
 
 
 @app.route('/')
@@ -16,7 +16,7 @@ def format_transcriptions(transcriptions):
 
 
 @app.route('/evolve', methods=['POST'])
-def evolver():
+def evolve():
     words = request.form['words'].split()
 
     try:
@@ -29,6 +29,6 @@ def evolver():
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
-    rules, words = evolve.evolve(words, generations, transcriptions)
+    words, rules = evolver.evolve(words, generations, transcriptions)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})

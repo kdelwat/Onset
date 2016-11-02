@@ -1,14 +1,12 @@
 import random
 
-#from app.table import Table
-from table import Table
-
-#PULMONIC = Table('app/data/pulmonic.csv')
-#VOWELS = Table('app/data/vowels.csv')
+from app.table import Table
 from collections import namedtuple
 
-PULMONIC = Table('data/pulmonic.csv')
-VOWELS = Table('data/vowels.csv')
+PULMONIC = Table('app/data/pulmonic.csv')
+VOWELS = Table('app/data/vowels.csv')
+
+
 
 ALL_VOWELS = VOWELS['close'] + VOWELS['closeclosemid'] + VOWELS['closemid'] + VOWELS['closemidopenmid'] + VOWELS['openmid'] + VOWELS['openmidopen'] + VOWELS['open']
 

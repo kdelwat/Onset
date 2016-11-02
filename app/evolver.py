@@ -1,9 +1,7 @@
-import selector
-import applier
+import app.selector as selector
+import app.applier as applier
 
-from rules import rules
-
-words = ['oxxaotatop', 'tobapɸcɒ', 'pɸxxtabasco']
+from app.rules import rules
 
 
 def evolve(words, generations=5, rewrite_rules=[]):
@@ -14,14 +12,19 @@ def evolve(words, generations=5, rewrite_rules=[]):
     for the given number of generations. One sound change is applied per
     generation.'''
 
+    changes = []
+
     for _ in range(generations):
-        sound_change = selector.select_rule(words, rules)
+
+        # Try to select a valid rule
+        try:
+            sound_change = selector.select_rule(words, rules)
+        # If there aren't any, finish early by breaking from the loop.
+        except ValueError:
+            break
+
+        changes.append(str(sound_change))
         print(sound_change)
         words = applier.apply_rule(words, sound_change)
 
-    return words
-
-if __name__ == '__main__':
-    print(evolve(words, 3))
-
-
+    return words, changes
