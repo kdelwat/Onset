@@ -12,7 +12,12 @@ def index():
 def format_transcriptions(transcriptions):
     '''Split the raw string of transcriptions into
     the correct tuple rules.'''
-    return [(pair.split(':')[0], pair.split(':')[1]) for pair in transcriptions.split('\n')]
+    clean_transcriptions = transcriptions.strip().lower()
+
+    if len(clean_transcriptions) == 0:
+        return []
+    else:
+        return [(pair.split(':')[0], pair.split(':')[1]) for pair in clean_transcriptions.split('\n')]
 
 
 @app.route('/evolve', methods=['POST'])
