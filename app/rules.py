@@ -5,12 +5,19 @@ from table import Table
 
 #PULMONIC = Table('app/data/pulmonic.csv')
 #VOWELS = Table('app/data/vowels.csv')
+from collections import namedtuple
 
 PULMONIC = Table('data/pulmonic.csv')
 VOWELS = Table('data/vowels.csv')
 
 ALL_VOWELS = VOWELS['close'] + VOWELS['closeclosemid'] + VOWELS['closemid'] + VOWELS['closemidopenmid'] + VOWELS['openmid'] + VOWELS['openmidopen'] + VOWELS['open']
 
+Rule = namedtuple('Rule', ['changes', 'environments'])
+
+sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
+                    ['^.', 'V.V', '.$', '{ubilabial}.'])
+
+rules = [sonorization]
 
 def in_words(search, word_list):
     '''Returns True if search string is in any of the words in word_list, else
