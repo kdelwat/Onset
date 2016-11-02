@@ -6,6 +6,12 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
 
+    <style>
+     textarea {
+         border: 1px solid #dddddd;}
+
+    </style>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
 
@@ -165,7 +171,8 @@
               <h3 class="panel-title">Words</h3>
             </div>
             <div class="panel-body">
-              <textarea id="word_list" name="word_list" style="width: 100% !important" rows=20 >Enter words</textarea>
+                <p>Enter a list of words, one per line, which will be evolved.</p>
+              <textarea id="word_list" name="word_list" style="width: 100% !important" rows=20 ></textarea>
             </div>
           </div>
         </div>
@@ -185,8 +192,8 @@
                 </div>
                 <div class="form-group">
                   <label for="transcriptions">Transcriptions</label>
-                  <i class="fa fa-question-circle" data-toggle="tooltip" title="A list of plain text to IPA transcriptions, seperated by colons" data-placement="right"></i>
-                  <textarea id="transcription_list" name="transcription_list" style="width: 100% !important" rows=5 ></textarea>
+                  <i class="fa fa-question-circle" data-toggle="tooltip" title="A list of plain text to IPA transcriptions, separated by colons" data-placement="right"></i>
+                  <textarea id="transcription_list" name="transcription_list" style="width: 100% !important" rows=5 placeholder="ng:ŋ"></textarea>
                 </div>
               </form>
             </div>
