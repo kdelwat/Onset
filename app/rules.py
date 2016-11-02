@@ -6,22 +6,22 @@ from collections import namedtuple
 PULMONIC = Table('app/data/pulmonic.csv')
 VOWELS = Table('app/data/vowels.csv')
 
-ALL_VOWELS = VOWELS['close'] + VOWELS['closeclosemid'] + VOWELS['closemid'] + VOWELS['closemidopenmid'] + VOWELS['openmid'] + VOWELS['openmidopen'] + VOWELS['open']
-
 # A Rule is a namedtuple with the following fields:
 #     name: a string representing the process' name
 #     target: a string representing the process' target
 #     replacement: a string representing the process' replacement
 #     changes: a dictionary of sound changes
 #     environments: a list of environments to apply the rule to
-
 Rule = namedtuple('Rule', ['name', 'target', 'replacement', 'changes', 'environments'])
 
-sonorization = Rule('sonorization', 'unvoiced plosive', 'voiced plosive',
-                    {'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
-                    ['^.', 'V.V', '.$', '{ubilabial}.'])
 
-rules = [sonorization]
+def combine_lists(list_1, list_2):
+    '''Combines two lists into a dictionary, ensuring that any pair that contains a
+    '' is removed.
+    '''
+    pairs = [pair for pair in zip(list_1, list_2) if pair[0] != '' and pair[1] != '']
+    return dict(pairs)
+
 
 def in_words(search, word_list):
     '''Returns True if search string is in any of the words in word_list, else
@@ -35,8 +35,8 @@ def rule(f):
     def wrapper(*args, **kwargs):
         rules, representation = f(*args, **kwargs)
 
-        # If the length of the rules list is 0, there are no applicable rules, so
-        # return False.
+        # If the length of the rules list is 0, there are no applicable rules,
+        # so return False.
         if len(rules) == 0:
             return False, None, None
         else:
@@ -46,271 +46,130 @@ def rule(f):
     return wrapper
 
 
-@rule
-def sonorization(word_list):
-    '''Implements the sonorization, or voicing, sound change, in which plosives are
-    converted to their voiced equivalent.'''
-
-    # List unvoiced plosives and their voiced equivalents
-    candidates = ['p', 't', 'ʈ', 'c', 'k', 'q']
-    targets = ['b', 'd', 'ɖ', 'ɟ', 'g', 'ɢ']
-
-    available_environments = ['^_', '(V)_(V)']
-
-    environments = [random.choice(available_environments)] * len(candidates)
-
-    # Zip together the candidates, targets, and environments into a list of
-    # rules. Include only those rules which are relevant to the given
-    # inventory.
-    rules = [rule for rule in zip(
-        candidates, targets, environments) if in_words(rule[0], word_list)]
-
-    representation = ['Sonorization', 'unvoiced plosive', 'voiced plosive',
-                      environments[0]]
-
-    return rules, representation
+def sonorization():
+    return Rule('sonorization', 'unvoiced plosive', 'voiced plosive',
+                {'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
+                ['^.', 'V.V', '.$'])
 
 
-@rule
-def degemination(word_list):
-    '''Implements the degemination sound change, in which doubled plosives are
-    converted to singular.'''
-
-    candidates = []
-    targets = []
-
+def degemination():
+    changes = {}
     for phoneme in PULMONIC['plosive']:
-        if phoneme != '':
-            candidates.append(phoneme + phoneme)
-            candidates.append(phoneme + phoneme + 'ʰ')
-            targets.append(phoneme)
-            targets.append(phoneme + 'ʰ')
+        changes[phoneme + phoneme] = phoneme
+        changes[phoneme + phoneme + 'ʰ'] = phoneme + 'ʰ'
 
-    available_environments = ['^_', '(V)_(V)']
-
-    environments = [random.choice(available_environments)] * len(candidates)
-
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(
-        candidates, targets, environments) if in_words(rule[0], word_list)]
-
-    representation = ['Degemination', 'geminated plosive', 'plosive',
-                      environments[0]]
-
-    return rules, representation
+    return Rule('degemination', 'geminated plosive', 'plosive',
+                changes,
+                ['^.', 'V.V'])
 
 
-@rule
-def spirantization(word_list):
-    '''Implements the spirantization sound change, in which stops are converted
-    to fricatives.'''
+def spirantization():
+    changes = combine_lists(PULMONIC['plosive'], PULMONIC['fricative'])
 
-    candidates = PULMONIC['plosive']
-    targets = PULMONIC['fricative']
-
-    available_environments = ['^_', '(V)_(V)']
-
-    environments = [random.choice(available_environments)] * len(candidates)
-
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '' and rule[1] != '']
-
-    representation = ['spirantization', 'plosive', 'fricative',
-                      environments[0]]
-
-    return rules, representation
+    return Rule('spirantization', 'plosive', 'fricative',
+                changes,
+                ['^.', 'V.V'])
 
 
-@rule
-def debuccalization(word_list):
-    '''Implements the debuccalization sound change, in which fricatives are
-    converted to the placeless approximant.'''
+def debuccalization():
+    fricatives = PULMONIC['fricative']
+    changes = combine_lists(fricatives, ['h'] * len(fricatives))
+    return Rule('dubuccalization', 'fricative', 'placeless approximant',
+                changes,
+                ['^.', 'V.V', '.$'])
 
-    candidates = PULMONIC['fricative']
-    targets = ['h'] * len(candidates)
 
-    available_environments = ['^_', '(V)_(V)', '_$']
+def lateral_vocalization():
+    return Rule('vocalization', 'lateral approximant', 'semivowel',
+                {'l': 'j', 'ɫ': 'w'},
+                ['^.', 'V.V', '.$'])
 
-    environments = [random.choice(available_environments)] * len(candidates)
 
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
+def palatal_vocalization():
+    return Rule('vocalization', 'palatal approximant', 'front vowel',
+                {'j': 'i'},
+                ['^.', 'V.V', '.$'])
 
-    representation = ['debuccalization', 'fricative', 'placeless approximant',
-                      environments[0]]
 
-    return rules, representation
+def approximation():
+    changes = {}
 
-@rule
-def lateral_vocalization(word_list):
-    '''Implements the lateral vocalization sound change, in which l is converted
-    to a semivowel.'''
-
-    candidates = []
-    targets = []
-    for phoneme in set(PULMONIC['lateralapproximant'] + ['ɫ']):
-        if phoneme != '':
-            for target in set(VOWELS['uback'] + VOWELS['rback'] + ['w', 'ɰ', 'j']):
-                if target != '':
-                    candidates.append(phoneme)
-                    targets.append(target)
-
-    available_environments = ['^_', '(V)_(V)', '_$']
-
-    environments = [random.choice(available_environments)] * len(candidates)
-
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list)]
-
-    representation = ['vocalization', 'lateral approximant', 'semivowel/back vowel',
-                      environments[0]]
-
-    return rules, representation
-
-@rule
-def palatal_vocalization(word_list):
-    '''Implements the palatal vocalization sound change, in which j is converted
-    to front vowel i.'''
-
-    available_environments = ['^_', '(V)_(V)', '_$']
-    environment = random.choice(available_environments)
-
-    representation = ['vocalization', 'palatal approximant', 'front vowel',
-                      environment]
-
-    rule = ('j', 'i', environment)
-    return [rule], representation
-
-@rule
-def approximation(word_list):
-    '''Implements the approximation sound change, in which continuants are
-    converted to approximants.'''
-
-    candidates = PULMONIC['fricative']
-    targets = PULMONIC['approximant']
-
-    available_environments = ['^_', '(V)_(V)', '_$']
-
-    environment = random.choice(available_environments)
-
-    rules = []
-    for candidate, target in zip(candidates, targets):
-        if candidate != '' and in_words(candidate, word_list):
-            if target == '':
-                rules.append((candidate, candidate + '\u031E', environment))
+    for fricative, approximant in zip(PULMONIC['fricative'], PULMONIC['approximant']):
+        if fricative != '':
+            if approximant == '':
+                changes[fricative] = fricative + '\u031E'
             else:
-                rules.append((candidate, target, environment))
+                changes[fricative] = approximant
 
-    representation = ['approximation', 'continuant', 'approximant',
-                      environment]
-
-    return rules, representation
-
-@rule
-def flapping(word_list):
-    '''Implements the flapping sound change, in which t and d are
-    converted to a tap.'''
-    available_environments = ['^_', '(V)_(V)']
-
-    environment = random.choice(available_environments)
-
-    representation = ['flapping', '[t] and [d]', 'flap',
-                      environment]
-
-    rules = [('t', 'ɾ', environment), ('d', 'ɾ', environment)]
-
-    return rules, representation
+    return Rule('approximation', 'continuant', 'approximant',
+                changes,
+                ['^.', 'V.V', '.$'])
 
 
-@rule
-def affrication(word_list):
-    '''Implements the affrication sound change, in which plosives are converted
-    to affricates.'''
+def flapping():
+    return Rule('flapping', '[t] and [d]', 'flap',
+                {'t': 'ɾ', 'd': 'ɾ'},
+                ['^.', 'V.V'])
 
-    candidates = PULMONIC['plosive'] + [p + 'ʰ' for p in PULMONIC['plosive']]
-    targets = PULMONIC['nonsibilantaffricate'] + PULMONIC['nonsibilantaffricate']
 
-    available_environments = ['(V)_(V)']
+def affrication():
+    changes = {}
 
-    environments = [random.choice(available_environments)] * len(candidates)
+    for plosive, affricate in zip(PULMONIC['plosive'], PULMONIC['nonsibilantaffricate']):
+        if plosive != '' and affricate != '':
+            changes[plosive] = affricate
+            changes[plosive + 'ʰ'] = affricate
 
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '' and rule[1] != '']
+    changes['t'] = 'ts'
+    changes['tʰ'] = 'ts'
 
-    if in_words('t', word_list):
-        rules.append(('t', 'ts', environments[0]))
-    if in_words('tʰ', word_list):
-        rules.append(('tʰ', 'ts', environments[0]))
+    return Rule('affrication', 'plosive', 'affricate',
+                changes,
+                ['V.V'])
 
-    representation = ['affrication', 'plosive', 'affricate',
-                      environments[0]]
 
-    return rules, representation
+def deaffrication():
+    changes = combine_lists(PULMONIC['nonsibilantaffricate'], PULMONIC['fricative'])
+    changes['ts'] = 's'
 
-@rule
-def deaffrication(word_list):
-    '''Implements the affrication sound change, in which plosives are converted
-    to affricates.'''
+    return Rule('deaffrication', 'affricate', 'fricative',
+                changes,
+                ['^.', 'V.V', '.$'])
 
-    candidates = PULMONIC['nonsibilantaffricate']
-    targets = PULMONIC['fricative']
 
-    available_environments = ['(V)_(V)', '^_', '_$']
+def approximant_elision():
+    changes = {}
 
-    environments = [random.choice(available_environments)] * len(candidates)
+    for approximant in PULMONIC['approximant']:
+        if approximant != '':
+            changes[approximant] = ''
 
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '' and rule[1] != '']
+    changes['h'] = ''
+    changes['ɦ'] = ''
 
-    if in_words('ts', word_list):
-        rules.append(('ts', 's', environments[0]))
+    return Rule('elision', 'approximant', 'nothing',
+                changes,
+                ['^.', 'V.V', '.$'])
 
-    representation = ['deaffrication', 'affricate', 'fricative',
-                      environments[0]]
 
-    return rules, representation
+def nasalization():
+    changes = {}
 
-@rule
-def approximant_elision(word_list):
-    '''Implements elision of approximants, in which approximants are deleted.'''
+    for vowel in VOWELS.members():
+        changes[vowel] = vowel + '\u0303'
 
-    candidates = PULMONIC['approximant']
-    targets = [''] * len(candidates)
+    return Rule('nasalization', 'vowel', 'nasal vowel',
+                changes,
+                '{nasal}.')
 
-    available_environments = ['(V)_(V)', '^_', '_$']
-
-    environments = [random.choice(available_environments)] * len(candidates)
-
-    # Zip together the candidates, targets, and environments into a list of
-    # rules.
-    rules = [rule for rule in zip(candidates, targets, environments) if in_words(rule[0], word_list) and rule[0] != '']
-
-    if in_words('h', word_list):
-        rules.append(('h', '', environments[0]))
-    if in_words('ɦ', word_list):
-        rules.append(('ɦ', '', environments[0]))
-
-    representation = ['elision', 'approximant', 'nothing',
-                      environments[0]]
-
-    return rules, representation
-
-@rule
-def nasalization(word_list):
-    '''Implements nasalization of vowels, in which vowels are nasalized following nasal consonants.'''
-
-    rules = []
-    for candidate in PULMONIC['nasal']:
-        for target in ALL_VOWELS:
-            rules.append((target, target + '\u0303', candidate + '_'))
-
-    representation = ['nasalization', 'vowel', 'nasal vowel',
-                      '(nasal consonant_']
-
-    return rules, representation
+rules = [sonorization(),
+         degemination(),
+         spirantization(),
+         debuccalization(),
+         lateral_vocalization(),
+         palatal_vocalization(),
+         approximation(),
+         flapping(),
+         affrication(),
+         deaffrication(),
+         approximant_elision()]
