@@ -1,5 +1,5 @@
 import random
-import re
+import regex as re
 
 from collections import namedtuple
 
