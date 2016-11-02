@@ -160,7 +160,7 @@ def nasalization():
 
     return Rule('nasalization', 'vowel', 'nasal vowel',
                 changes,
-                '{nasal}.')
+                ['{nasal}.'])
 
 rules = [sonorization(),
          degemination(),
@@ -172,4 +172,5 @@ rules = [sonorization(),
          flapping(),
          affrication(),
          deaffrication(),
-         approximant_elision()]
+         approximant_elision(),
+         nasalization()]
