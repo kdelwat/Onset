@@ -1,5 +1,6 @@
 import regex as re
 
+
 def apply_rule(words, rule):
     '''Applies the given rule to the list of words.'''
 
