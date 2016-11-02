@@ -1,20 +1,8 @@
 import random
 import regex as re
 
-from collections import namedtuple
-
 # Import phoneme tables
 from app.rules import PULMONIC, VOWELS
-
-Rule = namedtuple('Rule', ['changes', 'environments'])
-
-
-sonorization = Rule({'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ', 'xx': 'cc'},
-                    ['^.', 'V.V', '.$', '{ubilabial}.'])
-
-rules = [sonorization]
-
-words = ['oxxaotatop', 'tobapɸcɒ', 'pɸxxtabasco']
 
 
 def select_rule(words, rules):
@@ -111,7 +99,3 @@ def filter_rules_by_environments(words, rules):
                 filtered_rules.append(Rule(changes, [environment]))
 
     return filtered_rules
-
-if __name__ == '__main__':
-    print(select_rule(words, rules))
-
