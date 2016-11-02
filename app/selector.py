@@ -35,7 +35,6 @@ def expand_environment(environment):
     consonants, while other categories can be taken from the phonemes table
     using the form '{label}'.
     '''
-
     # Save the original environment for displaying
     environment_representation = str(environment)
 

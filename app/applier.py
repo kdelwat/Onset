@@ -15,7 +15,6 @@ def apply_rule(words, rule):
     # Make the substitution for each target - replacement pair in dictionary.
     for target, replacement in rule.changes.items():
         regex = '(?<={0}){1}(?={2})'.format(before, target, after)
-        print(regex)
         combined_words = re.sub(regex, replacement, combined_words,
                                 flags=re.MULTILINE)
 
