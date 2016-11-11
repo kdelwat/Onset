@@ -2,7 +2,7 @@
     <div id="app">
         <div class="columns">
             <div class="column">
-                <div class="card">
+                <div class="card is-fullwidth">
                     <header class="card-header">
                       <p class="card-header-title">Onset</p>
                     </header>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="column">
-              <div class="card">
+              <div class="card is-fullwidth">
                 <header class="card-header">
                   <p class="card-header-title">Words</p>
                 </header>
@@ -33,9 +33,9 @@
                 <p>Words: {{ wordString }}, {{ generations }}</p>
             </div>
             <div class="column">
-              <div class="card">
+              <div class="card is-fullwidth">
                 <header class="card-header">
-                  <p class="card-header-title">Words</p>
+                  <p class="card-header-title">Settings</p>
                 </header>
                 <div class="card-content">
                 <form>
