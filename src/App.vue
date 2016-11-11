@@ -30,7 +30,7 @@
                     </div>
                   </div>
               </div>
-                <p>Words: {{ wordString }}, {{ generations }}</p>
+                <p>Words: {{ transcriptions }}, {{ words }}</p>
             </div>
             <div class="column">
               <div class="card is-fullwidth">
@@ -45,7 +45,7 @@
                   </p>
                   <label class="label">Transcriptions</label>
                   <p class="control">
-                    <textarea class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
+                    <textarea v-model="transcriptionString" class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
                   </p>
                 </form>
                 </div>
@@ -66,6 +66,15 @@ export default {
       generations: 5,
       transcriptionString: '',
     };
+  },
+  computed: {
+    words() {
+      return this.wordString.split('\n').filter(x => x !== '');
+    },
+    transcriptions() {
+      const pairs = this.transcriptionString.split('\n').map(pair => pair.split(':'));
+      return pairs.filter(x => x.length !== 1);
+    },
   },
 };
 </script>
