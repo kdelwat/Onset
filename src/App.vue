@@ -19,7 +19,17 @@
                 </div>
             </div>
             <div class="column">
-                <words v-model="wordString"></words>
+              <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">Words</p>
+                </header>
+                  <div class="card-content">
+                    <div class="content">
+                      <p>Enter a list of words, one per line, which will be evolved.</p>
+                      <textarea ref="input" rows=20 v-model="wordString"></textarea>
+                    </div>
+                  </div>
+              </div>
                 <p>Words: {{ wordString }}</p>
             </div>
             <div class="column">
@@ -38,17 +48,19 @@ export default {
   },
   data() {
     return {
-      wordString: 'a',
+      wordString: '',
     };
   },
 };
 </script>
 
 <style>
-#app {
-}
-
 .is-disabled {
     opacity: 0.5;
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #dddddd;
 }
 </style>
