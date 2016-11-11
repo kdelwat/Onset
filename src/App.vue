@@ -26,29 +26,45 @@
                   <div class="card-content">
                     <div class="content">
                       <p>Enter a list of words, one per line, which will be evolved.</p>
-                      <textarea ref="input" rows=20 v-model="wordString"></textarea>
+                      <textarea class="textarea" ref="input" rows=20 v-model="wordString"></textarea>
                     </div>
                   </div>
               </div>
-                <p>Words: {{ wordString }}</p>
+                <p>Words: {{ wordString }}, {{ generations }}</p>
             </div>
             <div class="column">
+              <div class="card">
+                <header class="card-header">
+                  <p class="card-header-title">Words</p>
+                </header>
+                <div class="card-content">
+                <form>
+                  <label class="label">Generations</label>
+                  <p class="control">
+                    <input v-model="generations" type="number" class="input">
+                  </p>
+                  <label class="label">Transcriptions</label>
+                  <p class="control">
+                    <textarea class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
+                  </p>
+                </form>
+                </div>
+              </div>
             </div>
         </div>
   </div>
 </template>
 
 <script>
-import Words from './components/Words';
 
 export default {
   name: 'app',
-  components: {
-    Words,
-  },
+  components: {},
   data() {
     return {
       wordString: '',
+      generations: 5,
+      transcriptionString: '',
     };
   },
 };
@@ -60,7 +76,5 @@ export default {
 }
 
 textarea {
-    width: 100%;
-    border: 1px solid #dddddd;
 }
 </style>
