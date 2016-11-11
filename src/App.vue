@@ -19,21 +19,27 @@
                 </div>
             </div>
             <div class="column">
+                <words v-model="wordString"></words>
+                <p>Words: {{ wordString }}</p>
             </div>
             <div class="column">
             </div>
         </div>
-    <hello></hello>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello';
+import Words from './components/Words';
 
 export default {
   name: 'app',
   components: {
-    Hello,
+    Words,
+  },
+  data() {
+    return {
+      wordString: 'a',
+    };
   },
 };
 </script>
