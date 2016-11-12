@@ -80,7 +80,7 @@ export default {
       wordString: '',
       generations: 5,
       transcriptionString: '',
-      evolvedWords: ['a', 'b', 'c'],
+      evolvedWords: [],
     };
   },
   computed: {
@@ -94,9 +94,28 @@ export default {
   },
   methods: {
     evolve() {
-      axios.get('http://127.0.0.1:5000/evolve', { params: { words: this.wordString, generations: this.generations, transcriptions: this.transcriptionString } })
-        .then(response => console.log(response))
+      const parameters = { words: this.wordString,
+        generations: this.generations,
+        transcriptions: this.transcriptionString };
+
+      // Call the Flask API
+      axios.get('http://127.0.0.1:5000/evolve',
+                { params: parameters })
+      // Handle a valid response
+        .then((response) => {
+          // Trigger API error display if necessary
+          if (response.data.error !== 0) {
+            this.showError(response.data.error);
+          // Otherwise, update data from request result
+          } else {
+            this.evolvedWords = response.data.words;
+            console.log(response.data.words);
+          } })
+      // Handle an invalid response
         .catch(error => console.log(error));
+    },
+    showError(error) {
+      console.log('Error', error);
     },
   },
 };
