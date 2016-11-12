@@ -20,17 +20,19 @@ def format_transcriptions(transcriptions):
         return [(pair.split(':')[0], pair.split(':')[1]) for pair in clean_transcriptions.split('\n')]
 
 
-@app.route('/evolve', methods=['POST'])
+@app.route('/evolve')
 def evolve():
-    words = request.form['words'].split()
+    print(request.args['words'])
+
+    words = request.args['words'].split()
 
     try:
-        transcriptions = format_transcriptions(request.form['transcriptions'])
+        transcriptions = format_transcriptions(request.args['transcriptions'])
     except IndexError:
         return jsonify({'error': 'Error: Transcription seperator must be a colon'})
 
     try:
-        generations = int(request.form['generations'])
+        generations = int(request.args['generations'])
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
