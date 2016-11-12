@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" class="container">
         <div class="columns">
             <div class="column">
                 <div class="card is-fullwidth">
@@ -52,6 +52,19 @@
               </div>
             </div>
         </div>
+    <div v-if="evolvedWords.length >= 1">
+    <div class="columns">
+      <div class="column">
+        <div class="card is-fullwidth">
+          <header class="card-header">
+            <p class="card-header-title">Evolved Words</p>
+          </header>
+          <div class="card-content">
+            <a class="panel-block" v-for="word in evolvedWords">{{word}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,6 +78,7 @@ export default {
       wordString: '',
       generations: 5,
       transcriptionString: '',
+      evolvedWords: ['a', 'b', 'c'],
     };
   },
   computed: {
