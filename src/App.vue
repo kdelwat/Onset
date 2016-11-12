@@ -52,8 +52,21 @@
               </div>
             </div>
         </div>
+
     <div v-if="evolvedWords.length >= 1">
     <div class="columns">
+
+      <div class="column">
+        <div class="card is-fullwidth">
+          <header class="card-header">
+            <p class="card-header-title">Applied Rules</p>
+          </header>
+          <div class="card-content">
+            <a class="panel-block" v-for="rule in evolutionRules">{{rule[0]}}: {{rule[1]}} -> {{rule[2]}}, {{rule[3]}}</a>
+          </div>
+        </div>
+      </div>
+
       <div class="column">
         <div class="card is-fullwidth">
           <header class="card-header">
@@ -64,6 +77,9 @@
           </div>
         </div>
       </div>
+
+
+
     </div>
   </div>
 </template>
@@ -81,6 +97,7 @@ export default {
       generations: 5,
       transcriptionString: '',
       evolvedWords: [],
+      evolutionRules: [],
     };
   },
   computed: {
@@ -109,6 +126,7 @@ export default {
           // Otherwise, update data from request result
           } else {
             this.evolvedWords = response.data.words;
+            this.evolutionRules = response.data.rules;
             console.log(response.data.words);
           } })
       // Handle an invalid response
