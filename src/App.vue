@@ -12,7 +12,7 @@
                       </div>
                     </div>
                     <footer class="card-footer">
-                        <a class="card-footer-item">Evolve</a>
+                        <a class="card-footer-item" v-on:click="evolve">Evolve</a>
                         <a class="card-footer-item is-disabled">Save</a>
                         <a class="card-footer-item">Load</a>
                     </footer>
@@ -70,6 +70,8 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
   name: 'app',
   components: {},
@@ -88,6 +90,13 @@ export default {
     transcriptions() {
       const pairs = this.transcriptionString.split('\n').map(pair => pair.split(':'));
       return pairs.filter(x => x.length !== 1);
+    },
+  },
+  methods: {
+    evolve() {
+      axios.get('http://127.0.0.1:5000/evolve', { params: { words: this.wordString, generations: this.generations, transcriptions: this.transcriptionString } })
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
     },
   },
 };
