@@ -23,29 +23,6 @@ def combine_lists(list_1, list_2):
     return dict(pairs)
 
 
-def in_words(search, word_list):
-    '''Returns True if search string is in any of the words in word_list, else
-    returns False.'''
-    return any(search in word for word in word_list)
-
-
-def rule(f):
-    '''A decorator for all rule functions which checks to ensure rules are
-    applicable to current inventory.'''
-    def wrapper(*args, **kwargs):
-        rules, representation = f(*args, **kwargs)
-
-        # If the length of the rules list is 0, there are no applicable rules,
-        # so return False.
-        if len(rules) == 0:
-            return False, None, None
-        else:
-            random.shuffle(rules)
-            return True, rules, representation
-
-    return wrapper
-
-
 def sonorization():
     return Rule('sonorization', 'unvoiced plosive', 'voiced plosive',
                 {'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
@@ -55,8 +32,9 @@ def sonorization():
 def degemination():
     changes = {}
     for phoneme in PULMONIC['plosive']:
-        changes[phoneme + phoneme] = phoneme
-        changes[phoneme + phoneme + 'ʰ'] = phoneme + 'ʰ'
+        if phoneme != '':
+            changes[phoneme + phoneme] = phoneme
+            changes[phoneme + phoneme + 'ʰ'] = phoneme + 'ʰ'
 
     return Rule('degemination', 'geminated plosive', 'plosive',
                 changes,
@@ -73,6 +51,7 @@ def spirantization():
 
 def debuccalization():
     fricatives = PULMONIC['fricative']
+    fricatives.remove('h')
     changes = combine_lists(fricatives, ['h'] * len(fricatives))
     return Rule('dubuccalization', 'fricative', 'placeless approximant',
                 changes,
