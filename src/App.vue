@@ -30,7 +30,6 @@
                     </div>
                   </div>
               </div>
-                <p>Words: {{ transcriptions }}, {{ words }}</p>
             </div>
             <div class="column">
               <div class="card is-fullwidth">
@@ -99,15 +98,6 @@ export default {
       evolvedWords: [],
       evolutionRules: [],
     };
-  },
-  computed: {
-    words() {
-      return this.wordString.split('\n').filter(x => x !== '');
-    },
-    transcriptions() {
-      const pairs = this.transcriptionString.split('\n').map(pair => pair.split(':'));
-      return pairs.filter(x => x.length !== 1);
-    },
   },
   methods: {
     evolve() {
