@@ -8,7 +8,7 @@
                     </header>
                     <div class="card-content">
                       <div class="content">
-                        <p>Onset is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <emph>Evolve!</emph> to see it in action.</p>
+                        <p>Onset is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <em>Evolve!</em> to see it in action.</p>
                       </div>
                     </div>
                     <footer class="card-footer">
@@ -53,6 +53,7 @@
         </div>
 
     <div v-if="evolvedWords.length >= 1">
+    <hr>
     <div class="columns">
 
       <div class="column">
