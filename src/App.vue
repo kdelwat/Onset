@@ -150,25 +150,31 @@ export default {
     // Load rules from localStorage identified by the given filename
     loadLocal() {
       // Load and store the rules
-      this.evolutionRules = JSON.parse(localStorage.getItem(this.filename));
+      const loadedRules = JSON.parse(localStorage.getItem(this.filename));
 
-      const parameters = { words: this.wordString,
-        rules: JSON.stringify(this.evolutionRules) };
+      if (loadedRules === null) {
+        this.showError('No rules are saved under that name');
+      } else {
+        this.evolutionRules = loadedRules;
 
-      // Call the Flask API
-      axios.get('http://127.0.0.1:5000/apply',
-                { params: parameters })
-      // Handle a valid response
-        .then((response) => {
-          // Trigger API error display if necessary
-          if (response.data.error !== 0) {
-            this.showError(response.data.error);
-          // Otherwise, update words from request result
-          } else {
-            this.evolvedWords = response.data.words;
-          } })
-      // Handle an invalid response
-        .catch(error => console.log(error));
+        const parameters = { words: this.wordString,
+          rules: JSON.stringify(this.evolutionRules) };
+
+        // Call the Flask API
+        axios.get('http://127.0.0.1:5000/apply',
+                  { params: parameters })
+        // Handle a valid response
+          .then((response) => {
+            // Trigger API error display if necessary
+            if (response.data.error !== 0) {
+              this.showError(response.data.error);
+            // Otherwise, update words from request result
+            } else {
+              this.evolvedWords = response.data.words;
+            } })
+        // Handle an invalid response
+          .catch(error => console.log(error));
+      }
     },
   },
 };
