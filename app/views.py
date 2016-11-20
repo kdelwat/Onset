@@ -1,6 +1,9 @@
+import json
+
 from flask import render_template, jsonify, request
 from app import app
 from app import evolver
+from app import applier
 
 
 @app.route('/')
@@ -39,3 +42,18 @@ def evolve():
     words, rules = evolver.evolve(words, generations, transcriptions)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
+
+
+@app.route('/apply')
+def apply():
+    '''Evolves the language according to the given rules, specified by:
+
+        words: list [strings]
+        rules: list [Rules]
+    '''
+    words = request.args['words'].split()
+    rules = json.loads(request.args['rules'])
+
+    evolved_words = applier.apply_loaded_rules(words, rules)
+
+    return jsonify({'words': evolved_words, 'error': 0})

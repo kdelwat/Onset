@@ -1,5 +1,15 @@
 import regex as re
 
+from app.rules import Rule
+
+def apply_loaded_rules(words, rules):
+    '''Applies a given list of rules, from the interface, to the list of words.'''
+
+    for rule in rules:
+        rule_object = Rule(rule[0], rule[1], rule[2], rule[3], rule[4])
+        words = apply_rule(words, rule_object)
+
+    return words
 
 def apply_rule(words, rule):
     '''Applies the given rule to the list of words.'''
