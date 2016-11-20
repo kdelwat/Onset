@@ -8,7 +8,11 @@
                     </header>
                     <div class="card-content">
                       <div class="content">
-                        <p>Onset is a (mostly) linguistically-accurate language evolution simulator. Enter a list of words to evolve to the right, tweak the settings, and hit <em>Evolve!</em> to see it in action.</p>
+                        <p>Onset is a (mostly) linguistically-accurate language evolution simulator. </p>
+
+                        <p><b>Evolve:</b> Generate new evolutions for the list of words to the right, according to the settings.</p>
+                        <p><b>Save:</b> Save the current sound change rules under the given name (to browser storage).</p>
+                        <p><b>Load:</b> Load sound change rules from the given name and apply them to the current list of words.</p>
                       </div>
                     </div>
                     <footer class="card-footer">
@@ -37,7 +41,7 @@
                 </header>
                   <div class="card-content">
                     <div class="content">
-                      <p>Enter a list of words, one per line, which will be evolved.</p>
+                      <p>Enter a list of words in <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet">IPA</a>, one per line, which will be evolved.</p>
                       <textarea class="textarea" ref="input" rows=20 v-model="wordString"></textarea>
                     </div>
                   </div>
@@ -183,8 +187,5 @@ export default {
 <style>
 .disabled {
     opacity: 0.5;
-}
-
-textarea {
 }
 </style>
