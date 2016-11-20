@@ -13,8 +13,20 @@
                     </div>
                     <footer class="card-footer">
                         <a class="card-footer-item" v-on:click="evolve">Evolve</a>
-                        <a class="card-footer-item is-disabled">Save</a>
-                        <a class="card-footer-item">Load</a>
+
+                        <input v-model="filename" class="input" type="text" style="margin: 5px;" placeholder="filename"></input>
+
+                        <a class="card-footer-item"
+                           v-bind:class="{ disabled: !resultsPresent }"
+                           v-on:click="saveLocal">
+                           Save
+                        </a>
+
+                        <a class="card-footer-item"
+                           v-on:click="loadLocal">
+                           Load
+                        </a>
+
                     </footer>
                 </div>
             </div>
@@ -52,7 +64,7 @@
             </div>
         </div>
 
-    <div v-if="evolvedWords.length >= 1">
+    <div v-if="resultsPresent">
     <hr>
     <div class="columns">
 
@@ -77,9 +89,6 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
   </div>
 </template>
@@ -98,9 +107,16 @@ export default {
       transcriptionString: '',
       evolvedWords: [],
       evolutionRules: [],
+      filename: '',
     };
   },
+  computed: {
+    resultsPresent() {
+      return this.evolvedWords.length >= 1;
+    },
+  },
   methods: {
+    // Call the backend to evolve the given words
     evolve() {
       const parameters = { words: this.wordString,
         generations: this.generations,
@@ -123,15 +139,24 @@ export default {
       // Handle an invalid response
         .catch(error => console.log(error));
     },
+    // Display an error
     showError(error) {
       console.log('Error', error);
+    },
+    // Save the current rules to localStorage, identified by the given filename
+    saveLocal() {
+      localStorage.setItem(this.filename, JSON.stringify(this.evolutionRules));
+    },
+    // Load rules from localStorage identified by the given filename
+    loadLocal() {
+      this.evolutionRules = JSON.parse(localStorage.getItem(this.filename));
     },
   },
 };
 </script>
 
 <style>
-.is-disabled {
+.disabled {
     opacity: 0.5;
 }
 

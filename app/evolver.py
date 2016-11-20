@@ -48,7 +48,8 @@ def evolve(words, generations=5, rewrite_rules=[]):
         except ValueError:
             break
 
-        changes.append(rule_representation(sound_change))
+        # changes.append(rule_representation(sound_change))
+        changes.append(sound_change)
         print(sound_change)
         words = applier.apply_rule(words, sound_change)
 
