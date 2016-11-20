@@ -78,7 +78,7 @@
             <p class="card-header-title">Applied Rules</p>
           </header>
           <div class="card-content">
-            <a class="panel-block" v-for="rule in evolutionRules">{{rule[0]}}: {{rule[1]}} -> {{rule[2]}}, {{rule[3]}}</a>
+            <a class="panel-block" v-for="rule in evolutionRules">{{rule[0]}}: {{rule[1]}} -> {{rule[2]}}, {{rule[4][0][1]}}</a>
           </div>
         </div>
       </div>
