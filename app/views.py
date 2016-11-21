@@ -26,6 +26,7 @@ def format_transcriptions(transcriptions):
 @app.route('/evolve')
 def evolve():
     print(request.args['words'])
+    print(request.args['direction'])
 
     words = request.args['words'].split()
 
@@ -34,12 +35,19 @@ def evolve():
     except IndexError:
         return jsonify({'error': 'Error: Transcription seperator must be a colon'})
 
+    direction = request.args['direction']
+
+    if direction == 'Reverse':
+        reverse = True
+    else:
+        reverse = False
+
     try:
         generations = int(request.args['generations'])
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
-    words, rules = evolver.evolve(words, generations, transcriptions)
+    words, rules = evolver.evolve(words, generations, transcriptions, reverse)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 

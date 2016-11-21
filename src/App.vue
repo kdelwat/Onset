@@ -54,10 +54,22 @@
                 </header>
                 <div class="card-content">
                 <form>
+
                   <label class="label">Generations</label>
                   <p class="control">
                     <input v-model="generations" type="number" class="input">
                   </p>
+
+                  <label class="label">Direction</label>
+                  <p class="control">
+                    <span class="select">
+                      <select v-model="direction">
+                        <option>Forward</option>
+                        <option>Reverse</option>
+                      </select>
+                    </span>
+                  </p>
+                  {{ direction }}
                   <label class="label">Transcriptions</label>
                   <p class="control">
                     <textarea v-model="transcriptionString" class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
@@ -108,6 +120,7 @@ export default {
     return {
       wordString: '',
       generations: 5,
+      direction: 'Forward',
       transcriptionString: '',
       evolvedWords: [],
       evolutionRules: [],
@@ -124,6 +137,7 @@ export default {
     evolve() {
       const parameters = { words: this.wordString,
         generations: this.generations,
+        direction: this.direction,
         transcriptions: this.transcriptionString };
 
       // Call the Flask API
