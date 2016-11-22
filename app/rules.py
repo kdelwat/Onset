@@ -25,7 +25,16 @@ def combine_lists(list_1, list_2):
 ##############################################################################
 ## CONSONANTS
 ##############################################################################
+def palatalization():
+    changes = {}
 
+    for plosive in PULMONIC['plosive']:
+        if plosive != '':
+            changes[plosive] = plosive + 'ʲ'
+
+    return Rule('palatalization', 'plosive', 'palatalized plosive',
+                 changes,
+                 ['.(?:i|y|e|ø|j)', '(?:i|y|e|ø|j).'])
 
 ##############################################################################
 ## CONSONANTS - LENITION
@@ -157,6 +166,7 @@ def vowel_nasalization():
                 ['{nasal}.'])
 
 rules = [voicing(),
+         palatalization(),
          degemination(),
          spirantization(),
          debuccalization(),
