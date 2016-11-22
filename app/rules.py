@@ -36,6 +36,13 @@ def palatalization():
                  changes,
                  ['.(?:i|y|e|ø|j)', '(?:i|y|e|ø|j).'])
 
+
+def velarization():
+    return Rule('velarization', 'clear l', 'dark l',
+                {'l': 'ɬ'},
+                ['V.', '{back}.'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -167,6 +174,7 @@ def vowel_nasalization():
 
 rules = [voicing(),
          palatalization(),
+         velarization(),
          degemination(),
          spirantization(),
          debuccalization(),
