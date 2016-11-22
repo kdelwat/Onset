@@ -1,7 +1,7 @@
 import app.selector as selector
 import app.applier as applier
 
-from app.rules import rules
+from app.rules import rules as global_rules
 
 def reverse_rules(rules):
     '''Reverse all Rules in a list, by swapping the target-replacement pairs in
@@ -53,7 +53,10 @@ def evolve(words, generations=5, rewrite_rules=[], reverse=False):
 
     # Apply the given transcription rules
     words = rewrite(words, rewrite_rules, to='ipa')
-    print(rules)
+
+    # Make a local copy of the rules
+    rules = global_rules.copy()
+
     changes = []
 
     if not reverse:
@@ -67,6 +70,9 @@ def evolve(words, generations=5, rewrite_rules=[], reverse=False):
             except ValueError:
                 break
 
+            # Delete used rule from available rules
+            rules = [rule for rule in rules if rule.name != sound_change.name]
+
             # changes.append(rule_representation(sound_change))
             changes.append(sound_change)
             print(sound_change)
@@ -75,15 +81,18 @@ def evolve(words, generations=5, rewrite_rules=[], reverse=False):
         # Evolve backwards
 
         # Invert the sound changes for each rule
-        reversed_rules = reverse_rules(rules)
+        rules = reverse_rules(rules)
 
         for _ in range(generations):
             # Try to select a valid rule
             try:
-                sound_change = selector.select_rule(words, reversed_rules)
+                sound_change = selector.select_rule(words, rules)
             # If there aren't any, finish early by breaking from the loop.
             except ValueError:
                 break
+
+            # Delete used rule from available rules
+            rules = [rule for rule in rules if rule.name != sound_change.name]
 
             # Prepend the change to the rules list so that the rules appear in
             # reverse order
