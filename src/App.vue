@@ -55,12 +55,20 @@
                 <div class="card-content">
                 <form>
 
-                  <label class="label">Generations</label>
+                  <label class="label">Generations&nbsp;
+                    <i class="fa fa-question-circle">
+                      <div class="box content">The number of sound change rules to apply during evolution.</div>
+                    </i>
+                  </label>
                   <p class="control">
                     <input v-model="generations" type="number" class="input">
                   </p>
 
-                  <label class="label">Direction</label>
+                  <label class="label">Direction&nbsp;
+                    <i class="fa fa-question-circle">
+                      <div class="box content"><b>Forward</b> evolves the language forward in time, outputting the result. <b>Reverse</b> moves backwards in time, outputting the source words that evolved <em>into</em> the given ones.</div>
+                    </i>
+                  </label>
                   <p class="control">
                     <span class="select">
                       <select v-model="direction">
@@ -69,8 +77,12 @@
                       </select>
                     </span>
                   </p>
-                  {{ direction }}
-                  <label class="label">Transcriptions</label>
+
+                  <label class="label">Transcriptions&nbsp;
+                    <i class="fa fa-question-circle">
+                      <div class="box content">A list of plain text to IPA transcriptions, separated by colons.</div>
+                    </i>
+                  </label>
                   <p class="control">
                     <textarea v-model="transcriptionString" class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
                   </p>
@@ -201,5 +213,33 @@ export default {
 <style>
 .disabled {
     opacity: 0.5;
+}
+
+.fa {
+  vertical-align: baseline;
+}
+
+i {
+    position: relative;
+}
+
+i > div {
+    display: none;
+    position: absolute;
+    left: -140px;
+    bottom: 110%;
+
+    z-index: 2;
+    width: 300px;
+    text-align: left;
+}
+
+i:hover > div {
+    display: block;
+}
+
+.box {
+  display: none;
+  padding: 10px;
 }
 </style>
