@@ -22,13 +22,58 @@ def combine_lists(list_1, list_2):
     pairs = [pair for pair in zip(list_1, list_2) if pair[0] != '' and pair[1] != '']
     return dict(pairs)
 
+##############################################################################
+## CONSONANTS
+##############################################################################
 
-def sonorization():
-    return Rule('sonorization', 'unvoiced plosive', 'voiced plosive',
+
+##############################################################################
+## CONSONANTS - LENITION
+##############################################################################
+def flapping():
+    return Rule('flapping', '[t] and [d]', 'flap',
+                {'t': 'ɾ', 'd': 'ɾ'},
+                ['^.', 'V.V'])
+
+
+##############################################################################
+## CONSONANTS - LENITION - SONORIZATION
+##############################################################################
+def voicing():
+    return Rule('voicing', 'unvoiced plosive', 'voiced plosive',
                 {'p': 'b', 't': 'd', 'ʈ': 'ɖ', 'c': 'ɟ', 'k': 'g', 'q': 'ɢ'},
                 ['^.', 'V.V', '.$'])
 
 
+def lateral_vocalization():
+    return Rule('vocalization', 'lateral approximant', 'semivowel',
+                {'l': 'j', 'ɫ': 'w'},
+                ['^.', 'V.V', '.$'])
+
+
+def palatal_vocalization():
+    return Rule('vocalization', 'palatal approximant', 'front vowel',
+                {'j': 'i'},
+                ['^.', 'V.V', '.$'])
+
+def approximation():
+    changes = {}
+
+    for fricative, approximant in zip(PULMONIC['fricative'], PULMONIC['approximant']):
+        if fricative != '':
+            if approximant == '':
+                changes[fricative] = fricative + '\u031E'
+            else:
+                changes[fricative] = approximant
+
+    return Rule('approximation', 'continuant', 'approximant',
+                changes,
+                ['^.', 'V.V', '.$'])
+
+
+##############################################################################
+## CONSONANTS - LENITION - OPENING
+##############################################################################
 def degemination():
     changes = {}
     for phoneme in PULMONIC['plosive']:
@@ -56,39 +101,6 @@ def debuccalization():
     return Rule('dubuccalization', 'fricative', 'placeless approximant',
                 changes,
                 ['^.', 'V.V', '.$'])
-
-
-def lateral_vocalization():
-    return Rule('vocalization', 'lateral approximant', 'semivowel',
-                {'l': 'j', 'ɫ': 'w'},
-                ['^.', 'V.V', '.$'])
-
-
-def palatal_vocalization():
-    return Rule('vocalization', 'palatal approximant', 'front vowel',
-                {'j': 'i'},
-                ['^.', 'V.V', '.$'])
-
-
-def approximation():
-    changes = {}
-
-    for fricative, approximant in zip(PULMONIC['fricative'], PULMONIC['approximant']):
-        if fricative != '':
-            if approximant == '':
-                changes[fricative] = fricative + '\u031E'
-            else:
-                changes[fricative] = approximant
-
-    return Rule('approximation', 'continuant', 'approximant',
-                changes,
-                ['^.', 'V.V', '.$'])
-
-
-def flapping():
-    return Rule('flapping', '[t] and [d]', 'flap',
-                {'t': 'ɾ', 'd': 'ɾ'},
-                ['^.', 'V.V'])
 
 
 def affrication():
@@ -131,7 +143,10 @@ def approximant_elision():
                 ['^.', 'V.V', '.$'])
 
 
-def nasalization():
+##############################################################################
+## VOWELS
+##############################################################################
+def vowel_nasalization():
     changes = {}
 
     for vowel in VOWELS.members():
@@ -141,7 +156,7 @@ def nasalization():
                 changes,
                 ['{nasal}.'])
 
-rules = [sonorization(),
+rules = [voicing(),
          degemination(),
          spirantization(),
          debuccalization(),
@@ -152,4 +167,4 @@ rules = [sonorization(),
          affrication(),
          deaffrication(),
          approximant_elision(),
-         nasalization()]
+         vowel_nasalization()]
