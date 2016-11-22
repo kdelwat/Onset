@@ -1,5 +1,18 @@
 <template>
-    <div id="app" class="container">
+    <div id="app">
+        <div class="hero is-success">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Onset
+              </h1>
+              <h2 class="subtitle">
+                A (mostly) linguistically-accurate language evolution simulator
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="main-body container">
         <div class="columns">
             <div class="column">
                 <div class="card is-fullwidth">
@@ -119,6 +132,15 @@
       </div>
     </div>
   </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>Onset is built by <a href="https://cadelwatson.com">Cadel Watson</a>. See the source at <a href="https://github.com/kdelwat"><i class="fa fa-github">kdelwat</a>/<a href="https://github.com/kdelwat/Onset">Onset</a>!</p>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -241,5 +263,9 @@ i:hover > div {
 .box {
   display: none;
   padding: 10px;
+}
+
+.main-body {
+  margin-top: 50px;
 }
 </style>
