@@ -71,6 +71,12 @@ def rhotacism():
                 ['V.'])
 
 
+def lambdacism():
+    return Rule('lambdacism', '[r]', '[l]',
+                {'r': 'l'},
+                ['V.', '^.'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -206,6 +212,7 @@ rules = [voicing(),
          labialization(),
          dentalization(),
          rhotacism(),
+         lambdacism(),
          degemination(),
          spirantization(),
          debuccalization(),
