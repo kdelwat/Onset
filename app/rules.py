@@ -237,6 +237,12 @@ def consonant_denasalization():
                 ['V.V'])
 
 
+def devoicing():
+    return Rule('devoicing', 'voiced plosive', 'unvoiced plosive',
+                {'b': 'p', 'd': 't', 'ɖ': 'ʈ', 'ɟ': 'c', 'g': 'k', 'ɢ': 'q'},
+                ['.$'])
+
+
 ##############################################################################
 ## VOWELS
 ##############################################################################
@@ -251,6 +257,7 @@ def vowel_nasalization():
                 ['{nasal}.'])
 
 rules = [voicing(),
+         devoicing(),
          palatalization(),
          velarization(),
          labialization(),
