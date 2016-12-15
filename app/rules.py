@@ -267,6 +267,16 @@ def raising():
                 ['C.C', 'C.', '.C'])
 
 
+def lowering():
+    changes = combine_lists(VOWELS['close'], VOWELS['closemid'])
+    changes.update(combine_lists(VOWELS['closemid'], VOWELS['openmid']))
+    changes.update(combine_lists(VOWELS['openmid'], VOWELS['open']))
+
+    return Rule('lowering', 'vowel', 'lowered vowel',
+                changes,
+                ['C.C', 'C.', '.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -291,4 +301,5 @@ rules = [voicing(),
          consonant_denasalization(),
          approximant_elision(),
          raising(),
+         lowering(),
          vowel_nasalization()]
