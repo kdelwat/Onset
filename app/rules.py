@@ -277,6 +277,19 @@ def lowering():
                 ['C.C', 'C.', '.C'])
 
 
+def fronting():
+    changes = {}
+    changes.update(combine_lists(VOWELS['uback'], VOWELS['ucentral']))
+    changes.update(combine_lists(VOWELS['rback'], VOWELS['rcentral']))
+    changes.update(combine_lists(VOWELS['ucentral'], VOWELS['ufront']))
+    changes.update(combine_lists(VOWELS['rcentral'], VOWELS['rfront']))
+    changes.update(combine_lists(VOWELS['rcentralback'], VOWELS['rfrontcentral']))
+
+    return Rule('fronting', 'vowel', 'fronted vowel',
+                changes,
+                ['^.', '.$', 'C.C', 'C.', '.C', '.(?:i|j)'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -302,4 +315,5 @@ rules = [voicing(),
          approximant_elision(),
          raising(),
          lowering(),
+         fronting(),
          vowel_nasalization()]
