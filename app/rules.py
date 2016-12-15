@@ -77,6 +77,12 @@ def lambdacism():
                 ['V.', '^.'])
 
 
+def t_glottalization():
+    return Rule('t-glottalization', '[t]', '[ʔ]',
+                {'t': 'ʔ'},
+                ['.C'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -222,5 +228,6 @@ rules = [voicing(),
          flapping(),
          affrication(),
          deaffrication(),
+         t_glottalization(),
          approximant_elision(),
          vowel_nasalization()]
