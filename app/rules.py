@@ -54,6 +54,17 @@ def labialization():
                 ['{rounded}.', '.{rounded}'])
 
 
+def dentalization():
+    changes = {}
+    for phoneme in ['d', 't', 'n', 'r', 'ɾ']:
+        changes[phoneme] = phoneme + '\u032A'
+
+    return Rule('dentalization', 'alveolar consonant',
+                'dentalized alveolar consonant',
+                changes,
+                ['.(?:θ|ð)'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -187,6 +198,7 @@ rules = [voicing(),
          palatalization(),
          velarization(),
          labialization(),
+         dentalization(),
          degemination(),
          spirantization(),
          debuccalization(),
