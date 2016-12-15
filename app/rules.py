@@ -92,6 +92,14 @@ def flapping():
                 ['^.', 'V.V'])
 
 
+def consonant_nasalization():
+    changes = combine_lists(PULMONIC['plosive'], PULMONIC['nasal'])
+
+    return Rule('nasalization', 'plosive', 'nasal',
+                changes,
+                ['V.V'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION - SONORIZATION
 ##############################################################################
@@ -229,5 +237,6 @@ rules = [voicing(),
          affrication(),
          deaffrication(),
          t_glottalization(),
+         consonant_nasalization(),
          approximant_elision(),
          vowel_nasalization()]
