@@ -43,6 +43,17 @@ def velarization():
                 ['V.', '{back}.'])
 
 
+def labialization():
+    changes = {}
+    for phoneme in PULMONIC['plosive']:
+        if phoneme != '':
+            changes[phoneme] = phoneme + 'ʷ'
+
+    return Rule('labialization', 'plosive', 'labialized plosive',
+                changes,
+                ['{rounded}.', '.{rounded}'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -175,6 +186,7 @@ def vowel_nasalization():
 rules = [voicing(),
          palatalization(),
          velarization(),
+         labialization(),
          degemination(),
          spirantization(),
          debuccalization(),
