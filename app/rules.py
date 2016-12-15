@@ -229,6 +229,14 @@ def despirantization():
                 ['^.', 'V.V'])
 
 
+def consonant_denasalization():
+    changes = combine_lists(PULMONIC['nasal'], PULMONIC['plosive'])
+
+    return Rule('nasalization', 'nasal', 'plosive',
+                changes,
+                ['V.V'])
+
+
 ##############################################################################
 ## VOWELS
 ##############################################################################
@@ -262,5 +270,6 @@ rules = [voicing(),
          deaffrication(),
          t_glottalization(),
          consonant_nasalization(),
+         consonant_denasalization(),
          approximant_elision(),
          vowel_nasalization()]
