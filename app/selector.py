@@ -43,9 +43,32 @@ def expand_environment(environment):
     environment = environment.replace('C', list_to_category(PULMONIC.members()))
 
     # Replace vowel category special forms
-    environment = environment.replace('{back}', list_to_category(VOWELS['ucentralback'] + VOWELS['rcentralback'] + VOWELS['uback'] + VOWELS['rback']))
-    environment = environment.replace('{central}', list_to_category(VOWELS['ucentral'] + VOWELS['rcentral']))
-    environment = environment.replace('{front}', list_to_category(VOWELS['ufront'] + VOWELS['rfront'] + VOWELS['ufrontcentral'] + VOWELS['rfrontcentral']))
+    environment = environment.replace('{back}',
+                                      list_to_category(VOWELS['ucentralback'] +
+                                                       VOWELS['rcentralback'] +
+                                                       VOWELS['uback'] +
+                                                       VOWELS['rback']))
+    environment = environment.replace('{central}',
+                                      list_to_category(VOWELS['ucentral'] +
+                                                       VOWELS['rcentral']))
+    environment = environment.replace('{front}',
+                                      list_to_category(VOWELS['ufront'] +
+                                                       VOWELS['rfront'] +
+                                                       VOWELS['ufrontcentral'] +
+                                                       VOWELS['rfrontcentral']))
+    environment = environment.replace('{rounded}',
+                                      list_to_category(VOWELS['rfront'] +
+                                                       VOWELS['rfrontcentral'] +
+                                                       VOWELS['rcentral'] +
+                                                       VOWELS['rcentralback'] +
+                                                       VOWELS['rback']))
+
+    environment = environment.replace('{unrounded}',
+                                      list_to_category(VOWELS['ufront'] +
+                                                       VOWELS['ufrontcentral'] +
+                                                       VOWELS['ucentral'] +
+                                                       VOWELS['ucentralback'] +
+                                                       VOWELS['uback']))
 
     # Replace arbitrary categories
     for category in re.findall('{(.*)}', environment):
