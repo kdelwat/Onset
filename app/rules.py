@@ -65,6 +65,12 @@ def dentalization():
                 ['.(?:θ|ð)'])
 
 
+def rhotacism():
+    return Rule('rhotacism', '[n] and [z]', '[r]',
+                {'n': 'r', 'z':'r'},
+                ['V.'])
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -199,6 +205,7 @@ rules = [voicing(),
          velarization(),
          labialization(),
          dentalization(),
+         rhotacism(),
          degemination(),
          spirantization(),
          debuccalization(),
