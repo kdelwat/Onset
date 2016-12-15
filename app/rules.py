@@ -208,6 +208,20 @@ def approximant_elision():
 
 
 ##############################################################################
+## CONSONANTS - FORTITION
+##############################################################################
+def gemination():
+    changes = {}
+    for phoneme in PULMONIC['plosive']:
+        if phoneme != '':
+            changes[phoneme] = phoneme + phoneme
+
+    return Rule('gemination', 'plosive', 'reduplicated plosive',
+                changes,
+                ['V.V'])
+
+
+##############################################################################
 ## VOWELS
 ##############################################################################
 def vowel_nasalization():
@@ -230,6 +244,7 @@ rules = [voicing(),
          degemination(),
          spirantization(),
          debuccalization(),
+         gemination(),
          lateral_vocalization(),
          palatal_vocalization(),
          approximation(),
