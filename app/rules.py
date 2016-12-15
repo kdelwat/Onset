@@ -256,6 +256,17 @@ def vowel_nasalization():
                 changes,
                 ['{nasal}.'])
 
+
+def raising():
+    changes = combine_lists(VOWELS['closemid'], VOWELS['close'])
+    changes.update(combine_lists(VOWELS['openmid'], VOWELS['closemid']))
+    changes.update(combine_lists(VOWELS['open'], VOWELS['openmid']))
+
+    return Rule('raising', 'vowel', 'raised vowel',
+                changes,
+                ['C.C', 'C.', '.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -279,4 +290,5 @@ rules = [voicing(),
          consonant_nasalization(),
          consonant_denasalization(),
          approximant_elision(),
+         raising(),
          vowel_nasalization()]
