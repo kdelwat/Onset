@@ -224,7 +224,7 @@ def gemination():
 def despirantization():
     changes = combine_lists(PULMONIC['fricative'], PULMONIC['plosive'])
 
-    return Rule('spirantization', 'fricative', 'plosive',
+    return Rule('despirantization', 'fricative', 'plosive',
                 changes,
                 ['^.', 'V.V'])
 
@@ -232,7 +232,7 @@ def despirantization():
 def consonant_denasalization():
     changes = combine_lists(PULMONIC['nasal'], PULMONIC['plosive'])
 
-    return Rule('nasalization', 'nasal', 'plosive',
+    return Rule('denasalization', 'nasal', 'plosive',
                 changes,
                 ['V.V'])
 
