@@ -221,6 +221,14 @@ def gemination():
                 ['V.V'])
 
 
+def despirantization():
+    changes = combine_lists(PULMONIC['fricative'], PULMONIC['plosive'])
+
+    return Rule('spirantization', 'fricative', 'plosive',
+                changes,
+                ['^.', 'V.V'])
+
+
 ##############################################################################
 ## VOWELS
 ##############################################################################
@@ -249,6 +257,7 @@ rules = [voicing(),
          palatal_vocalization(),
          approximation(),
          flapping(),
+         despirantization(),
          affrication(),
          deaffrication(),
          t_glottalization(),
