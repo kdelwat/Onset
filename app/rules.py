@@ -316,6 +316,19 @@ def rounding():
                 ['^.', '.C'])
 
 
+def unrounding():
+    changes = {}
+    changes.update(combine_lists(VOWELS['rfront'], VOWELS['ufront']))
+    changes.update(combine_lists(VOWELS['rfrontcentral'], VOWELS['ufrontcentral']))
+    changes.update(combine_lists(VOWELS['rcentral'], VOWELS['ucentral']))
+    changes.update(combine_lists(VOWELS['rcentralback'], VOWELS['ucentralback']))
+    changes.update(combine_lists(VOWELS['rback'], VOWELS['uback']))
+
+    return Rule('unrounding', 'vowel', 'unrounded vowel',
+                changes,
+                ['^.', '.$', 'C.'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -344,4 +357,5 @@ rules = [voicing(),
          fronting(),
          backing(),
          rounding(),
+         unrounding(),
          vowel_nasalization()]
