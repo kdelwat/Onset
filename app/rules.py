@@ -370,6 +370,18 @@ def extra_shortening():
                 ['C.C', 'V.V'])
 
 
+def glide_formation():
+    return Rule('glide-formation', 'vowel', 'glide',
+                {'i': 'j', 'y': 'ɥ', 'ɯ': 'ɰ', 'u': 'w', 'ɚ': 'ɻ', 'ɑ': 'ʕ̞'},
+                ['C.V'])
+
+
+def glide_insertion():
+    return Rule('glide-insertion', 'vowel', 'vowel + glide',
+                {'i': 'ij', 'y': 'yɥ', 'ɯ': 'ɯɰ', 'u': 'uw', 'ɚ': 'ɚɻ', 'ɑ': 'ɑʕ̞'},
+                ['C.V'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -403,4 +415,6 @@ rules = [voicing(),
          half_lengthening(),
          shortening(),
          extra_shortening(),
+         glide_formation(),
+         glide_insertion(),
          vowel_nasalization()]
