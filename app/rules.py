@@ -346,7 +346,7 @@ def lengthening():
 
     return Rule('lengthening', 'vowel', 'lengthened vowel',
                 changes,
-                ['.V', 'V.', '.$', '^.', 'C.C'])
+                ['.V', 'V.C', '.$', '^.C', 'C.C'])
 
 
 def half_lengthening():
@@ -356,7 +356,7 @@ def half_lengthening():
 
     return Rule('half-lengthening', 'vowel', 'half-lengthened vowel',
                 changes,
-                ['.V', 'V.', '.$', '^.', 'C.C'])
+                ['.V', 'V.C', '.$', '^.C', 'C.C'])
 
 
 def shortening():
