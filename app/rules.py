@@ -412,6 +412,26 @@ def vowel_apheresis():
                 ['^.C'])
 
 
+def apocope():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = ''
+
+    return Rule('apocope', 'vowel', 'nothing',
+                changes,
+                ['.$'])
+
+
+def syncope():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = ''
+
+    return Rule('syncope', 'vowel', 'nothing',
+                changes,
+                ['C.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -450,4 +470,6 @@ rules = [voicing(),
          coalescence(),
          consonant_apheresis(),
          vowel_apheresis(),
+         apocope(),
+         syncope(),
          vowel_nasalization()]
