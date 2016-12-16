@@ -37,6 +37,16 @@ def palatalization():
                  ['.(?:i|y|e|ø|j)', '(?:i|y|e|ø|j).'])
 
 
+def consonant_apheresis():
+    changes = {}
+    for phoneme in PULMONIC.members():
+        changes[phoneme] = ''
+
+    return Rule('apheresis', 'consonant', 'nothing',
+                changes,
+                ['^.C'])
+
+
 def velarization():
     return Rule('velarization', 'clear l', 'dark l',
                 {'l': 'ɬ'},
@@ -392,6 +402,16 @@ def coalescence():
                 ['.'])
 
 
+def vowel_apheresis():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = ''
+
+    return Rule('apheresis', 'vowel', 'nothing',
+                changes,
+                ['^.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -428,4 +448,6 @@ rules = [voicing(),
          glide_formation(),
          glide_insertion(),
          coalescence(),
+         consonant_apheresis(),
+         vowel_apheresis(),
          vowel_nasalization()]
