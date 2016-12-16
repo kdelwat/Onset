@@ -382,6 +382,16 @@ def glide_insertion():
                 ['C.V'])
 
 
+def coalescence():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme + phoneme] = phoneme
+
+    return Rule('coalescence', 'duplicated vowel', 'vowel',
+                changes,
+                ['.'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -417,4 +427,5 @@ rules = [voicing(),
          extra_shortening(),
          glide_formation(),
          glide_insertion(),
+         coalescence(),
          vowel_nasalization()]
