@@ -349,6 +349,27 @@ def half_lengthening():
                 ['.V', 'V.', '.$', '^.', 'C.C'])
 
 
+def shortening():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme + 'ˑ'] = phoneme
+        changes[phoneme + 'ː'] = phoneme
+
+    return Rule('shortening', 'lengthened vowel', 'vowel',
+                changes,
+                ['.V', 'V.', '.$', '^.', 'C.C'])
+
+
+def extra_shortening():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = phoneme + '\u0306'
+
+    return Rule('extra shortening', 'vowel', 'extra-short vowel',
+                changes,
+                ['C.C', 'V.V'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -380,4 +401,6 @@ rules = [voicing(),
          unrounding(),
          lengthening(),
          half_lengthening(),
+         shortening(),
+         extra_shortening(),
          vowel_nasalization()]
