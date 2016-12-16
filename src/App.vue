@@ -186,10 +186,9 @@ export default {
           } else {
             this.evolvedWords = response.data.words;
             this.evolutionRules = response.data.rules;
-            console.log(response.data.words);
           } })
       // Handle an invalid response
-        .catch(error => console.log(error));
+        .catch(error => this.showError(error));
     },
     // Display an error
     showError(error) {
@@ -225,7 +224,7 @@ export default {
               this.evolvedWords = response.data.words;
             } })
         // Handle an invalid response
-          .catch(error => console.log(error));
+          .catch(error => this.showError(error));
       }
     },
   },
