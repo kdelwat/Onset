@@ -175,7 +175,7 @@ export default {
         transcriptions: this.transcriptionString };
 
       // Call the Flask API
-      axios.get('http://127.0.0.1:5000/evolve',
+      axios.get('/evolve',
                 { params: parameters })
       // Handle a valid response
         .then((response) => {
