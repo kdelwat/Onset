@@ -303,6 +303,19 @@ def backing():
                 ['^.', '.$', 'C.C', 'C.', '.C'])
 
 
+def rounding():
+    changes = {}
+    changes.update(combine_lists(VOWELS['ufront'], VOWELS['rfront']))
+    changes.update(combine_lists(VOWELS['ufrontcentral'], VOWELS['rfrontcentral']))
+    changes.update(combine_lists(VOWELS['ucentral'], VOWELS['rcentral']))
+    changes.update(combine_lists(VOWELS['ucentralback'], VOWELS['rcentralback']))
+    changes.update(combine_lists(VOWELS['uback'], VOWELS['rback']))
+
+    return Rule('rounding', 'vowel', 'rounded vowel',
+                changes,
+                ['^.', '.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -330,4 +343,5 @@ rules = [voicing(),
          lowering(),
          fronting(),
          backing(),
+         rounding(),
          vowel_nasalization()]
