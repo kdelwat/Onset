@@ -466,6 +466,18 @@ def diphthongization():
                 environments)
 
 
+def smoothing():
+    changes = {}
+    for first_vowel in VOWELS.members():
+        for second_vowel in VOWELS.members():
+            if first_vowel != second_vowel:
+                changes[first_vowel + second_vowel] = first_vowel + 'ː'
+
+    return Rule('smoothing', 'diphthong', 'single lengthened vowel',
+                changes,
+                ['.C', 'C.C', '^.', '.$'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -508,4 +520,5 @@ rules = [voicing(),
          syncope(),
          prothesis(),
          diphthongization(),
+         smoothing(),
          vowel_nasalization()]
