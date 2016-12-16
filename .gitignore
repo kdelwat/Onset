@@ -2,6 +2,8 @@
 node_modules/
 dist/
 build/
+app/templates/
+app/static/
 __pycache__/
 npm-debug.log
 .vscode
