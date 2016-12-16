@@ -329,6 +329,26 @@ def unrounding():
                 ['^.', '.$', 'C.'])
 
 
+def lengthening():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = phoneme + 'ː'
+
+    return Rule('lengthening', 'vowel', 'lengthened vowel',
+                changes,
+                ['.V', 'V.', '.$', '^.', 'C.C'])
+
+
+def half_lengthening():
+    changes = {}
+    for phoneme in VOWELS.members():
+        changes[phoneme] = phoneme + 'ˑ'
+
+    return Rule('half-lengthening', 'vowel', 'half-lengthened vowel',
+                changes,
+                ['.V', 'V.', '.$', '^.', 'C.C'])
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -358,4 +378,6 @@ rules = [voicing(),
          backing(),
          rounding(),
          unrounding(),
+         lengthening(),
+         half_lengthening(),
          vowel_nasalization()]
