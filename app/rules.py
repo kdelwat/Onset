@@ -293,7 +293,7 @@ def fronting():
 def backing():
     changes = {}
     changes.update(combine_lists(VOWELS['ucentral'], VOWELS['uback']))
-    changes.update(combine_lists(VOWELS['rcentral'], VOWELS['back']))
+    changes.update(combine_lists(VOWELS['rcentral'], VOWELS['rback']))
     changes.update(combine_lists(VOWELS['ufront'], VOWELS['ucentral']))
     changes.update(combine_lists(VOWELS['rfront'], VOWELS['rcentral']))
     changes.update(combine_lists(VOWELS['rfrontcentral'], VOWELS['rcentralback']))
