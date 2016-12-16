@@ -432,6 +432,15 @@ def syncope():
                 ['C.C'])
 
 
+def prothesis():
+    changes = {'': random.choice(list(VOWELS.members()))}
+    environments = ['.{0}'.format(consonant) for consonant in PULMONIC.members()]
+
+    return Rule('prothesis', 'nothing', 'vowel',
+                changes,
+                environments)
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -472,4 +481,5 @@ rules = [voicing(),
          vowel_apheresis(),
          apocope(),
          syncope(),
+         prothesis(),
          vowel_nasalization()]
