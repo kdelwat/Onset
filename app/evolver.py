@@ -73,9 +73,7 @@ def evolve(words, generations=5, rewrite_rules=[], reverse=False):
             # Delete used rule from available rules
             rules = [rule for rule in rules if rule.name != sound_change.name]
 
-            # changes.append(rule_representation(sound_change))
             changes.append(sound_change)
-            print(sound_change)
             words = applier.apply_rule(words, sound_change)
     else:
         # Evolve backwards
@@ -97,7 +95,6 @@ def evolve(words, generations=5, rewrite_rules=[], reverse=False):
             # Prepend the change to the rules list so that the rules appear in
             # reverse order
             changes.insert(0, sound_change)
-            print(sound_change)
             words = applier.apply_rule(words, sound_change)
 
     # Convert back to orthographic representation using the given transcription

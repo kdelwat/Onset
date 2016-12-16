@@ -25,9 +25,6 @@ def format_transcriptions(transcriptions):
 
 @app.route('/evolve')
 def evolve():
-    print(request.args['words'])
-    print(request.args['direction'])
-
     words = request.args['words'].split()
 
     try:
