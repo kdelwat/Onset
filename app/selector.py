@@ -70,6 +70,27 @@ def expand_environment(environment):
                                                        VOWELS['ucentralback'] +
                                                        VOWELS['uback']))
 
+    # Replace consonant category special forms
+    environment = environment.replace('{back_consonant}',
+                                      list_to_category(PULMONIC['uvelar'] +
+                                                       PULMONIC['vvelar'] +
+                                                       PULMONIC['uuvular'] +
+                                                       PULMONIC['vuvular'] +
+                                                       PULMONIC['upharyngeal'] +
+                                                       PULMONIC['vpharyngeal'] +
+                                                       PULMONIC['uglottal'] +
+                                                       PULMONIC['vglottal']))
+
+    environment = environment.replace('{front_consonant}',
+                                      list_to_category(PULMONIC['ubilabial'] +
+                                                       PULMONIC['vbilabial'] +
+                                                       PULMONIC['ulabiodental'] +
+                                                       PULMONIC['vlabiodental'] +
+                                                       PULMONIC['udental'] +
+                                                       PULMONIC['vdental'] +
+                                                       PULMONIC['ualveolar'] +
+                                                       PULMONIC['valveolar']))
+
     # Replace arbitrary categories
     for category in re.findall('{(.*)}', environment):
         if category in VOWELS:

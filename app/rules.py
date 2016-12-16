@@ -441,6 +441,31 @@ def prothesis():
                 environments)
 
 
+def diphthongization():
+    changes = {}
+
+    if random.randint(0, 1) == 0:
+        origin = 'front'
+        final = 'back'
+    else:
+        origin = 'back'
+        final = 'front'
+
+    for existing_vowel, new_vowel in zip(VOWELS['u' + origin], VOWELS['u' + final]):
+        if existing_vowel != '' and new_vowel != '':
+            changes[existing_vowel] = existing_vowel + new_vowel
+
+    for existing_vowel, new_vowel in zip(VOWELS['r' + origin], VOWELS['r' + final]):
+        if existing_vowel != '' and new_vowel != '':
+            changes[existing_vowel] = existing_vowel + new_vowel
+
+    environments = ['.{' + final + '_consonant}']
+
+    return Rule('diphthongization', 'single vowel', 'diphthong',
+                changes,
+                environments)
+
+
 rules = [voicing(),
          devoicing(),
          palatalization(),
@@ -482,4 +507,5 @@ rules = [voicing(),
          apocope(),
          syncope(),
          prothesis(),
+         diphthongization(),
          vowel_nasalization()]
