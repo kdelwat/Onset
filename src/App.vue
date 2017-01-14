@@ -182,11 +182,12 @@ export default {
           // Trigger API error display if necessary
           if (response.data.error !== 0) {
             this.showError(response.data.error);
-          // Otherwise, update data from request result
           } else {
+            // Otherwise, update data from request result
             this.evolvedWords = response.data.words;
             this.evolutionRules = response.data.rules;
-          } })
+          }
+        })
       // Handle an invalid response
         .catch(error => this.showError(error));
     },
@@ -219,10 +220,11 @@ export default {
             // Trigger API error display if necessary
             if (response.data.error !== 0) {
               this.showError(response.data.error);
-            // Otherwise, update words from request result
             } else {
+              // Otherwise, update words from request result
               this.evolvedWords = response.data.words;
-            } })
+            }
+          })
         // Handle an invalid response
           .catch(error => this.showError(error));
       }
