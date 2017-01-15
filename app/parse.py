@@ -34,6 +34,7 @@ def tokenise(word, available_segments, available_diacritics):
         # If the current substring is a valid sequence in IPA, add it to the
         # results list and recur
         if valid_subword(subword, available_segments, available_diacritics):
-            return [subword] + tokenise(word[length:])
+            return [subword] + tokenise(word[length:], available_segments,
+                                        available_diacritics)
 
     raise ValueError('Invalid character in word: {0}'.format(word))
