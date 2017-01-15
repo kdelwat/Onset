@@ -35,3 +35,16 @@ def test_setters():
     segment.negative = 'stress'
     assert segment.positive == ['long']
     assert segment.negative == ['stress']
+
+
+def test_addition():
+    feature_dictionary = {'stress': '+', 'syllabic': '-', 'continuant': '0',
+                          'IPA': 'b'}
+
+    segment = Segment.from_dictionary(feature_dictionary)
+
+    syllabic_diacritic = Segment(['syllabic'], ['voice'])
+
+    addition = segment + syllabic_diacritic
+    assert addition.positive == ['stress', 'syllabic']
+    assert addition.negative == ['voice']
