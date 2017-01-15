@@ -24,15 +24,15 @@ def test_setters():
 
     segment = Segment.from_dictionary(feature_dictionary)
 
-    segment.positive = 'long'
+    segment.add_positive('long')
     assert segment.positive == ['stress', 'long']
     assert segment.negative == []
 
-    segment.negative = 'stress'
+    segment.add_negative('stress')
     assert segment.positive == ['long']
     assert segment.negative == ['stress']
 
-    segment.negative = 'stress'
+    segment.add_negative('stress')
     assert segment.positive == ['long']
     assert segment.negative == ['stress']
 

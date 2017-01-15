@@ -22,8 +22,7 @@ class Segment:
     def positive(self):
         return self._positive
 
-    @positive.setter
-    def positive(self, feature):
+    def add_positive(self, feature):
         '''Add the feature to the positive list. If it already exists in the
         negative list, remove it from negative.'''
 
@@ -37,8 +36,7 @@ class Segment:
     def negative(self):
         return self._negative
 
-    @negative.setter
-    def negative(self, feature):
+    def add_negative(self, feature):
         '''Add the feature to the negative list. If it already exists in the
         positive list, remove it from positive.'''
 
@@ -53,9 +51,9 @@ class Segment:
         together, the values of the second override those of the first that
         differ.'''
         for positive_feature in other.positive:
-            self.positive = positive_feature
+            self.add_positive(positive_feature)
 
         for negative_feature in other.negative:
-            self.negative = negative_feature
+            self.add_negative(negative_feature)
 
         return self
