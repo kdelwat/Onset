@@ -6,7 +6,8 @@ base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 
 sys.path.append(path.join(base_directory, 'app'))
 
-from parse import tokenise, valid_subword, token_to_segment
+from parse import tokenise, valid_subword, token_to_segment, parse_words
+from word import Word
 
 # Load data
 with open(path.join(base_directory, 'app', 'data', 'features.csv'), 'r') as f:
@@ -44,3 +45,11 @@ def test_token_to_segment():
 
     assert segment.positive == ['consonantal', 'voice', 'labial', 'spreadglottis', 'long']
     assert segment.negative == ['syllabic', 'stress', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
+
+
+def test_parse_words():
+    word_strings = ['bæd', 'bɔɪ']
+    words = parse_words(word_strings, segments, diacritics)
+
+    assert len(words) == 2
+    assert all([isinstance(word, Word) for word in words])

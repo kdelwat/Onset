@@ -1,4 +1,27 @@
 from segment import Segment
+from word import Word
+
+
+def parse_words(strings, segments, diacritics):
+    '''Given a list of word strings (in IPA), return a list of Word objects
+    containing parsed segments. Use the given list of segment dictionaries and
+    list of diacritic dictionaries.
+
+    '''
+
+    # Create two lists of available segments and diacritics
+    segment_strings = [segment['IPA'] for segment in segments]
+    diacritic_strings = [diacritic['IPA'] for diacritic in diacritics]
+
+    words = []
+
+    for word in strings:
+        tokens = tokenise(word, segment_strings, diacritic_strings)
+        parsed_segments = [token_to_segment(token, segments, diacritics) for
+                           token in tokens]
+        words.append(Word(parsed_segments))
+
+    return words
 
 
 def valid_subword(subword, available_segments, available_diacritics):
