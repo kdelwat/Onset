@@ -24,25 +24,25 @@ def parse_words(strings, segments, diacritics):
     return words
 
 
-def valid_subword(subword, available_segments, available_diacritics):
+def valid_subword(subword, segment_strings, diacritic_strings):
     '''Determines whether a string is a valid IPA segment.'''
 
     # If it's a simple IPA sequence, return True
-    if subword in available_segments:
+    if subword in segment_strings:
         return True
 
     # Iterate through the string, slicing at each index. If the first part is
     # an IPA sequence and the second half is entirely made up of diacritics,
     # it's valid.
     for i in range(1, len(subword)):
-        if subword[:i] in available_segments and all([x in available_diacritics
+        if subword[:i] in segment_strings and all([x in diacritic_strings
                                                       for x in subword[i:]]):
             return True
     else:
         return False
 
 
-def tokenise(word, available_segments, available_diacritics):
+def tokenise(word, segment_strings, diacritic_strings):
     '''Recursively tokenise a string of IPA characters, with support for diacritics
     and digraphs. Example: bok͡piʰ becomes ["b", "o", "k͡p", "iʰ"].
 
@@ -59,17 +59,17 @@ def tokenise(word, available_segments, available_diacritics):
 
         # If the current substring is a valid sequence in IPA, add it to the
         # results list and recur
-        if valid_subword(subword, available_segments, available_diacritics):
-            return [subword] + tokenise(word[length:], available_segments,
-                                        available_diacritics)
+        if valid_subword(subword, segment_strings, diacritic_strings):
+            return [subword] + tokenise(word[length:], segment_strings,
+                                        diacritic_strings)
 
     raise ValueError('Invalid character in word: {0}'.format(word))
 
 
-def find_segment(string, available_segments):
+def find_segment(string, segment_strings):
     '''Search the segment dictionary for the segment with the correct IPA
     string.'''
-    return [segment for segment in available_segments
+    return [segment for segment in segment_strings
             if segment['IPA'] == string][0]
 
 
@@ -78,14 +78,14 @@ def token_to_segment(token, segment_list, diacritic_list):
     a list of dictionaries representing segments and the same representing
     diacritics.'''
 
-    available_diacritics = [segment['IPA'] for segment in diacritic_list]
+    diacritic_strings = [segment['IPA'] for segment in diacritic_list]
 
     # Isolate the base IPA segment string
-    base_string = ''.join(filter(lambda x: x not in available_diacritics,
+    base_string = ''.join(filter(lambda x: x not in diacritic_strings,
                                  token))
 
     # Isolate an iterable of diacritics
-    diacritics = filter(lambda x: x in available_diacritics, token)
+    diacritics = filter(lambda x: x in diacritic_strings, token)
 
     # Initialise the base Segment
     segment = Segment.from_dictionary(find_segment(base_string,
