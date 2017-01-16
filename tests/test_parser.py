@@ -7,6 +7,7 @@ base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, 'app'))
 
 from parse import tokenise, valid_subword, token_to_segment, parse_words
+from deparse import deparse_words
 from word import Word
 
 # Load data
@@ -15,6 +16,9 @@ with open(path.join(base_directory, 'app', 'data', 'features.csv'), 'r') as f:
 
 with open(path.join(base_directory, 'app', 'data', 'simple_diacritics.csv'), 'r') as f:
     diacritics = [segment for segment in csv.DictReader(f)]
+
+with open(path.join(base_directory, 'app', 'data', 'hayes-feature-strings.csv'), 'r') as f:
+    feature_strings = list(csv.reader(f))
 
 available_segments = [segment['IPA'] for segment in segments]
 available_diacritics = [segment['IPA'] for segment in diacritics]
@@ -53,3 +57,11 @@ def test_parse_words():
 
     assert len(words) == 2
     assert all([isinstance(word, Word) for word in words])
+
+
+def test_parse_deparse():
+    word_strings = ['bæd', 'bɔɪ', 'bʰɒtl']
+
+    words = parse_words(word_strings, segments, diacritics)
+
+    assert deparse_words(words, segments, diacritics, feature_strings) == word_strings
