@@ -1,3 +1,5 @@
+from functools import partial
+
 from Levenshtein import distance
 
 import csv
@@ -47,7 +49,7 @@ def feature_string(segment):
     return ''.join(features)
 
 
-def best_segment_match(target_feature_string, all_feature_strings):
+def segment_match(target_feature_string, all_feature_strings):
     '''Returns the best match for the segment denoted by the target feature string,
     from the given list of tuples containing feature strings. The first item in
     each tuple is the phoneme and the second is the feature string.
@@ -74,6 +76,21 @@ def best_segment_match(target_feature_string, all_feature_strings):
     return lowest_options[0][1][0]
 
 
+def deparse_segment(diacritic_translations, feature_strings, segment):
+    '''Deparses a segment into an IPA string, provided a dictionary of diacritic
+    feature-to-IPA translations and a list of feature strings.'''
+
+    # Get the base segment by matching with the feature string data
+    segment_string = segment_match(feature_string(segment),
+                                   feature_strings)
+
+    # Add diacritics based on diacritic features stored on the segment
+    for diacritic_feature in segment.diacritics:
+        segment_string += diacritic_translations[diacritic_feature]
+
+    return segment_string
+
+
 def deparse_words(words, segments, diacritics, feature_strings):
     '''Given a list of Words, return a list of IPA strings, one for each
     word.'''
@@ -83,20 +100,12 @@ def deparse_words(words, segments, diacritics, feature_strings):
     diacritic_translations = {line['feature']: line['IPA'] for line in
                               diacritics}
 
-    word_strings = []
+    # Partially apply the deparse_segment function to avoid repeated calls with
+    # the data objects.
+    deparse = partial(deparse_segment, diacritic_translations, feature_strings)
 
-    for word in words:
-        word_string = ''
-
-        for segment in word.segments:
-            segment_string = best_segment_match(feature_string(segment),
-                                                feature_strings)
-
-            for diacritic_feature in segment.diacritics:
-                segment_string += diacritic_translations[diacritic_feature]
-
-            word_string += segment_string
-
-        word_strings.append(word_string)
+    # Deparse each segment in each word
+    word_strings = [''.join(deparse(segment) for segment in word.segments)
+                    for word in words]
 
     return word_strings
