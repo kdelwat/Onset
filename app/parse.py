@@ -1,3 +1,6 @@
+from segment import Segment
+
+
 def valid_subword(subword, available_segments, available_diacritics):
     '''Determines whether a string is a valid IPA segment.'''
 
@@ -38,3 +41,36 @@ def tokenise(word, available_segments, available_diacritics):
                                         available_diacritics)
 
     raise ValueError('Invalid character in word: {0}'.format(word))
+
+
+def find_segment(string, available_segments):
+    '''Search the segment dictionary for the segment with the correct IPA
+    string.'''
+    return [segment for segment in available_segments
+            if segment['IPA'] == string][0]
+
+
+def token_to_segment(token, segment_list, diacritic_list):
+    '''Converts a string token in IPA to Segment object, given
+    a list of dictionaries representing segments and the same representing
+    diacritics.'''
+
+    available_diacritics = [segment['IPA'] for segment in diacritic_list]
+
+    # Isolate the base IPA segment string
+    base_string = ''.join(filter(lambda x: x not in available_diacritics,
+                                 token))
+
+    # Isolate an iterable of diacritics
+    diacritics = filter(lambda x: x in available_diacritics, token)
+
+    # Initialise the base Segment
+    segment = Segment.from_dictionary(find_segment(base_string,
+                                                   segment_list))
+
+    # Add each diacritic to the segment
+    for diacritic in diacritics:
+        segment += Segment.from_dictionary(find_segment(diacritic,
+                                                        diacritic_list))
+
+    return segment
