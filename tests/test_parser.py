@@ -13,7 +13,7 @@ from word import Word
 with open(path.join(base_directory, 'app', 'data', 'features.csv'), 'r') as f:
     segments = [segment for segment in csv.DictReader(f)]
 
-with open(path.join(base_directory, 'app', 'data', 'diacritics.csv'), 'r') as f:
+with open(path.join(base_directory, 'app', 'data', 'simple_diacritics.csv'), 'r') as f:
     diacritics = [segment for segment in csv.DictReader(f)]
 
 available_segments = [segment['IPA'] for segment in segments]
@@ -43,8 +43,8 @@ def test_token_to_segment():
 
     segment = token_to_segment('bʰː', segments, diacritics)
 
-    assert segment.positive == ['consonantal', 'voice', 'labial', 'spreadglottis', 'long']
-    assert segment.negative == ['syllabic', 'stress', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
+    assert segment.positive == ['consonantal', 'voice', 'labial', 'aspirated', 'lengthened']
+    assert segment.negative == ['syllabic', 'stress', 'long', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
 
 
 def test_parse_words():

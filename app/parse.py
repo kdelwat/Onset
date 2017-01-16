@@ -91,9 +91,9 @@ def token_to_segment(token, segment_list, diacritic_list):
     segment = Segment.from_dictionary(find_segment(base_string,
                                                    segment_list))
 
-    # Add each diacritic to the segment
+    # Add each diacritic feature to the segment
     for diacritic in diacritics:
-        segment += Segment.from_dictionary(find_segment(diacritic,
-                                                        diacritic_list))
+        diacritic_feature = find_segment(diacritic, diacritic_list)['feature']
+        segment += Segment([diacritic_feature], [])
 
     return segment
