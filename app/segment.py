@@ -46,6 +46,28 @@ class Segment:
 
             self._negative.append(feature)
 
+    @property
+    def diacritics(self):
+        '''Return all diacritic features on the segment.'''
+        diacritic_features = {'dsyllabic',
+                              'creaky',
+                              'breathy',
+                              'voiceless',
+                              'dental',
+                              'frontedvelar',
+                              'backedvelar',
+                              'lengthened',
+                              'aspirated',
+                              'palatalized',
+                              'labialized',
+                              'velarized',
+                              'pharyngealized',
+                              'nasalized',
+                              'rhotic',
+                              'ejective'}
+
+        return set(self._positive).intersection(diacritic_features)
+
     def __add__(self, other):
         '''Override the regular addition behaviour. When two segments are added
         together, the values of the second override those of the first that

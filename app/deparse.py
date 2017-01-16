@@ -1,5 +1,7 @@
 from Levenshtein import distance
 
+import csv
+
 feature_order = ['syllabic',
                  'stress',
                  'long',
@@ -73,4 +75,32 @@ def best_segment_match(target_feature_string, all_feature_strings):
 
 
 def deparse_words(words, segments, diacritics):
-    pass
+    '''Given a list of Words, return a list of IPA strings, one for each
+    word.'''
+
+    # Load feature strings
+    with open('data/hayes-feature-strings.csv', 'r') as f:
+        feature_strings = list(csv.reader(f))
+
+    # Load diacritic data into a dictionary. The keys are the features while
+    # the values are the corresponding IPA.
+    with open('data/simple_diacritics.csv', 'r') as f:
+        diacritics = {line[1]: line[0] for line in csv.reader(f)}
+
+    word_strings = []
+
+    for word in words:
+        word_string = ''
+
+        for segment in word.segments:
+            segment_string = best_segment_match(feature_string(segment),
+                                                feature_strings)
+
+            for diacritic_feature in segment.diacritics:
+                segment_string += diacritics[diacritic_feature]
+
+            word_string += segment_string
+
+        word_strings.append(word_string)
+
+    return word_strings
