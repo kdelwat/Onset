@@ -17,3 +17,7 @@ Daniel McCloy, and Richard Wright. The original data is released under
 the
 [Creative Commons Attribution-ShareAlike 3.0 Unported License](https://creativecommons.org/licenses/by-sa/3.0/),
 and this adaptation is therefore released under the same license.
+
+# hayes-feature-strings
+
+The feature strings data is generated from `features.csv`.
