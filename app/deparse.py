@@ -74,18 +74,14 @@ def best_segment_match(target_feature_string, all_feature_strings):
     return lowest_options[0][1][0]
 
 
-def deparse_words(words, segments, diacritics):
+def deparse_words(words, segments, diacritics, feature_strings):
     '''Given a list of Words, return a list of IPA strings, one for each
     word.'''
 
-    # Load feature strings
-    with open('data/hayes-feature-strings.csv', 'r') as f:
-        feature_strings = list(csv.reader(f))
-
     # Load diacritic data into a dictionary. The keys are the features while
     # the values are the corresponding IPA.
-    with open('data/simple_diacritics.csv', 'r') as f:
-        diacritics = {line[1]: line[0] for line in csv.reader(f)}
+    diacritic_translations = {line['feature']: line['IPA'] for line in
+                              diacritics}
 
     word_strings = []
 
@@ -97,7 +93,7 @@ def deparse_words(words, segments, diacritics):
                                                 feature_strings)
 
             for diacritic_feature in segment.diacritics:
-                segment_string += diacritics[diacritic_feature]
+                segment_string += diacritic_translations[diacritic_feature]
 
             word_string += segment_string
 
