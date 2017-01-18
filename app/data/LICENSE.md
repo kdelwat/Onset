@@ -21,3 +21,7 @@ and this adaptation is therefore released under the same license.
 # hayes-feature-strings
 
 The feature strings data is generated from `features.csv`.
+
+# diacritics.yaml
+
+The data is converted from 'Introductory Phonology' by Bruce Hayes.

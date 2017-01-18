@@ -1,0 +1,182 @@
+---
+- name: syllabic
+  symbol: "\u0329"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - syllabic
+
+- name: creaky
+  symbol: "\u0330"
+  conditions:
+    positive:
+      - voice
+  applies:
+    positive:
+      - constrictedglottis
+    negative:
+      - spreadglottis
+
+- name: breathy
+  symbol: "\u0324"
+  conditions:
+    positive:
+      - voice
+  applies:
+    positive:
+      - spreadglottis
+    negative:
+      - constrictedglottis
+
+- name: voiceless
+  symbol: "\u0325"
+  conditions:
+    positive:
+      - voice
+  applies:
+    negative:
+      - voice
+
+- name: dental
+  symbol: "\u032A"
+  conditions:
+    positive:
+      - coronal
+      - anterior
+  applies:
+    positive:
+      - distributed
+
+- name: advanced
+  symbol: "\u031F"
+  conditions:
+    positive:
+      - dorsal
+      - consonantal
+      - high
+  applies:
+    positive:
+      - front
+    negative:
+      - back
+
+- name: retracted
+  symbol: "\u0320"
+  conditions:
+    positive:
+      - dorsal
+      - consonantal
+      - high
+  applies:
+    positive:
+      - back
+    negative:
+      - front
+
+- name: long
+  symbol: "\u02D0"
+  conditions: {}
+  applies:
+    positive:
+      - long
+
+- name: aspirated
+  symbol: "\u02B0"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - spreadglottis
+    negative:
+      - constrictedglottis
+
+- name: palatalized
+  symbol: "\u02B2"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - dorsal
+      - high
+      - front
+    negative:
+      - low
+      - back
+
+- name: labialized
+  symbol: "\u02B7"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - labial
+      - round
+
+- name: velarized
+  symbol: "\u02E0"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - dorsal
+      - high
+      - back
+    negative:
+      - low
+      - front
+
+- name: pharyngealized
+  symbol: "\u02C1"
+  conditions:
+    negative:
+      - syllabic
+  applies:
+    positive:
+      - dorsal
+      - low
+      - back
+    negative:
+      - high
+      - front
+
+- name: nasalized
+  symbol: "\u0303"
+  conditions:
+    positive:
+      - sonorant
+  applies:
+    positive:
+      - nasal
+
+- name: rhotic
+  symbol: "\u02DE"
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - consonantal
+  applies:
+    positive:
+      - coronal
+      - anterior
+      - distributed
+    negative:
+      - strident
+
+- name: ejective
+  symbol: "\u02BC"
+  conditions:
+    negative:
+      - sonorant
+  applies:
+    positive:
+      - constrictedglottis
+    negative:
+      - spreadglottis
+
