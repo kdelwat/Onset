@@ -68,6 +68,19 @@ class Segment:
 
         return set(self._positive).intersection(diacritic_features)
 
+    def meets_conditions(self, conditions):
+        '''Takes a dictionary of features, in the format:
+
+            {'positive': ['feature1', 'feature2'], 'negative': ['feature3']}
+
+        Returns True if all features specified as positive are in
+        self._positive and those specified as negative are in self._negative.
+        Otherwise returns false.
+
+        '''
+        return (set(conditions.get('positive', [])).issubset(self._positive)
+                and set(conditions.get('negative', [])).issubset(self._negative))
+
     def __add__(self, other):
         '''Override the regular addition behaviour. When two segments are added
         together, the values of the second override those of the first that

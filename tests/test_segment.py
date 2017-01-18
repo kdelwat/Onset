@@ -48,3 +48,14 @@ def test_addition():
     addition = segment + syllabic_diacritic
     assert addition.positive == ['stress', 'syllabic']
     assert addition.negative == ['voice']
+
+
+def test_meets_conditions():
+    segment = Segment(['syllabic', 'voice'], ['consonantal', 'continuant'])
+
+    assert segment.meets_conditions({})
+    assert segment.meets_conditions({'positive': ['syllabic']})
+    assert segment.meets_conditions({'positive': ['syllabic', 'voice'],
+                                     'negative': ['continuant']})
+    assert not segment.meets_conditions({'positive': ['lateral'],
+                                         'negative': ['continuant']})
