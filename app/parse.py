@@ -5,7 +5,7 @@ from word import Word
 def parse_words(strings, segments, diacritics):
     '''Given a list of word strings (in IPA), return a list of Word objects
     containing parsed segments. Use the given list of segment dictionaries and
-    list of diacritic dictionaries.
+    diacritic rules.
 
     '''
 
@@ -84,8 +84,9 @@ def token_to_segment(token, segment_list, diacritic_list):
     base_string = ''.join(filter(lambda x: x not in diacritic_strings,
                                  token))
 
-    # Isolate an iterable of diacritics
-    diacritics = filter(lambda x: x in diacritic_strings, token)
+    # Isolate an iterable of diacritics present
+    diacritics = [diacritic for diacritic in diacritic_list
+                  if diacritic['IPA'] in token]
 
     # Initialise the base Segment
     segment = Segment.from_dictionary(find_segment(base_string,
@@ -93,7 +94,8 @@ def token_to_segment(token, segment_list, diacritic_list):
 
     # Add each diacritic feature to the segment
     for diacritic in diacritics:
-        diacritic_feature = find_segment(diacritic, diacritic_list)['feature']
-        segment += Segment([diacritic_feature], [])
+        diacritic_segment = Segment(diacritic['applies'].get('positive', []),
+                                    diacritic['applies'].get('negative', []))
+        segment = segment + diacritic_segment
 
     return segment

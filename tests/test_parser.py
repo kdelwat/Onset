@@ -1,9 +1,9 @@
 import sys
 import csv
+import yaml
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-
 sys.path.append(path.join(base_directory, 'app'))
 
 from parse import tokenise, valid_subword, token_to_segment, parse_words
@@ -14,8 +14,8 @@ from word import Word
 with open(path.join(base_directory, 'app', 'data', 'features.csv'), 'r') as f:
     segments = [segment for segment in csv.DictReader(f)]
 
-with open(path.join(base_directory, 'app', 'data', 'simple_diacritics.csv'), 'r') as f:
-    diacritics = [segment for segment in csv.DictReader(f)]
+with open(path.join(base_directory, 'app', 'data', 'diacritics.yaml'), 'r') as f:
+    diacritics = yaml.load(f)
 
 with open(path.join(base_directory, 'app', 'data', 'hayes-feature-strings.csv'), 'r') as f:
     feature_strings = list(csv.reader(f))
@@ -45,10 +45,18 @@ def test_token_to_segment():
     assert segment.positive == ['consonantal', 'voice', 'labial']
     assert segment.negative == ['syllabic', 'stress', 'long', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
 
-    segment = token_to_segment('bʰː', segments, diacritics)
+    segment = token_to_segment('bː', segments, diacritics)
 
-    assert segment.positive == ['consonantal', 'voice', 'labial', 'aspirated', 'lengthened']
-    assert segment.negative == ['syllabic', 'stress', 'long', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
+    assert segment.positive == ['consonantal', 'voice', 'labial', 'long']
+    assert segment.negative == ['syllabic', 'stress', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
+
+    segment = token_to_segment('bː\u0303', segments, diacritics)
+    assert segment.positive == ['consonantal', 'voice', 'labial', 'long', 'nasal']
+    assert segment.negative == ['syllabic', 'stress', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal']
+
+    segment = token_to_segment('b\u0325', segments, diacritics)
+    assert segment.positive == ['consonantal', 'labial']
+    assert segment.negative == ['syllabic', 'stress', 'long', 'sonorant', 'continuant', 'delayedrelease', 'approximant', 'tap', 'trill', 'nasal', 'spreadglottis', 'constrictedglottis', 'round', 'labiodental', 'coronal', 'lateral', 'dorsal', 'voice']
 
 
 def test_parse_words():
