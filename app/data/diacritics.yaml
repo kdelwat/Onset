@@ -2,6 +2,8 @@
 - name: syllabic
   symbol: "\u0329"
   conditions:
+    positive:
+      - consonantal
     negative:
       - syllabic
   applies:
@@ -24,6 +26,8 @@
   conditions:
     positive:
       - voice
+    negative:
+      - spreadglottis
   applies:
     positive:
       - spreadglottis
@@ -87,6 +91,8 @@
   conditions:
     negative:
       - syllabic
+      - spreadglottis
+      - voice
   applies:
     positive:
       - spreadglottis
@@ -150,6 +156,8 @@
   conditions:
     positive:
       - sonorant
+    negative:
+      - nasal
   applies:
     positive:
       - nasal
@@ -179,4 +187,3 @@
       - constrictedglottis
     negative:
       - spreadglottis
-
