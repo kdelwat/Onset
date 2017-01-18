@@ -85,7 +85,7 @@ class Segment:
         '''Override the regular addition behaviour. When two segments are added
         together, the values of the second override those of the first that
         differ.'''
-        new_segment = Segment(self._positive, self._negative)
+        new_segment = Segment(self._positive.copy(), self._negative.copy())
 
         for positive_feature in other.positive:
             new_segment.add_positive(positive_feature)
