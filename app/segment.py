@@ -94,3 +94,7 @@ class Segment:
             new_segment.add_negative(negative_feature)
 
         return new_segment
+
+    def __repr__(self):
+        return '<Segment> Positive: {0}, Negative: {1}'.format(self._positive,
+                                                               self._negative)
