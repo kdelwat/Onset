@@ -49,7 +49,7 @@ def feature_string(segment):
     return ''.join(features)
 
 
-def segment_match(target_feature_string, all_feature_strings):
+def segment_match(all_feature_strings, target_feature_string):
     '''Returns the best match for the segment denoted by the target feature string,
     from the given list of tuples containing feature strings. The first item in
     each tuple is the phoneme and the second is the feature string.
@@ -84,28 +84,17 @@ def deparse_segment(diacritic_translations, feature_strings, segment):
     segment_string = segment_match(feature_string(segment),
                                    feature_strings)
 
-    # Add diacritics based on diacritic features stored on the segment
-    for diacritic_feature in segment.diacritics:
-        segment_string += diacritic_translations[diacritic_feature]
 
-    return segment_string
-
-
-def deparse_words(words, segments, diacritics, feature_strings):
+def deparse_words(words, segments, feature_strings):
     '''Given a list of Words, return a list of IPA strings, one for each
     word.'''
 
-    # Load diacritic data into a dictionary. The keys are the features while
-    # the values are the corresponding IPA.
-    diacritic_translations = {line['feature']: line['IPA'] for line in
-                              diacritics}
-
     # Partially apply the deparse_segment function to avoid repeated calls with
-    # the data objects.
-    deparse = partial(deparse_segment, diacritic_translations, feature_strings)
+    # the feature_strings object.
+    deparse = partial(segment_match, feature_strings)
 
     # Deparse each segment in each word
-    word_strings = [''.join(deparse(segment) for segment in word.segments)
-                    for word in words]
+    word_strings = [''.join(deparse(feature_string(segment)) for segment in
+                            word.segments) for word in words]
 
     return word_strings

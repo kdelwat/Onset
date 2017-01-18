@@ -25,3 +25,7 @@ The feature strings data is generated from `features.csv`.
 # diacritics.yaml
 
 The data is converted from 'Introductory Phonology' by Bruce Hayes.
+
+# feature-strings-with-diacritics.csv
+
+The feature strings data is generated from `features.csv` and `diacritics.yaml`.
