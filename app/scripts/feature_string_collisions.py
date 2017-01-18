@@ -79,7 +79,7 @@ def main():
             print('\tNegative: {0}'.format(base_segment.negative))
 
         for diacritic in diacritics:
-            IPA_representation = segment['IPA'] + diacritic['symbol']
+            IPA_representation = segment['IPA'] + diacritic['IPA']
 
             if base_segment.meets_conditions(diacritic['conditions']):
                 diacritic_segment = base_segment + Segment(diacritic['applies'].get('positive', []),

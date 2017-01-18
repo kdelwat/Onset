@@ -1,6 +1,6 @@
 ---
 - name: syllabic
-  symbol: "\u0329"
+  IPA: "\u0329"
   conditions:
     positive:
       - consonantal
@@ -11,7 +11,7 @@
       - syllabic
 
 - name: creaky
-  symbol: "\u0330"
+  IPA: "\u0330"
   conditions:
     positive:
       - voice
@@ -22,7 +22,7 @@
       - spreadglottis
 
 - name: breathy
-  symbol: "\u0324"
+  IPA: "\u0324"
   conditions:
     positive:
       - voice
@@ -35,7 +35,7 @@
       - constrictedglottis
 
 - name: voiceless
-  symbol: "\u0325"
+  IPA: "\u0325"
   conditions:
     positive:
       - voice
@@ -44,7 +44,7 @@
       - voice
 
 - name: dental
-  symbol: "\u032A"
+  IPA: "\u032A"
   conditions:
     positive:
       - coronal
@@ -54,7 +54,7 @@
       - distributed
 
 - name: advanced
-  symbol: "\u031F"
+  IPA: "\u031F"
   conditions:
     positive:
       - dorsal
@@ -67,7 +67,7 @@
       - back
 
 - name: retracted
-  symbol: "\u0320"
+  IPA: "\u0320"
   conditions:
     positive:
       - dorsal
@@ -80,14 +80,14 @@
       - front
 
 - name: long
-  symbol: "\u02D0"
+  IPA: "\u02D0"
   conditions: {}
   applies:
     positive:
       - long
 
 - name: aspirated
-  symbol: "\u02B0"
+  IPA: "\u02B0"
   conditions:
     negative:
       - syllabic
@@ -100,7 +100,7 @@
       - constrictedglottis
 
 - name: palatalized
-  symbol: "\u02B2"
+  IPA: "\u02B2"
   conditions:
     negative:
       - syllabic
@@ -114,7 +114,7 @@
       - back
 
 - name: labialized
-  symbol: "\u02B7"
+  IPA: "\u02B7"
   conditions:
     negative:
       - syllabic
@@ -124,7 +124,7 @@
       - round
 
 - name: velarized
-  symbol: "\u02E0"
+  IPA: "\u02E0"
   conditions:
     negative:
       - syllabic
@@ -138,7 +138,7 @@
       - front
 
 - name: pharyngealized
-  symbol: "\u02C1"
+  IPA: "\u02C1"
   conditions:
     negative:
       - syllabic
@@ -152,7 +152,7 @@
       - front
 
 - name: nasalized
-  symbol: "\u0303"
+  IPA: "\u0303"
   conditions:
     positive:
       - sonorant
@@ -163,7 +163,7 @@
       - nasal
 
 - name: rhotic
-  symbol: "\u02DE"
+  IPA: "\u02DE"
   conditions:
     positive:
       - syllabic
@@ -178,7 +178,7 @@
       - strident
 
 - name: ejective
-  symbol: "\u02BC"
+  IPA: "\u02BC"
   conditions:
     negative:
       - sonorant
