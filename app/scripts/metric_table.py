@@ -28,7 +28,8 @@ def main():
 
     results = []
     for word, word_string in zip(words, target_words):
-        results.append([word_string, metrics.phonetic_product(word)])
+        results.append([word_string, metrics.phonetic_product(word),
+                        metrics.weighted_phonetic_product(word)])
 
     print(tabulate(results, headers=['Word', 'Phonetic Product']))
 

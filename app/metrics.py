@@ -24,8 +24,9 @@ def classify_segment(segment):
 
 
 def phonetic_product(word):
-    '''Given a word, compute the Phonetic Product outlined by Harold Bauer &
-    Michael P. Robb in "The ethologic model of phonetic development" (1992).
+    '''Given a word, compute the Phonetic Product outlined by Harold R. Bauer in
+    "The ethologic model of phonetic development: I. Phonetic contrast
+    estimators" (1988).
 
     '''
     phonetic_count = Counter()
@@ -34,3 +35,28 @@ def phonetic_product(word):
         phonetic_count.update(classify_segment(segment))
 
     return reduce(operator.mul, map(lambda x: x + 1, phonetic_count.values()))
+
+
+def weighted_phonetic_product(word):
+    '''Given a word, compute the Phonetic Product outlined by Harold R. Bauer in
+    "The ethologic model of phonetic development: I. Phonetic contrast
+    estimators" (1988), using weighted values by Carterette and Jones in
+    "Informal Speech: Alphabetic and Phonetic Texts with Statistical Analyses
+    and Tables" (1974).
+
+    '''
+    phonetic_count = Counter()
+
+    for segment in word.segments:
+        phonetic_count.update(classify_segment(segment))
+
+    segment_types = [phonetic_count[0] * 0.1658 + 1,
+                     phonetic_count[1] * 0.3149 + 1,
+                     phonetic_count[2] * 0.01129 + 1,
+                     phonetic_count[3] * 0.04945 + 1,
+                     phonetic_count[4] * 0.04945 + 1,
+                     phonetic_count[5] * 0.18 + 1,
+                     phonetic_count[6] * 0.1431 + 1,
+                     phonetic_count[7] * 0.0709 + 1]
+
+    return reduce(operator.mul, segment_types)
