@@ -50,3 +50,28 @@ def test_applicable():
     assert not inapplicable_word.applicable(rule_length_one)
     assert not inapplicable_word.applicable(rule_length_two)
     assert not inapplicable_word.applicable(rule_length_three)
+
+
+def test_apply_rule():
+    rule = {'applies': {'positive': ['nasal']},
+            'conditions': {'negative': ['nasal'],
+                           'positive': ['syllabic']},
+            'name': 'nasalization'}
+
+    word = Word([Segment(['nasal'], ['syllabic']),
+                 Segment(['syllabic'], ['nasal'])])
+
+    target_word = Word([Segment(['nasal'], ['syllabic']),
+                        Segment(['syllabic', 'nasal'], [])])
+
+    assert word.apply_rule(rule) == target_word
+
+
+def test_equality():
+    word1 = Word([Segment(['nasal'], ['syllabic']),
+                  Segment(['syllabic'], ['nasal'])])
+
+    word2 = Word([Segment(['nasal'], ['syllabic']),
+                  Segment(['syllabic'], ['nasal'])])
+
+    assert word1 == word2
