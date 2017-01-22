@@ -13,18 +13,6 @@ with open(path.join(base_directory, 'app', 'data', 'rules.yaml'), 'r') as f:
     rules = yaml.load(f)
 
 
-def test_overlapping_chunks():
-    word = Word([])
-    assert list(word.overlapping_chunks([], 3)) == []
-    assert list(word.overlapping_chunks([1, 2, 3, 4, 5], 2)) == [(1, 2),
-                                                                 (2, 3),
-                                                                 (3, 4),
-                                                                 (4, 5)]
-    assert list(word.overlapping_chunks([1, 2, 3, 4, 5], 3)) == [(1, 2, 3),
-                                                                 (2, 3, 4),
-                                                                 (3, 4, 5)]
-
-
 def test_applicable():
 
     rule_length_one = {'applies': {'positive': ['nasal']},
