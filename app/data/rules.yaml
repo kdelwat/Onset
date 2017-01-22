@@ -1,0 +1,30 @@
+# This file contains all rules used by Onset to evolve words. They are present in
+# the following format:
+#
+# - name (obligatory): nameofrule
+# - before (non-obligatory): the features present in the preceding segment
+#     positive: list of positive features
+#     negative: list of negative features
+# - after (non-obligatory): the features present in the succeeding segment
+#     positive: list of positive features
+#     negative: list of negative features
+# - conditions (non-obligatory): the features present in the changed segment
+#     positive: list of positive features
+#     negative: list of negative features
+# - applies (obligatory): the features to apply to the changed segment
+#     positive: list of positive features
+#     negative: list of negative features
+
+---
+- name: nasalization
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - nasal
+  before:
+    positive:
+      - nasal
+  applies:
+    positive:
+      - nasal
