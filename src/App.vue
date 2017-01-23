@@ -115,7 +115,7 @@
             <p class="card-header-title">Applied Rules</p>
           </header>
           <div class="card-content">
-            <a class="panel-block" v-for="rule in evolutionRules">{{rule[0]}}: {{rule[1]}} -> {{rule[2]}}, {{rule[4][0][1]}}</a>
+            <a class="panel-block" v-for="rule in evolutionRules">{{rule}}</a>
           </div>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default {
         transcriptions: this.transcriptionString };
 
       // Call the Flask API
-      axios.get('/evolve',
+      axios.get('http://127.0.0.1:5000/evolve',
                 { params: parameters })
       // Handle a valid response
         .then((response) => {

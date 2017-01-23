@@ -16,6 +16,25 @@
 #     negative: list of negative features
 
 ---
+- name: palatalization
+  before:
+    positive:
+      - syllabic
+      - high
+      - front
+  conditions:
+    negative:
+      - syllabic
+      - dorsal
+  applies:
+    positive:
+      - dorsal
+      - high
+      - front
+    negative:
+      - low
+      - back
+
 - name: nasalization
   conditions:
     positive:

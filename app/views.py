@@ -1,10 +1,13 @@
 import json
+import sys
+import os.path as path
 
 from flask import render_template, jsonify, request
 from app import app
-from app import evolver
-from app import applier
 
+base_directory = path.dirname(path.dirname(path.abspath(__file__)))
+sys.path.append(path.join(base_directory, 'engine'))
+import engine
 
 @app.route('/')
 @app.route('/index')
@@ -44,7 +47,8 @@ def evolve():
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
-    words, rules = evolver.evolve(words, generations, transcriptions, reverse)
+    words, rules = engine.run_engine(words, generations, transcriptions,
+                                     reverse)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 
