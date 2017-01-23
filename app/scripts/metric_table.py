@@ -13,7 +13,7 @@ import metrics
 
 
 def main():
-    target_words = ['bːɒtl', 'b\u02D0ɒtl']
+    target_words = ['aba', 'bːɒtl', 'b\u02D0ɒtl', 'b\u02D0ɒbtdolie']
 
     with open(path.join(base_directory, 'data', 'features.csv'), 'r') as f:
         segments = [segment for segment in csv.DictReader(f)]
@@ -29,9 +29,12 @@ def main():
     results = []
     for word, word_string in zip(words, target_words):
         results.append([word_string, metrics.phonetic_product(word),
-                        metrics.weighted_phonetic_product(word)])
+                        metrics.weighted_phonetic_product(word),
+                        metrics.number_of_syllables(word),
+                        metrics.number_of_consonant_clusters(word),
+                        metrics.word_complexity_measure(word)])
 
-    print(tabulate(results, headers=['Word', 'Phonetic Product']))
+    print(tabulate(results, headers=['Word', 'Phonetic Product', 'Weighted Phonetic Product', 'Syllables', 'Consonant Clusters', 'WCM']))
 
 
 if __name__ == '__main__':
