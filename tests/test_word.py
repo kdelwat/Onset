@@ -75,3 +75,17 @@ def test_equality():
                   Segment(['syllabic'], ['nasal'])])
 
     assert word1 == word2
+
+
+def test_index_applicable():
+    syllable_rule = {'before': {'negative': ['syllabic']},
+                     'conditions': {'positive': ['syllabic']}}
+
+    word = Word([Segment(['consonantal', 'voice', 'labial', 'long'],
+                         ['syllabic', 'stress']),
+                 Segment(['syllabic', 'sonorant', 'continuant', 'approximant', 'voice', 'labial', 'round', 'dorsal', 'low', 'back'],
+                         ['stress', 'long']),
+                 Segment(['consonantal', 'coronal', 'anterior'],
+                         ['syllabic', 'stress'])])
+
+    assert word.index_applicable(1, syllable_rule)
