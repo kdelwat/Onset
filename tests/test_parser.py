@@ -4,20 +4,20 @@ import yaml
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(path.join(base_directory, 'app'))
+sys.path.append(path.join(base_directory, 'engine'))
 
 from parse import tokenise, valid_subword, token_to_segment, parse_words
 from deparse import deparse_words
 from word import Word
 
 # Load data
-with open(path.join(base_directory, 'app', 'data', 'features.csv'), 'r') as f:
+with open(path.join(base_directory, 'engine', 'data', 'features.csv'), 'r') as f:
     segments = [segment for segment in csv.DictReader(f)]
 
-with open(path.join(base_directory, 'app', 'data', 'diacritics.yaml'), 'r') as f:
+with open(path.join(base_directory, 'engine', 'data', 'diacritics.yaml'), 'r') as f:
     diacritics = yaml.load(f)
 
-with open(path.join(base_directory, 'app', 'data', 'feature-strings-with-diacritics.csv'), 'r') as f:
+with open(path.join(base_directory, 'engine', 'data', 'feature-strings-with-diacritics.csv'), 'r') as f:
     feature_strings = list(csv.reader(f))
 
 available_segments = [segment['IPA'] for segment in segments]

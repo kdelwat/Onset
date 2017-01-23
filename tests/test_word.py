@@ -3,13 +3,13 @@ import sys
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(path.join(base_directory, 'app'))
+sys.path.append(path.join(base_directory, 'engine'))
 
 from word import Word
 from segment import Segment
 
 # Load rules
-with open(path.join(base_directory, 'app', 'data', 'rules.yaml'), 'r') as f:
+with open(path.join(base_directory, 'engine', 'data', 'rules.yaml'), 'r') as f:
     rules = yaml.load(f)
 
 

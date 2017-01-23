@@ -3,7 +3,7 @@ import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 
-sys.path.append(path.join(base_directory, 'app'))
+sys.path.append(path.join(base_directory, 'engine'))
 
 from segment import Segment
 
