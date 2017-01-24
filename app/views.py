@@ -55,6 +55,11 @@ def apply():
     words = request.args['words'].split()
     rules = json.loads(request.args['rules'])
 
-    evolved_words = applier.apply_loaded_rules(words, rules)
+    try:
+        transcriptions = format_transcriptions(request.args['transcriptions'])
+    except IndexError:
+        return jsonify({'error': 'Error: Transcription seperator must be a colon'})
+
+    evolved_words = engine.apply_rules(words, rules, transcriptions)
 
     return jsonify({'words': evolved_words, 'error': 0})

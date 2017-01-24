@@ -194,7 +194,8 @@ export default {
         this.evolutionRules = loadedRules;
 
         const parameters = { words: this.wordString,
-          rules: JSON.stringify(this.evolutionRules) };
+          rules: JSON.stringify(this.evolutionRules),
+          transcriptions: this.transcriptionString };
 
         // Call the Flask API
         axios.get('http://127.0.0.1:5000/apply',

@@ -101,3 +101,28 @@ def evolve_words(words, available_rules, generations):
         return words, applied_rules
 
     return words, applied_rules
+
+
+def apply_rules(words, rules, rewrite_rules=[]):
+    '''Given a list of word strings and a list of rules, apply each rule to the
+    words and return the new word strings.'''
+
+    # Apply the given transcription rules
+    words = rewrite(words, rewrite_rules, to='ipa')
+
+    # Parse the word strings into Word objects
+    parsed_words = parse.parse_words(words, segments, diacritics)
+
+    # Apply each rule in sequence
+    for rule in rules:
+        parsed_words = [word.apply_rule(rule) for word in parsed_words]
+
+    # Deparse the evolved words into strings
+    deparsed_words = deparse.deparse_words(parsed_words, segments,
+                                           feature_strings)
+
+    # Convert back to orthographic representation using the given transcription
+    # rules
+    deparsed_words = rewrite(deparsed_words, rewrite_rules, to='plain')
+
+    return deparsed_words
