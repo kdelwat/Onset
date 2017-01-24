@@ -29,6 +29,21 @@ with open(feature_strings_path, 'r') as f:
     feature_strings = [line for line in csv.reader(f)]
 
 
+def rewrite(words, rules, to='ipa'):
+    '''Rewrite a list of words according to a list of tuple rules of form
+    (plain, ipa), in direction given by target.'''
+    if len(rules) == 0:
+        return words
+
+    if to == 'ipa':
+        return [word.replace(rule[0], rule[1]) for rule in rules
+                for word in words]
+
+    elif to == 'plain':
+        return [word.replace(rule[1], rule[0]) for rule in rules
+                for word in words]
+
+
 def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
                metric=metrics.phonetic_product, optimisation_function=min):
     '''Evolves the language specified by a list of word strings according to
@@ -47,6 +62,8 @@ def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
     Returns a list of evolved word strings and a list of applied rules.
 
     '''
+    # Apply the given transcription rules
+    words = rewrite(words, rewrite_rules, to='ipa')
 
     # Parse the word strings into Word objects
     parsed_words = parse.parse_words(words, segments, diacritics)
@@ -58,6 +75,10 @@ def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
     # Deparse the evolved words into strings
     deparsed_words = deparse.deparse_words(evolved_words, segments,
                                            feature_strings)
+
+    # Convert back to orthographic representation using the given transcription
+    # rules
+    deparsed_words = rewrite(deparsed_words, rewrite_rules, to='plain')
 
     return deparsed_words, applied_rules
 
