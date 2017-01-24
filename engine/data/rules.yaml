@@ -2,13 +2,14 @@
 # the following format:
 #
 # - name (obligatory): nameofrule
-# - before (non-obligatory): the features present in the preceding segment
+# - description (optional): a description of the rule
+# - before (optional): the features present in the preceding segment
 #     positive: list of positive features
 #     negative: list of negative features
-# - after (non-obligatory): the features present in the succeeding segment
+# - after (optional): the features present in the succeeding segment
 #     positive: list of positive features
 #     negative: list of negative features
-# - conditions (non-obligatory): the features present in the changed segment
+# - conditions (optional): the features present in the changed segment
 #     positive: list of positive features
 #     negative: list of negative features
 # - applies (obligatory): the features to apply to the changed segment
@@ -17,6 +18,7 @@
 
 ---
 - name: palatalization
+  description: Plosives become palatalized after high vowels
   before:
     positive:
       - syllabic
@@ -36,6 +38,7 @@
       - back
 
 - name: nasalization
+  description: Vowels become nasalized after nasal consonants
   conditions:
     positive:
       - syllabic

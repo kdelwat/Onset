@@ -1,3 +1,4 @@
+
 <template>
     <div id="app">
         <div class="hero is-success">
@@ -125,8 +126,10 @@
           <header class="card-header">
             <p class="card-header-title">Applied Rules</p>
           </header>
-          <div class="card-content">
-            <a class="panel-block" v-for="rule in evolutionRules">{{rule}}</a>
+          <div class="card-content rule-container">
+            <div v-for="rule in evolutionRules">
+              <rule :rule=rule></rule>
+            </div>
           </div>
         </div>
       </div>
@@ -155,12 +158,13 @@
 </template>
 
 <script>
-
 import axios from 'axios';
+
+import Rule from './components/Rule';
 
 export default {
   name: 'app',
-  components: {},
+  components: { Rule },
   data() {
     return {
       wordString: '',
@@ -282,5 +286,9 @@ i:hover > div {
 
 .main-body {
   margin-top: 50px;
+}
+
+.rule-container {
+    padding: 0;
 }
 </style>
