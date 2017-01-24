@@ -44,7 +44,7 @@ def rewrite(words, rules, to='ipa'):
                 for word in words]
 
 
-def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
+def run_engine(words, generations=5, rewrite_rules=[],
                metric=metrics.phonetic_product, optimisation_function=min):
     '''Evolves the language specified by a list of word strings according to
     parameters:
@@ -53,7 +53,6 @@ def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
         rewrite_rules: a list of rewrite tuples in form (plain, ipa) which
                        is used to transcribe the input words from orthographic
                        representation to IPA.
-        reverse: if true, evolution will run in reverse.
         metric: the metric function that will be used in selecting rules.
         optimisation_function: the function that will determine the best
                                metric result to use during selection. Should

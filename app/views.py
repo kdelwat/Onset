@@ -35,20 +35,12 @@ def evolve():
     except IndexError:
         return jsonify({'error': 'Error: Transcription seperator must be a colon'})
 
-    direction = request.args['direction']
-
-    if direction == 'Reverse':
-        reverse = True
-    else:
-        reverse = False
-
     try:
         generations = int(request.args['generations'])
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
-    words, rules = engine.run_engine(words, generations, transcriptions,
-                                     reverse)
+    words, rules = engine.run_engine(words, generations, transcriptions)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 

@@ -77,20 +77,6 @@
                     <input v-model="generations" type="number" class="input">
                   </p>
 
-                  <label class="label">Direction&nbsp;
-                    <i class="fa fa-question-circle">
-                      <div class="box content"><b>Forward</b> evolves the language forward in time, outputting the result. <b>Reverse</b> moves backwards in time, outputting the source words that evolved <em>into</em> the given ones.</div>
-                    </i>
-                  </label>
-                  <p class="control">
-                    <span class="select">
-                      <select v-model="direction">
-                        <option>Forward</option>
-                        <option>Reverse</option>
-                      </select>
-                    </span>
-                  </p>
-
                   <label class="label">Transcriptions&nbsp;
                     <i class="fa fa-question-circle">
                       <div class="box content">A list of plain text to IPA transcriptions, separated by colons.</div>
@@ -154,7 +140,6 @@ export default {
     return {
       wordString: '',
       generations: 5,
-      direction: 'Forward',
       transcriptionString: '',
       evolvedWords: [],
       evolutionRules: [],
@@ -171,7 +156,6 @@ export default {
     evolve() {
       const parameters = { words: this.wordString,
         generations: this.generations,
-        direction: this.direction,
         transcriptions: this.transcriptionString };
 
       // Call the Flask API
