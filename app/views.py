@@ -8,6 +8,14 @@ from app import app
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, 'engine'))
 import engine
+import metrics
+
+optimisation_functions = {'Maximise': max, 'Minimise': min}
+metric_functions = {'weighted phonetic product': metrics.weighted_phonetic_product,
+                    'phonetic product': metrics.phonetic_product,
+                    'Word Complexity Measure': metrics.word_complexity_measure,
+                    'number of syllables': metrics.number_of_syllables,
+                    'number of consonant clusters': metrics.number_of_consonant_clusters}
 
 @app.route('/')
 @app.route('/index')
@@ -40,7 +48,11 @@ def evolve():
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
-    words, rules = engine.run_engine(words, generations, transcriptions)
+    optimisation_function = optimisation_functions[request.args['optimisationFunction']]
+    metric = metric_functions[request.args['metric']]
+
+    words, rules = engine.run_engine(words, generations, transcriptions,
+                                     metric, optimisation_function)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 

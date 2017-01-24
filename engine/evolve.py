@@ -50,7 +50,7 @@ def optimal_rule_pair(rule_pairs, metric, optimisation_function=min):
     return ranked_pairs[optimisation_function(ranked_pairs.keys())][0]
 
 
-def evolve(words, rules):
+def evolve(words, rules, metric, optimisation_function):
     '''Evolve a list of Words, returning the applied rule and the new list of
     Words.'''
 
@@ -62,4 +62,4 @@ def evolve(words, rules):
 
     rule_pairs = apply_rules(words, rules)
 
-    return optimal_rule_pair(rule_pairs, metrics.phonetic_product)
+    return optimal_rule_pair(rule_pairs, metric, optimisation_function)

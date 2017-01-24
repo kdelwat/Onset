@@ -85,6 +85,31 @@
                   <p class="control">
                     <textarea v-model="transcriptionString" class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
                   </p>
+
+                  <label class="label">Rule selector&nbsp;
+                    <i class="fa fa-question-circle">
+                      <div class="box content">The algorithm to use when selecting rules.</div>
+                    </i>
+                  </label>
+                  <p class="control has-addons">
+                    <span class="select">
+                      <select v-model="optimisationFunction">
+                        <option>Minimise</option>
+                        <option>Maximise</option>
+                      </select>
+                      </span>
+                    <span class="select">
+                      <select v-model="metricFunction" class="is-expanded">
+                        <option>weighted phonetic product</option>
+                        <option>phonetic product</option>
+                        <option>Word Complexity Measure</option>
+                        <option>number of syllables</option>
+                        <option>number of consonant clusters</option>
+                      </select>
+                    </span>
+                  </p>
+
+                  {{ optimisationFunction }}: {{ metricFunction }}
                 </form>
                 </div>
               </div>
@@ -141,6 +166,8 @@ export default {
       wordString: '',
       generations: 5,
       transcriptionString: '',
+      optimisationFunction: 'Minimise',
+      metricFunction: 'weighted phonetic product',
       evolvedWords: [],
       evolutionRules: [],
       filename: '',
@@ -156,7 +183,9 @@ export default {
     evolve() {
       const parameters = { words: this.wordString,
         generations: this.generations,
-        transcriptions: this.transcriptionString };
+        transcriptions: this.transcriptionString,
+        optimisationFunction: this.optimisationFunction,
+        metric: this.metricFunction };
 
       // Call the Flask API
       axios.get('http://127.0.0.1:5000/evolve',

@@ -69,7 +69,8 @@ def run_engine(words, generations=5, rewrite_rules=[],
 
     # Evolve the words for the given number of generations
     evolved_words, applied_rules = evolve_words(parsed_words, rules,
-                                                generations)
+                                                generations, metric,
+                                                optimisation_function)
 
     # Deparse the evolved words into strings
     deparsed_words = deparse.deparse_words(evolved_words, segments,
@@ -82,7 +83,8 @@ def run_engine(words, generations=5, rewrite_rules=[],
     return deparsed_words, applied_rules
 
 
-def evolve_words(words, available_rules, generations):
+def evolve_words(words, available_rules, generations, metric,
+                 optimisation_function):
     '''Evolves the given list of words according to the given list of rules, for a
     number of generations. If no more applicable rules are available, the
     evolution will stop early. Returns the evolved list of words and a list of
@@ -93,7 +95,8 @@ def evolve_words(words, available_rules, generations):
 
     try:
         for _ in range(generations):
-            rule, words = evolve.evolve(words, available_rules)
+            rule, words = evolve.evolve(words, available_rules, metric,
+                                        optimisation_function)
             applied_rules.append(rule)
 
     # StopIteration is raised when there are no more applicable rules
