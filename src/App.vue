@@ -14,9 +14,9 @@
           </div>
         </div>
         <div class="main-body container">
-        <div v-if="displayError" class="notification is-danger">
-          <button @click="displayError = false" class="delete"></button>
-          {{errorMessage}}
+        <div v-if="displayModal" v-bind:class="{ 'is-danger': modalType == 'is-danger', 'is-success': modalType == 'is-success'}" class="notification">
+          <button @click="displayModal = false" class="delete"></button>
+          {{modalMessage}}
         </div>
         <div class="columns">
             <div class="column">
@@ -196,8 +196,9 @@ export default {
       evolvedWords: [],
       evolutionRules: [],
       filename: '',
-      errorMessage: '',
-      displayError: false,
+      modalMessage: '',
+      modalType: 'is-danger',
+      displayModal: false,
     };
   },
   computed: {
@@ -235,12 +236,20 @@ export default {
     // Display an error
     showError(error) {
       console.log(error);
-      this.errorMessage = error;
-      this.displayError = true;
+      this.modalMessage = error;
+      this.modalType = 'is-danger';
+      this.displayModal = true;
+    },
+    // Display a success message
+    showSuccess(error) {
+      this.modalMessage = error;
+      this.modalType = 'is-success';
+      this.displayModal = true;
     },
     // Save the current rules to localStorage, identified by the given filename
     saveLocal() {
       localStorage.setItem(this.filename, JSON.stringify(this.evolutionRules));
+      this.showSuccess('Rules saved successfully!');
     },
     // Load rules from localStorage identified by the given filename
     loadLocal() {
@@ -268,6 +277,7 @@ export default {
             } else {
               // Otherwise, update words from request result
               this.evolvedWords = response.data.words;
+              this.showSuccess('Rules loaded and applied!');
             }
           })
         // Handle an invalid response
