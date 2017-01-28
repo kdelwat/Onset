@@ -43,12 +43,12 @@ def evolve():
     try:
         transcriptions = format_transcriptions(request.args['transcriptions'])
     except IndexError:
-        return jsonify({'error': 'Error: Transcription seperator must be a colon'})
+        return jsonify({'error': 'Transcription seperator must be a colon'})
 
     try:
         generations = int(request.args['generations'])
     except ValueError:
-        return jsonify({'error': 'Error: Generations must be an integer'})
+        return jsonify({'error': 'Generations must be an integer'})
 
     if request.args['direction'] == 'Reverse':
         reverse = True
@@ -62,7 +62,7 @@ def evolve():
         words, rules = engine.run_engine(words, generations, transcriptions,
                                          reverse, metric, optimisation_function)
     except Exception as e:
-        return jsonify({'error': 'Error: {0}'.format(e)})
+        return jsonify({'error': str(e)})
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 
@@ -87,12 +87,12 @@ def apply():
     try:
         transcriptions = format_transcriptions(request.args['transcriptions'])
     except IndexError:
-        return jsonify({'error': 'Error: Transcription seperator must be a colon'})
+        return jsonify({'error': 'Transcription seperator must be a colon'})
 
     try:
         evolved_words = engine.apply_rules(words, rules, transcriptions,
                                            reverse)
     except Exception as e:
-        return jsonify({'error': 'Error: {0}'.format(e)})
+        return jsonify({'error': str(e)})
 
     return jsonify({'words': evolved_words, 'error': 0})
