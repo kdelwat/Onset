@@ -155,42 +155,40 @@ def reverse_rule(rule):
     if 'after' in rule:
         reversed_rule['after'] = rule['after']
 
-    # Old applies features become conditions
-    new_conditions = {}
-    if 'positive' in rule['applies']:
-        new_conditions['positive'] = rule['applies']['positive']
-    if 'negative' in rule['applies']:
-        new_conditions['negative'] = rule['applies']['negative']
-
-    # Construct sets containing all features present in the initial rule's
-    # application features
-    positive_applies = set(rule['applies'].get('positive', []))
-    negative_applies = set(rule['applies'].get('negative', []))
-
-    # If an old condition is unchanged by the rule, it remains a condition.
-    # Otherwise, it becomes an applied feature.
+    # Invert application
     new_applies = {}
-    if 'conditions' in rule:
-        for feature in rule['conditions'].get('positive', []):
-            if feature not in negative_applies:
+    if 'positive' in rule['applies']:
+        new_applies['negative'] = list(set(rule['applies']['positive']))
+
+    if 'negative' in rule['applies']:
+        new_applies['positive'] = list(set(rule['applies']['negative']))
+
+    # The new conditions are the same as the old application features.
+    # We must use a deep copy to prevent in-place modification.
+    new_conditions = copy.deepcopy(rule['applies'])
+
+    # Construct set containing all features present in the new conditions.
+    new_conditions_set = set(new_conditions.get('positive', []) +
+                             new_conditions.get('negative', []))
+
+    # For each feature in the old conditions, if it isn't in the new conditions
+    # add it, keeping the same polarity. This catches conditions that aren't
+    # changed by the rule.
+    for feature in rule['conditions'].get('positive', []):
+        if feature not in new_conditions_set:
+            if 'positive' in new_conditions:
                 new_conditions['positive'].append(feature)
             else:
-                if 'positive' in new_applies:
-                    new_applies['positive'].append(feature)
-                else:
-                    new_applies['positive'] = [feature]
-
-        for feature in rule['conditions'].get('negative', []):
-            if feature not in positive_applies:
+                new_conditions['positive'] = [feature]
+    for feature in rule['conditions'].get('negative', []):
+        if feature not in new_conditions_set:
+            if 'negative' in new_conditions:
                 new_conditions['negative'].append(feature)
             else:
-                if 'negative' in new_applies:
-                    new_applies['negative'].append(feature)
-                else:
-                    new_applies['negative'] = [feature]
+                new_conditions['negative'] = [feature]
 
-        reversed_rule['conditions'] = new_conditions
-        reversed_rule['applies'] = new_applies
+    reversed_rule['conditions'] = new_conditions
+    reversed_rule['applies'] = new_applies
 
     return reversed_rule
 
