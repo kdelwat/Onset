@@ -2,6 +2,7 @@ import csv
 import yaml
 import sys
 import os.path as path
+import copy
 
 import parse
 import deparse
@@ -121,7 +122,7 @@ def evolve_words_reverse(words, available_rules, generations, metric,
 
     '''
     # Transform each rule to its reversed equivalent
-    reverse_rules = map(reverse_rule, available_rules)
+    reverse_rules = list(map(reverse_rule, available_rules))
 
     # Invert the optimisation algorithm
     if optimisation_function == min:
