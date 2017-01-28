@@ -62,7 +62,7 @@ def evolve():
         words, rules = engine.run_engine(words, generations, transcriptions,
                                          reverse, metric, optimisation_function)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': 'Error: {0}'.format(e)})
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 

@@ -14,6 +14,10 @@
           </div>
         </div>
         <div class="main-body container">
+        <div v-if="displayError" class="notification is-danger">
+          <button @click="displayError = false" class="delete"></button>
+          {{errorMessage}}
+        </div>
         <div class="columns">
             <div class="column">
                 <div class="card is-fullwidth">
@@ -192,6 +196,8 @@ export default {
       evolvedWords: [],
       evolutionRules: [],
       filename: '',
+      errorMessage: '',
+      displayError: false,
     };
   },
   computed: {
@@ -228,7 +234,9 @@ export default {
     },
     // Display an error
     showError(error) {
-      console.log('Error', error);
+      console.log(error);
+      this.errorMessage = error;
+      this.displayError = true;
     },
     // Save the current rules to localStorage, identified by the given filename
     saveLocal() {
