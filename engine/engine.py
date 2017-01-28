@@ -196,7 +196,7 @@ def reverse_rule(rule):
     return reversed_rule
 
 
-def apply_rules(words, rules, rewrite_rules=[]):
+def apply_rules(words, rules, rewrite_rules=[], reverse=False):
     '''Given a list of word strings and a list of rules, apply each rule to the
     words and return the new word strings.'''
 
@@ -205,6 +205,10 @@ def apply_rules(words, rules, rewrite_rules=[]):
 
     # Parse the word strings into Word objects
     parsed_words = parse.parse_words(words, segments, diacritics)
+
+    # If reversed, apply in reverse order
+    if reverse:
+        rules = reversed(rules)
 
     # Apply each rule in sequence
     for rule in rules:

@@ -73,15 +73,26 @@ def apply():
 
         words: list [strings]
         rules: list [Rules]
+        reverse: if True, apply in reverse order (used when applying rules
+                 created by reverse evolution)
     '''
     words = request.args['words'].split()
     rules = json.loads(request.args['rules'])
+
+    if request.args['direction'] == 'Reverse':
+        reverse = True
+    else:
+        reverse = False
 
     try:
         transcriptions = format_transcriptions(request.args['transcriptions'])
     except IndexError:
         return jsonify({'error': 'Error: Transcription seperator must be a colon'})
 
-    evolved_words = engine.apply_rules(words, rules, transcriptions)
+    try:
+        evolved_words = engine.apply_rules(words, rules, transcriptions,
+                                           reverse)
+    except Exception as e:
+        return jsonify({'error': 'Error: {0}'.format(e)})
 
     return jsonify({'words': evolved_words, 'error': 0})
