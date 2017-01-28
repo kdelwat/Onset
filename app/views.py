@@ -58,8 +58,11 @@ def evolve():
     optimisation_function = optimisation_functions[request.args['optimisationFunction']]
     metric = metric_functions[request.args['metric']]
 
-    words, rules = engine.run_engine(words, generations, transcriptions,
-                                     reverse, metric, optimisation_function)
+    try:
+        words, rules = engine.run_engine(words, generations, transcriptions,
+                                         reverse, metric, optimisation_function)
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 
