@@ -139,9 +139,11 @@ def evolve_words_reverse(words, available_rules, generations, metric,
 
     # StopIteration is raised when there are no more applicable rules
     except StopIteration:
-        return words, applied_rules
+        return words, list(reversed(applied_rules))
 
-    return words, applied_rules
+    # When returning, the applied rules list is reversed due to the reverse
+    # chronological order.
+    return words, list(reversed(applied_rules))
 
 
 def reverse_rule(rule):
