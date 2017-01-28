@@ -44,7 +44,7 @@ def rewrite(words, rules, to='ipa'):
                 for word in words]
 
 
-def run_engine(words, generations=5, rewrite_rules=[],
+def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
                metric=metrics.phonetic_product, optimisation_function=min):
     '''Evolves the language specified by a list of word strings according to
     parameters:
@@ -53,6 +53,7 @@ def run_engine(words, generations=5, rewrite_rules=[],
         rewrite_rules: a list of rewrite tuples in form (plain, ipa) which
                        is used to transcribe the input words from orthographic
                        representation to IPA.
+        reverse: if True, run the evolution in reverse.
         metric: the metric function that will be used in selecting rules.
         optimisation_function: the function that will determine the best
                                metric result to use during selection. Should
@@ -67,10 +68,15 @@ def run_engine(words, generations=5, rewrite_rules=[],
     # Parse the word strings into Word objects
     parsed_words = parse.parse_words(words, segments, diacritics)
 
+    if reverse:
+        evolution_function = evolve_words_reverse
+    else:
+        evolution_function = evolve_words
+
     # Evolve the words for the given number of generations
-    evolved_words, applied_rules = evolve_words(parsed_words, rules,
-                                                generations, metric,
-                                                optimisation_function)
+    evolved_words, applied_rules = evolution_function(parsed_words, rules,
+                                                      generations, metric,
+                                                      optimisation_function)
 
     # Deparse the evolved words into strings
     deparsed_words = deparse.deparse_words(evolved_words, segments,
@@ -104,6 +110,89 @@ def evolve_words(words, available_rules, generations, metric,
         return words, applied_rules
 
     return words, applied_rules
+
+
+def evolve_words_reverse(words, available_rules, generations, metric,
+                         optimisation_function):
+    '''Evolves the given list of words in reverse, according to the given list of
+    rules, for a number of generations. If no more applicable rules are
+    available, the evolution will stop early. Returns the evolved list of words
+    and a list of rule which were applied.
+
+    '''
+    # Transform each rule to its reversed equivalent
+    reverse_rules = map(reverse_rule, available_rules)
+
+    # Invert the optimisation algorithm
+    if optimisation_function == min:
+        optimisation_function = max
+    else:
+        optimisation_function = min
+
+    applied_rules = []
+
+    try:
+        for _ in range(generations):
+            rule, words = evolve.evolve(words, reverse_rules, metric,
+                                        optimisation_function)
+            applied_rules.append(rule)
+
+    # StopIteration is raised when there are no more applicable rules
+    except StopIteration:
+        return words, applied_rules
+
+    return words, applied_rules
+
+
+def reverse_rule(rule):
+    '''Given a rule dictionary, transform it so that it applies the rule in
+    reverse.'''
+    reversed_rule = {'name': rule['name'], 'description': rule['description']}
+
+    # Before and after conditions are unchanged
+    if 'before' in rule:
+        reversed_rule['before'] = rule['before']
+    if 'after' in rule:
+        reversed_rule['after'] = rule['after']
+
+    # Old applies features become conditions
+    new_conditions = {}
+    if 'positive' in rule['applies']:
+        new_conditions['positive'] = rule['applies']['positive']
+    if 'negative' in rule['applies']:
+        new_conditions['negative'] = rule['applies']['negative']
+
+    # Construct sets containing all features present in the initial rule's
+    # application features
+    positive_applies = set(rule['applies'].get('positive', []))
+    negative_applies = set(rule['applies'].get('negative', []))
+
+    # If an old condition is unchanged by the rule, it remains a condition.
+    # Otherwise, it becomes an applied feature.
+    new_applies = {}
+    if 'conditions' in rule:
+        for feature in rule['conditions'].get('positive', []):
+            if feature not in negative_applies:
+                new_conditions['positive'].append(feature)
+            else:
+                if 'positive' in new_applies:
+                    new_applies['positive'].append(feature)
+                else:
+                    new_applies['positive'] = [feature]
+
+        for feature in rule['conditions'].get('negative', []):
+            if feature not in positive_applies:
+                new_conditions['negative'].append(feature)
+            else:
+                if 'negative' in new_applies:
+                    new_applies['negative'].append(feature)
+                else:
+                    new_applies['negative'] = [feature]
+
+        reversed_rule['conditions'] = new_conditions
+        reversed_rule['applies'] = new_applies
+
+    return reversed_rule
 
 
 def apply_rules(words, rules, rewrite_rules=[]):

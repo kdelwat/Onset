@@ -87,6 +87,21 @@
                     <textarea v-model="transcriptionString" class="textarea" rows=5 placeholder="ng:ŋ"></textarea>
                   </p>
 
+                  <label class="label">Direction&nbsp;
+                    <i class="fa fa-question-circle">
+                      <div class="box content">The direction to evolve the language in. If set to forward, the output will be the input with all changes applied. If set to reverse, the output will be the first state of the language, and applying the given changes will produce the input.</div>
+
+                    </i>
+                  </label>
+                  <p class="control">
+                    <span class="select">
+                      <select v-model="direction">
+                        <option>Forward</option>
+                        <option>Reverse</option>
+                      </select>
+                    </span>
+                  </p>
+
                   <label class="label">Rule selector&nbsp;
                     <i class="fa fa-question-circle">
                       <div class="box content">The algorithm to use when selecting rules.</div>
@@ -170,6 +185,7 @@ export default {
       wordString: '',
       generations: 5,
       transcriptionString: '',
+      direction: 'Forward',
       optimisationFunction: 'Minimise',
       metricFunction: 'weighted phonetic product',
       evolvedWords: [],
@@ -188,6 +204,7 @@ export default {
       const parameters = { words: this.wordString,
         generations: this.generations,
         transcriptions: this.transcriptionString,
+        direction: this.direction,
         optimisationFunction: this.optimisationFunction,
         metric: this.metricFunction };
 

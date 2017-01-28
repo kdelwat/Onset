@@ -48,11 +48,16 @@ def evolve():
     except ValueError:
         return jsonify({'error': 'Error: Generations must be an integer'})
 
+    if request.args['direction'] == 'Reverse':
+        reverse = True
+    else:
+        reverse = False
+
     optimisation_function = optimisation_functions[request.args['optimisationFunction']]
     metric = metric_functions[request.args['metric']]
 
     words, rules = engine.run_engine(words, generations, transcriptions,
-                                     metric, optimisation_function)
+                                     reverse, metric, optimisation_function)
 
     return jsonify({'rules': rules, 'words': words, 'error': 0})
 
