@@ -121,6 +121,7 @@
                         <option>Word Complexity Measure</option>
                         <option>number of syllables</option>
                         <option>number of consonant clusters</option>
+                        <option>random value</option>
                       </select>
                     </span>
                   </p>

@@ -15,7 +15,9 @@ metric_functions = {'weighted phonetic product': metrics.weighted_phonetic_produ
                     'phonetic product': metrics.phonetic_product,
                     'Word Complexity Measure': metrics.word_complexity_measure,
                     'number of syllables': metrics.number_of_syllables,
-                    'number of consonant clusters': metrics.number_of_consonant_clusters}
+                    'number of consonant clusters': metrics.number_of_consonant_clusters,
+                    'random value': metrics.random_value}
+
 
 @app.route('/')
 @app.route('/index')

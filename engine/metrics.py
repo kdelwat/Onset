@@ -1,5 +1,6 @@
 from collections import Counter
 from functools import reduce
+from random import random
 import operator
 
 BILABIAL = (0, {'positive': ['labial'], 'negative': ['syllabic']})
@@ -128,3 +129,8 @@ def word_complexity_measure(word):
                 WCM_score += 1
 
     return WCM_score
+
+
+def random_value(word):
+    '''Given a word, return a random value.'''
+    return random()
