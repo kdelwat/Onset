@@ -105,7 +105,8 @@ def test_index_applicable():
 
 
 def test_index_applicable_boundaries():
-    start_boundary = {'conditions': {'positive': ['syllabic', 'first']}}
+    start_boundary = {'conditions': {'positive': ['syllabic']},
+                      'first': True}
 
     word = Word([Segment(['syllabic'], ['nasal']),
                  Segment(['syllabic'], ['nasal'])])
@@ -113,13 +114,14 @@ def test_index_applicable_boundaries():
     assert word.index_applicable(0, start_boundary)
     assert not word.index_applicable(1, start_boundary)
 
-    end_boundary = {'conditions': {'positive': ['syllabic', 'last']}}
+    end_boundary = {'conditions': {'positive': ['syllabic']},
+                    'last': True}
 
     assert not word.index_applicable(0, end_boundary)
     assert word.index_applicable(1, end_boundary)
 
-    not_end_boundary = {'conditions': {'positive': ['syllabic'],
-                                       'negative': ['last']}}
+    not_end_boundary = {'conditions': {'positive': ['syllabic']},
+                        'last': False}
 
     word = Word([Segment(['syllabic'], ['nasal']),
                  Segment(['syllabic'], ['nasal'])])

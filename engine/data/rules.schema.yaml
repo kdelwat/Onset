@@ -9,6 +9,10 @@ sequence:
       "description":
         type: str
         required: true
+      "first":
+        type: bool
+      "last":
+        type: bool
       "before":
         type: map
         mapping:
