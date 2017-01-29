@@ -1,3 +1,5 @@
+import copy
+
 from segment import Segment
 
 
@@ -48,7 +50,33 @@ class Word:
             valid['after'] = after_segment.meets_conditions(rule['after'])
 
         current_segment = self.segments[index]
-        valid['current'] = current_segment.meets_conditions(rule['conditions'])
+
+        conditions = copy.deepcopy(rule['conditions'])
+
+        # Check for the first and last conditions. If they exist, delete them
+        # from the conditions list so as not to confuse meets_conditions().
+        # This code is really ugly :(.
+        if 'first' in conditions.get('positive', []):
+            if index != 0:
+                return False
+            conditions['positive'].remove('first')
+
+        if 'first' in conditions.get('negative', []):
+            if index == 0:
+                return False
+            conditions['negative'].remove('first')
+
+        if 'last' in conditions.get('positive', []):
+            if index != len(self.segments) - 1:
+                return False
+            conditions['positive'].remove('last')
+
+        if 'last' in conditions.get('negative', []):
+            if index == len(self.segments) - 1:
+                return False
+            conditions['negative'].remove('last')
+
+        valid['current'] = current_segment.meets_conditions(conditions)
 
         return all(valid.values())
 
