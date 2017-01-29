@@ -35,6 +35,13 @@ npm run build
 python run.py
 ```
 
+To validate the YAML data:
+
+``` bash
+pykwalify -d engine/data/rules.yaml -s engine/data/rules.schema.yaml
+pykwalify -d engine/data/diacritics.yaml -s engine/data/diacritics.schema.yaml
+```
+
 ## Sources
 
 Information on the phonological processes that underpin the app is from

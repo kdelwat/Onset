@@ -1,0 +1,55 @@
+type: seq
+sequence:
+  - type: map
+    mapping:
+      "name":
+        type: str
+        required: true
+        unique: true
+      "description":
+        type: str
+        required: true
+      "before":
+        type: map
+        mapping:
+          "positive":
+            type: seq
+            sequence:
+              - type: str
+          "negative":
+            type: seq
+            sequence:
+              - type: str
+      "after":
+        type: map
+        mapping:
+          "positive":
+            type: seq
+            sequence:
+              - type: str
+          "negative":
+            type: seq
+            sequence:
+              - type: str
+      "conditions":
+        type: map
+        mapping:
+          "positive":
+            type: seq
+            sequence:
+              - type: str
+          "negative":
+            type: seq
+            sequence:
+              - type: str
+      "applies":
+        type: map
+        mapping:
+          "positive":
+            type: seq
+            sequence:
+              - type: str
+          "negative":
+            type: seq
+            sequence:
+              - type: str
