@@ -9,6 +9,12 @@ class Word:
 
     def __eq__(self, other):
         '''Compares Word objects by ensuring each segment is equal.'''
+
+        # If the two words aren't the same length, they are automatically
+        # inequal.
+        if len(self.segments) != len(other.segments):
+            return False
+
         for own_segment, other_segment in zip(self.segments, other.segments):
             positive_match = (set(own_segment.positive) ==
                               set(other_segment.positive))
