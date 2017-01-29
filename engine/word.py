@@ -69,7 +69,12 @@ class Word:
 
         for i in range(len(self.segments)):
             if self.index_applicable(i, rule):
-                new_segments.append(self.segments[i] + rule_segment)
+                # If the rule contains the deletion feature, don't add the new
+                # segment, effectively removing it entirely. Otherwise, add the
+                # modified segment.
+                if 'deletion' not in rule['applies'].get('positive', []):
+                    new_segments.append(self.segments[i] + rule_segment)
+
             else:
                 new_segments.append(self.segments[i])
 

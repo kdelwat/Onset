@@ -67,6 +67,19 @@ def test_apply_rule():
     assert word.apply_rule(rule) == target_word
 
 
+def test_apply_rule_deletion():
+    rule = {'applies': {'positive': ['deletion']},
+            'conditions': {'positive': ['syllabic']},
+            'name': 'deletion'}
+
+    word = Word([Segment(['nasal'], ['syllabic']),
+                 Segment(['syllabic'], ['nasal'])])
+
+    target_word = Word([Segment(['nasal'], ['syllabic'])])
+
+    assert word.apply_rule(rule) == target_word
+
+
 def test_equality():
     word1 = Word([Segment(['nasal'], ['syllabic']),
                   Segment(['syllabic'], ['nasal'])])
