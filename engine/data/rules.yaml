@@ -17,8 +17,11 @@
 #     negative: list of negative features
 
 ---
-- name: palatalization
-  description: Plosives become palatalized after high vowels
+##############################################################################
+## CONSONANTS
+##############################################################################
+- name: Palatalization
+  description: Plosives become palatalized after high vowels.
   before:
     positive:
       - syllabic
@@ -37,8 +40,18 @@
       - low
       - back
 
-- name: nasalization
-  description: Vowels become nasalized after nasal consonants
+- name: Consonant Apheresis
+  description: Consonants are lost at the beginning of words.
+  first: true
+  conditions:
+    positive:
+      - consonantal
+  applies:
+    positive:
+      - deletion
+
+- name: Nasalization
+  description: Vowels become nasalized after nasal consonants.
   conditions:
     positive:
       - syllabic
