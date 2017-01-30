@@ -17,7 +17,7 @@ import sys
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(base_directory)
+sys.path.append(path.join(base_directory, 'engine'))
 
 import deparse
 from segment import Segment
@@ -48,9 +48,10 @@ def main():
     # Add IPA strings here to print segment values when encountered
     diagnostic_targets = []
 
-    segments = load_segments(path.join(base_directory, 'data', 'features.csv'))
+    segments = load_segments(path.join(base_directory, 'engine', 'data',
+                                       'features.csv'))
 
-    with open(path.join(base_directory, 'data', 'diacritics.yaml')) as f:
+    with open(path.join(base_directory, 'engine', 'data', 'diacritics.yaml')) as f:
         diacritics = yaml.load(f)
 
     print('Generating basic feature strings')

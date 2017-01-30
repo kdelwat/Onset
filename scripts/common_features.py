@@ -22,7 +22,7 @@ def load_segments(filename):
 
 
 def main(segment_string):
-    all_segments = load_segments(path.join(base_directory, 'data',
+    all_segments = load_segments(path.join(base_directory, 'engine', 'data',
                                            'features.csv'))
     target_segments = [segment for segment in all_segments if segment['IPA'] in
                        segment_string]

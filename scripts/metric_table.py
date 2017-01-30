@@ -5,7 +5,7 @@ import sys
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(base_directory)
+sys.path.append(path.join(base_directory, 'engine'))
 
 import parse
 import deparse
@@ -15,10 +15,10 @@ import metrics
 def main():
     target_words = ['aba', 'bːɒtl', 'b\u02D0ɒtl', 'b\u02D0ɒbtdolie']
 
-    with open(path.join(base_directory, 'data', 'features.csv'), 'r') as f:
+    with open(path.join(base_directory, 'engine', 'data', 'features.csv'), 'r') as f:
         segments = [segment for segment in csv.DictReader(f)]
 
-    with open(path.join(base_directory, 'data', 'diacritics.yaml')) as f:
+    with open(path.join(base_directory, 'engine', 'data', 'diacritics.yaml')) as f:
         diacritics = yaml.load(f)
 
     words = parse.parse_words(target_words, segments, diacritics)

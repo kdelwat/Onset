@@ -5,7 +5,7 @@ import sys
 import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(base_directory)
+sys.path.append(path.join(base_directory, 'engine'))
 
 import deparse
 from segment import Segment
@@ -40,8 +40,8 @@ def load_diacritics(filename):
 
 
 def main():
-    segments = load_segments(path.join(base_directory, 'data', 'features.csv'))
-    diacritics = load_diacritics(path.join(base_directory, 'data', 'diacritics.yaml'))
+    segments = load_segments(path.join(base_directory, 'engine', 'data', 'features.csv'))
+    diacritics = load_diacritics(path.join(base_directory, 'engine', 'data', 'diacritics.yaml'))
 
     datasets = ['feature-strings', 'hayes-feature-strings',
                 'feature-strings-with-diacritics']
@@ -68,8 +68,8 @@ def benchmark_match_accuracy(segments, diacritics, filename):
     of the conversion.
 
     '''
-    feature_strings = load_feature_strings(path.join(base_directory, 'data',
-                                                     filename))
+    feature_strings = load_feature_strings(path.join(base_directory, 'engine',
+                                                     'data', filename))
 
     matches = []
 
