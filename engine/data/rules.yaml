@@ -225,6 +225,21 @@
     negative:
       - long
 
+- name: Spirantization
+  description: Affricates become fricatives before consonants.
+  after:
+    positive:
+      - consonantal
+  conditions:
+    positive:
+      - consonantal
+      - delayedrelease
+    negative:
+      - continuant
+  applies:
+    positive:
+      - continuant
+
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
