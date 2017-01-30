@@ -140,6 +140,26 @@
     positive:
       - syllabic
 
+- name: Consonant Nasalization
+  description: Plosives become nasalized between vowels.
+  conditions:
+    negative:
+      - syllabic
+      - continuant
+      - delayedrelease
+      - sonorant
+      - nasal
+  applies:
+    positive:
+      - nasal
+      - sonorant
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
