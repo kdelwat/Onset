@@ -192,7 +192,7 @@
       - lateral
       - coronal
 
-- name: Nasalization
+- name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
     positive:
