@@ -212,7 +212,19 @@
     negative:
       - consonantal
       - anterior
-  
+
+- name: Degemination
+  description: Geminated consonants are shortened after vowels.
+  before:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - long
+  applies:
+    negative:
+      - long
+
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
