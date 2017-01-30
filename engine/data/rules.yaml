@@ -192,6 +192,27 @@
       - lateral
       - coronal
 
+- name: Approximation
+  description: Voiced continuants become approximants between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - continuant
+      - voice
+      - consonantal
+  applies:
+    positive:
+      - approximant
+      - sonorant
+    negative:
+      - consonantal
+      - anterior
+  
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
