@@ -160,6 +160,22 @@
     positive:
       - syllabic
   
+##############################################################################
+## CONSONANTS - LENITION - SONORIZATION
+##############################################################################
+- name: Voicing
+  description: Consonants become voiced after voiced segments.
+  before:
+    positive:
+      - voice
+  conditions:
+    negative:
+      - voice
+  applies:
+    positive:
+      - voice
+
+
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
