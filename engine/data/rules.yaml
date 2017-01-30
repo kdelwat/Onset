@@ -112,6 +112,32 @@
     positive:
       - distributed
 
+- name: Consonant Nasalization
+  description: Plosives become nasalized between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    negative:
+      - syllabic
+      - continuant
+      - delayedrelease
+      - sonorant
+      - nasal
+  applies:
+    positive:
+      - nasal
+      - sonorant
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
@@ -140,26 +166,6 @@
     positive:
       - syllabic
 
-- name: Consonant Nasalization
-  description: Plosives become nasalized between vowels.
-  conditions:
-    negative:
-      - syllabic
-      - continuant
-      - delayedrelease
-      - sonorant
-      - nasal
-  applies:
-    positive:
-      - nasal
-      - sonorant
-  before:
-    positive:
-      - syllabic
-  after:
-    positive:
-      - syllabic
-  
 ##############################################################################
 ## CONSONANTS - LENITION - SONORIZATION
 ##############################################################################
@@ -319,6 +325,74 @@
   applies:
     positive:
       - deletion
+
+##############################################################################
+## CONSONANTS - FORTITION
+##############################################################################
+- name: Gemination
+  description: Plosives become lengthened between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+      - long
+  applies:
+    positive:
+      - long
+
+- name: Despirantization
+  description: Fricatives become plosives between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+      - delayedrelease
+      - continuant
+  applies:
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+
+- name: Consonant Denasalization
+  description: Nasal consonants become plosives between vowels.
+  conditions:
+    positive:
+      - consonantal
+      - nasal
+  applies:
+    negative:
+      - nasal
+      - sonorant
+
+- name: Devoicing
+  description: Voiced plosives become unvoiced at the end of words.
+  last: true
+  conditions:
+    positive:
+      - consonantal
+      - voice
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+  applies:
+    negative:
+      - voice
 
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
