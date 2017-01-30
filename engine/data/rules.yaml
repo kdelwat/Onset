@@ -92,6 +92,26 @@
       - labial
       - round
 
+- name: Dentalization
+  description: Alveolar consonants become dentalized before dentalized fricatives.
+  conditions:
+    positive:
+      - anterior
+      - consonantal
+      - coronal
+    negative:
+      - distributed
+  after:
+    positive:
+      - coronal
+      - anterior
+      - distributed
+      - continuant
+      - delayedrelease
+  applies:
+    positive:
+      - distributed
+
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
