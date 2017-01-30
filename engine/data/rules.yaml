@@ -30,7 +30,9 @@
   conditions:
     negative:
       - syllabic
-      - dorsal
+      - continuant
+      - delayedrelease
+      - sonorant
   applies:
     positive:
       - dorsal
@@ -71,6 +73,24 @@
     negative:
       - low
       - front
+
+- name: Labialization
+  description: Plosives are labialized after rounded vowels.
+  before:
+    positive:
+      - syllabic
+      - round
+  conditions:
+    negative:
+      - syllabic
+      - continuant
+      - delayedrelease
+      - sonorant
+      - round
+  applies:
+    positive:
+      - labial
+      - round
 
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
