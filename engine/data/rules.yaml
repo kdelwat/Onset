@@ -213,6 +213,27 @@
       - consonantal
       - anterior
 
+- name: Spirantization
+  description: Voiced plosives become continuants between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+      - voice
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+  applies:
+    positive:
+      - continuant
+      - delayedrelease
+
 ##############################################################################
 ## CONSONANTS - LENITION - OPENING
 ##############################################################################
@@ -228,7 +249,7 @@
     negative:
       - long
 
-- name: Spirantization
+- name: Deaffrication
   description: Affricates become fricatives before vowels.
   after:
     positive:
