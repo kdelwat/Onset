@@ -50,6 +50,28 @@
     positive:
       - deletion
 
+- name: Velarization
+  description: Liquids are velarized after back vowels.
+  before:
+    positive:
+      - syllabic
+      - back
+  conditions:
+    positive:
+      - consonantal
+      - approximant
+      - sonorant
+    negative:
+      - dorsal
+  applies:
+    positive:
+      - dorsal
+      - high
+      - back
+    negative:
+      - low
+      - front
+
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
