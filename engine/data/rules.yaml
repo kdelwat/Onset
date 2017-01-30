@@ -213,6 +213,9 @@
       - consonantal
       - anterior
 
+##############################################################################
+## CONSONANTS - LENITION - OPENING
+##############################################################################
 - name: Degemination
   description: Geminated consonants are shortened after vowels.
   before:
@@ -226,10 +229,10 @@
       - long
 
 - name: Spirantization
-  description: Affricates become fricatives before consonants.
+  description: Affricates become fricatives before vowels.
   after:
     positive:
-      - consonantal
+      - vowel
   conditions:
     positive:
       - consonantal
@@ -239,6 +242,62 @@
   applies:
     positive:
       - continuant
+
+- name: Debuccalization
+  description: Fricatives become placeless approximants between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+      - delayedrelease
+      - continuant
+  applies:
+    positive:
+      - spreadglottis
+    negative:
+      - consonantal
+
+- name: Affrication
+  description: Plosives become affricates between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+  applies:
+    positive:
+      - delayedrelease
+
+- name: Approximant Elision
+  description: Placeless approximants are lost between vowels.
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  conditions:
+    positive:
+      - spreadglottis
+      - continuant
+    negative:
+      - consonantal
+  applies:
+    positive:
+      - deletion
 
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
