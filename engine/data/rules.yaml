@@ -175,6 +175,22 @@
     positive:
       - voice
 
+- name: Lateral Vocalization
+  description: Liquids become back vowels at the end of words.
+  last: true
+  conditions:
+    positive:
+      - approximant
+      - sonorant
+      - lateral
+  applies:
+    positive:
+      - tense
+      - dorsal
+    negative:
+      - consonantal
+      - lateral
+      - coronal
 
 - name: Nasalization
   description: Vowels become nasalized after nasal consonants.
