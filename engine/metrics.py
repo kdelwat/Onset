@@ -42,6 +42,10 @@ def phonetic_product(word):
     for segment in word.segments:
         phonetic_count.update(classify_segment(segment))
 
+    # Return a very high penalty for empty words
+    if len(list(phonetic_count.values())) < 1:
+        return 1000000
+
     return reduce(operator.mul, map(lambda x: x + 1, phonetic_count.values()))
 
 
