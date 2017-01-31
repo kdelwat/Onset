@@ -74,8 +74,8 @@ class Word:
         '''Returns True if any segment in the word meets all conditions of the
         given rule.'''
 
-        return any([self.index_applicable(i, rule) for i in
-                    range(len(self.segments))])
+        return any(self.index_applicable(i, rule) for i in
+                   range(len(self.segments)))
 
     def apply_rule(self, rule):
         '''Apply the given rule to the current Segments, returning a new Word.'''

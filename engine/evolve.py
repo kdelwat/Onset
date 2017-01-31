@@ -9,7 +9,7 @@ def filter_rules(words, rules):
 
     '''
     return [rule for rule in rules
-            if any([word.applicable(rule) for word in words])]
+            if any(word.applicable(rule) for word in words)]
 
 
 def apply_rules(words, rules):
