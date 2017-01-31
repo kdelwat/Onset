@@ -394,6 +394,9 @@
     negative:
       - voice
 
+##############################################################################
+## VOWELS
+##############################################################################
 - name: Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
@@ -407,3 +410,63 @@
   applies:
     positive:
       - nasal
+
+- name: Raising
+  description: Mid vowels are closed before high segments.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - high
+      - low
+  after:
+    positive:
+      - high
+  applies:
+    positive:
+      - high
+
+- name: Lowering
+  description: Mid vowels are opened before low segments.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - high
+      - low
+  after:
+    positive:
+      - low
+  applies:
+    positive:
+      - low
+
+- name: Fronting
+  description: Central vowels are fronted before front segments.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - front
+      - back
+  after:
+    positive:
+      - front
+  applies:
+    positive:
+      - front
+
+- name: Backing
+  description: Central vowels are backed before back segments.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - front
+      - back
+  after:
+    positive:
+      - back
+  applies:
+    positive:
+      - back
