@@ -4,6 +4,8 @@ from segment import Segment
 class Word:
     '''A representation of a word, containing multiple Segments.'''
 
+    __slots__ = ['segments']
+
     def __init__(self, segments):
         self.segments = segments
 

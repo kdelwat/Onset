@@ -1,6 +1,8 @@
 class Segment:
     '''A representation of a phonetic segment, stored in terms of features.'''
 
+    __slots__ = ['_positive', '_negative']
+
     def __init__(self, positive, negative):
         self._positive = positive
         self._negative = negative
