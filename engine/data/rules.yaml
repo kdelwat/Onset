@@ -236,6 +236,23 @@
     positive:
       - voice
 
+- name: Vocalization
+  description: Semivowels become vowels after consonants.
+  before:
+    positive:
+      - consonantal
+  conditions:
+    positive:
+      - dorsal
+      - sonorant
+      - approximant
+    negative:
+      - consonantal
+      - syllabic
+  applies:
+    positive:
+      - syllabic
+
 - name: Approximation
   description: Voiced continuants become approximants between vowels.
   before:
