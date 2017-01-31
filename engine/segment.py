@@ -80,8 +80,21 @@ class Segment:
         Otherwise returns false.
 
         '''
-        return (set(conditions.get('positive', [])).issubset(self._positive)
-                and set(conditions.get('negative', [])).issubset(self._negative))
+
+        # This code is really ugly. I had a cool one-liner using sets, but
+        # switching to basic loops saved 8 seconds (!) when benchmarking.
+        # Such is the life of optimisation.
+        if 'positive' in conditions:
+            for feature in conditions['positive']:
+                if feature not in self._positive:
+                    return False
+
+        if 'negative' in conditions:
+            for feature in conditions['negative']:
+                if feature not in self._negative:
+                    return False
+
+        return True
 
     def __add__(self, other):
         '''Override the regular addition behaviour. When two segments are added
