@@ -498,3 +498,38 @@
     negative:
       - round
       - labial
+
+- name: Lengthening
+  description: Vowels are lengthened after voiced consonants.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - long
+  before:
+    positive:
+      - voice
+      - consonantal
+  applies:
+    positive:
+      - long
+
+- name: Shortening
+  description: Long vowels are shortened between unvoiced consonants.
+  conditions:
+    positive:
+      - syllabic
+      - long
+  before:
+    positive:
+      - consonantal
+    negative:
+      - voice
+  after:
+    positive:
+      - consonantal
+    negative:
+      - voice
+  applies:
+    negative:
+      - long
