@@ -32,45 +32,38 @@ class Word:
         '''Given an index and a rule, check if the segment at the given index
         meets the conditions of the current rule.'''
 
-        # Store the results of each check
-        valid = {}
+        # Break out if the current segment isn't applicable.
+        if not self.segments[index].meets_conditions(rule['conditions']):
+            return False
 
-        # Break out if the segment does not obey optional first/last
-        # indicators.
+        # Break out if the segment does not obey optional first, last, before,
+        # or after indicators.
         if 'first' in rule:
-            if rule['first']:
-                if index != 0:
-                    return False
-            else:
-                if index == 0:
-                    return False
+            if index != 0:
+                return False
 
         if 'last' in rule:
-            if rule['last']:
-                if index != len(self.segments) - 1:
-                    return False
-            else:
-                if index == len(self.segments) - 1:
-                    return False
+            if index != len(self.segments) - 1:
+                return False
 
         if 'before' in rule:
             if index == 0:
                 return False
 
             before_segment = self.segments[index - 1]
-            valid['before'] = before_segment.meets_conditions(rule['before'])
+            if not before_segment.meets_conditions(rule['before']):
+                return False
 
         if 'after' in rule:
             if index == len(self.segments) - 1:
                 return False
 
             after_segment = self.segments[index + 1]
-            valid['after'] = after_segment.meets_conditions(rule['after'])
+            if not after_segment.meets_conditions(rule['after']):
+                return False
 
-        current_segment = self.segments[index]
-        valid['current'] = current_segment.meets_conditions(rule['conditions'])
-
-        return all(valid.values())
+        # Finally, return True if nothing has caused an early exit
+        return True
 
     def applicable(self, rule):
         '''Returns True if any segment in the word meets all conditions of the
