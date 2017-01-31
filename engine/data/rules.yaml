@@ -470,3 +470,31 @@
   applies:
     positive:
       - back
+
+- name: Rounding
+  description: Unrounded vowels are rounded after labialised consonants.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - round
+  before:
+    positive:
+      - round
+  applies:
+    positive:
+      - round
+      - labial
+
+- name: Unrounding
+  description: Rounded vowels are unrounded at the end of words.
+  last: true
+  conditions:
+    positive:
+      - syllabic
+      - round
+      - labial
+  applies:
+    negative:
+      - round
+      - labial
