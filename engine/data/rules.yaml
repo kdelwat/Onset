@@ -533,3 +533,23 @@
   applies:
     negative:
       - long
+
+- name: Glide Formation
+  description: Vowels become semivowels between a plosive and another vowel.
+  conditions:
+    positive:
+      - syllabic
+  before:
+    positive:
+      - consonantal
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+  after:
+    positive:
+      - syllabic
+  applies:
+    negative:
+      - syllabic
+
