@@ -176,7 +176,23 @@
   before:
     positive:
       - syllabic
-  
+
+- name: Glottalization
+  description: Plosives become glottalized at the end of words.
+  last: true
+  conditions:
+    positive:
+      - consonantal
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+      - constrictedglottis
+  applies:
+    positive:
+      - constrictedglottis
+
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
