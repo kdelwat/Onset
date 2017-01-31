@@ -25,6 +25,11 @@ def index():
     return render_template('index.html')
 
 
+def sanitise(string):
+    '''Remove all whitespace from a string and lowercase it.'''
+    return string.strip().replace(' ', '').lower()
+
+
 def format_transcriptions(transcriptions):
     '''Split the raw string of transcriptions into
     the correct tuple rules.'''
@@ -33,12 +38,13 @@ def format_transcriptions(transcriptions):
     if len(clean_transcriptions) == 0:
         return []
     else:
-        return [(pair.split(':')[0], pair.split(':')[1]) for pair in clean_transcriptions.split('\n')]
+        return [(sanitise(pair.split(':')[0]), sanitise(pair.split(':')[1]))
+                for pair in clean_transcriptions.split('\n')]
 
 
 @app.route('/evolve')
 def evolve():
-    words = request.args['words'].split()
+    words = [sanitise(word) for word in request.args['words'].split()]
 
     try:
         transcriptions = format_transcriptions(request.args['transcriptions'])
