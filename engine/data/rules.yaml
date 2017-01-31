@@ -147,6 +147,8 @@
       - coronal
     negative:
       - distributed
+      - trill
+      - approximant
   before:
     positive:
       - syllabic
@@ -160,6 +162,21 @@
     negative:
       - delayedrelease
 
+- name: Lambdacism
+  description: Trills become [l] after vowels.
+  conditions:
+    positive:
+      - approximant
+      - trill
+  applies:
+    positive:
+      - lateral
+    negative:
+      - trill
+  before:
+    positive:
+      - syllabic
+  
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
