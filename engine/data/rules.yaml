@@ -138,6 +138,28 @@
     positive:
       - syllabic
 
+- name: Rhotacism
+  description: Alveolar consonants become rhotics between vowels.
+  conditions:
+    positive:
+      - anterior
+      - consonantal
+      - coronal
+    negative:
+      - distributed
+  before:
+    positive:
+      - syllabic
+  after:
+    positive:
+      - syllabic
+  applies:
+    positive:
+      - approximant
+      - trill
+    negative:
+      - delayedrelease
+
 ##############################################################################
 ## CONSONANTS - LENITION
 ##############################################################################
