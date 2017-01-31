@@ -16,7 +16,13 @@ def parse_words(strings, segments, diacritics):
     words = []
 
     for word in strings:
-        tokens = tokenise(word, segment_strings, diacritic_strings)
+        try:
+            tokens = tokenise(word, segment_strings, diacritic_strings)
+        except ValueError as subword:
+            error = ('Error parsing word: {0}. There was an unknown character '
+                     'in the subword: {1}')
+            raise ValueError(error.format(word, subword))
+
         parsed_segments = [token_to_segment(token, segments, diacritics) for
                            token in tokens]
         words.append(Word(parsed_segments))
@@ -63,7 +69,7 @@ def tokenise(word, segment_strings, diacritic_strings):
             return [subword] + tokenise(word[length:], segment_strings,
                                         diacritic_strings)
 
-    raise ValueError('Invalid character in word: {0}'.format(word))
+    raise ValueError(word)
 
 
 def find_segment(string, segment_strings):
