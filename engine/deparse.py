@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from collections import defaultdict
 from Levenshtein import distance
 
@@ -32,19 +32,20 @@ feature_order = ['syllabic',
                  'tense']
 
 
+@lru_cache(maxsize=None)
 def feature_string(segment):
     '''Convert a Segment object into a feature string.'''
-    features = []
+    feature_string = ''
 
     for feature in feature_order:
         if feature in segment.positive:
-            features.append('+')
+            feature_string += '+'
         elif feature in segment.negative:
-            features.append('-')
+            feature_string += '-'
         else:
-            features.append('0')
+            feature_string += '0'
 
-    return ''.join(features)
+    return feature_string
 
 
 def segment_match(feature_strings, target_segment):
