@@ -1,5 +1,4 @@
 from functools import partial, lru_cache
-from collections import defaultdict
 from Levenshtein import distance
 
 feature_order = ['syllabic',
@@ -56,19 +55,30 @@ def segment_match(feature_strings, target_segment):
     '''
     target_feature_string = feature_string(target_segment)
 
-    # Build a dictionary, where each key is the Levenshtein distance between
-    # all strings in its list and the target feature string.
-    distances = defaultdict(list)
+    # Find the distance of the initial candidate to serve as a benchmark.
+    best_distance = distance(target_feature_string, feature_strings[0][1])
+    best_strings = [feature_strings[0][0]]
 
-    for string in feature_strings:
-        distances[distance(target_feature_string, string[1])].append(string[0])
+    # Loop through the rest of the available strings. If the distance between
+    # the string and the target is greater than the current best, jump to the
+    # next string. Otherwise, if it's the same add it to best_strings, or if
+    # it's less overwrite best_strings.
+    for string in feature_strings[1:]:
+        new_distance = distance(target_feature_string, string[1])
 
-    # Get all feature strings with the lowest distance
-    lowest_feature_strings = distances[min(distances.keys())]
+        if new_distance > best_distance:
+            continue
+
+        elif new_distance < best_distance:
+            best_distance = new_distance
+            best_strings = [string[0]]
+
+        else:
+            best_strings.append(string[0])
 
     # Return the shortest of these strings, because we want to deparse
     # into the simplest segments possible.
-    return min(lowest_feature_strings, key=len)
+    return min(best_strings, key=len)
 
 
 def deparse_words(words, segments, feature_strings):
