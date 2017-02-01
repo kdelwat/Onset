@@ -1,5 +1,5 @@
 from collections import Counter
-from functools import reduce
+from functools import reduce, lru_cache
 from random import random
 import operator
 
@@ -24,6 +24,7 @@ FRICATIVE_OR_AFFRICATE = {'positive': ['delayedrelease']}
 VOICED = {'positive': ['voice']}
 
 
+@lru_cache(maxsize=None)
 def classify_segment(segment):
     '''Given a segment, return all phonetic constants which apply to it, in a
     list.'''
