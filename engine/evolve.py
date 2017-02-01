@@ -12,42 +12,18 @@ def filter_rules(words, rules):
             if any(word.applicable(rule) for word in words)]
 
 
-def apply_rules(words, rules):
-    '''Given a list of words and a list of rules, return a list of tuples. The
-    first value of each tuple is the rule applied, while the second is the list
-    of words with that rule applied.
+def get_metric_from_words(words, rule, metric):
+    '''Given a list of words and a rule, apply the rule to the words. Return the
+    value of the metric applied to the new rules.'''
 
-    '''
-    results = []
-
-    for rule in rules:
-        results.append((rule, [word.apply_rule(rule) for word in words]))
-
-    return results
+    return average_metric_value([word.apply_rule(rule) for word in words],
+                                metric)
 
 
 def average_metric_value(words, metric):
     '''Apply the metric function to each word in words, returning the average
     result.'''
     return sum(map(metric, words)) / len(words)
-
-
-def optimal_rule_pair(rule_pairs, metric, optimisation_function=min):
-    '''Given a list of tuples of form (rule, words), rank each pair according to
-    the given metric function. Return the rule and words which are first when
-    ranked using the optimisation function.
-
-    '''
-    ranked_pairs = defaultdict(list)
-
-    # Add each pair to the dictionary with the key given by the average metric
-    # value of the words.
-    for rule, words in rule_pairs:
-        ranked_pairs[average_metric_value(words, metric)].append((rule, words))
-
-    # If there is more than one pair for the best metric value, return the
-    # first
-    return ranked_pairs[optimisation_function(ranked_pairs.keys())][0]
 
 
 def evolve(words, rules, metric, optimisation_function):
@@ -60,6 +36,19 @@ def evolve(words, rules, metric, optimisation_function):
     if len(rules) == 0:
         raise StopIteration
 
-    rule_pairs = apply_rules(words, rules)
+    # Establish a baseline for evolution effectiveness using the first
+    # available rule.
+    best_rule = rules[0]
+    best_metric = get_metric_from_words(words, rules[0], metric)
 
-    return optimal_rule_pair(rule_pairs, metric, optimisation_function)
+    # Loop through the rest of the rules. If a rule is better than the
+    # current best, it becomes the new best.
+    for rule in rules[1:]:
+        new_metric = get_metric_from_words(words, rule, metric)
+
+        if optimisation_function(new_metric, best_metric) == new_metric:
+            best_metric = new_metric
+            best_rule = rule
+
+    # Return the best rule and the words with the best rule applied
+    return best_rule, [word.apply_rule(best_rule) for word in words]
