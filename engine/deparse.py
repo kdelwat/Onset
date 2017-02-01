@@ -1,4 +1,5 @@
 from functools import partial
+from collections import defaultdict
 from Levenshtein import distance
 
 feature_order = ['syllabic',
@@ -54,24 +55,19 @@ def segment_match(feature_strings, target_segment):
     '''
     target_feature_string = feature_string(target_segment)
 
-    # Record the Levenshtein distance between each feature string and the
-    # target.
-    ranked_options = [(distance(target_feature_string, string[1]), string) for
-                      string in feature_strings]
+    # Build a dictionary, where each key is the Levenshtein distance between
+    # all strings in its list and the target feature string.
+    distances = defaultdict(list)
 
-    # Sort based on distance between the strings.
-    ranked_options.sort(key=lambda x: x[0])
+    for string in feature_strings:
+        distances[distance(target_feature_string, string[1])].append(string[0])
 
-    # Remove all options that don't have the current lowest distance
-    lowest = ranked_options[0][0]
-    lowest_options = [option for option in ranked_options if option[0] ==
-                      lowest]
+    # Get all feature strings with the lowest distance
+    lowest_feature_strings = distances[min(distances.keys())]
 
-    # Sort by length of the segment, as we want the simplest possible segment.
-    lowest_options.sort(key=lambda x: len(x[1][0]))
-
-    # Return the first remaining segment
-    return lowest_options[0][1][0]
+    # Return the shortest of these strings, because we want to deparse
+    # into the simplest segments possible.
+    return min(lowest_feature_strings, key=len)
 
 
 def deparse_words(words, segments, feature_strings):
