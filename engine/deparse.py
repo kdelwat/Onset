@@ -30,7 +30,6 @@ feature_order = ['syllabic',
                  'back',
                  'tense']
 
-
 @lru_cache(maxsize=None)
 def feature_string(segment):
     '''Convert a Segment object into a feature string.'''
@@ -55,6 +54,10 @@ def segment_match(feature_strings, target_segment):
     '''
     target_feature_string = feature_string(target_segment)
 
+    # If the segment has previously been matched, return the cached value
+    if target_feature_string in deparse_cache:
+        return deparse_cache[target_feature_string]
+
     # Find the distance of the initial candidate to serve as a benchmark.
     best_distance = hamming(target_feature_string, feature_strings[0][1])
     best_strings = [feature_strings[0][0]]
@@ -76,14 +79,27 @@ def segment_match(feature_strings, target_segment):
         else:
             best_strings.append(string[0])
 
-    # Return the shortest of these strings, because we want to deparse
+    # Find the shortest of these strings, because we want to deparse
     # into the simplest segments possible.
-    return min(best_strings, key=len)
+    deparsed_segment = min(best_strings, key=len)
+
+    # Add the new match to the cache.
+    deparse_cache[target_feature_string] = deparsed_segment
+
+    return deparsed_segment
+
+
+def initialise_cache():
+    '''Creates the global cache for deparsing, where segment matches will be
+    stored.'''
+    global deparse_cache
+    deparse_cache = {}
 
 
 def deparse_words(words, segments, feature_strings):
     '''Given a list of Words, return a list of IPA strings, one for each
     word.'''
+    initialise_cache()
 
     # Partially apply the segment_match function to avoid repeated calls with
     # the feature_strings object.
