@@ -43,8 +43,7 @@ def main():
     segments = load_segments(path.join(base_directory, 'engine', 'data', 'features.csv'))
     diacritics = load_diacritics(path.join(base_directory, 'engine', 'data', 'diacritics.yaml'))
 
-    datasets = ['feature-strings', 'hayes-feature-strings',
-                'feature-strings-with-diacritics']
+    datasets = ['feature-strings']
 
     print('Beginning benchmark\n===================\n')
 

@@ -25,7 +25,7 @@ with open(rules_path, 'r') as f:
     rules = yaml.load(f)
 
 feature_strings_path = path.join(base_directory, 'engine', 'data',
-                                 'feature-strings-with-diacritics.csv')
+                                 'feature-strings.csv')
 with open(feature_strings_path, 'r') as f:
     feature_strings = [line for line in csv.reader(f)]
 
