@@ -40,10 +40,12 @@ def load_diacritics(filename):
 
 
 def main():
-    segments = load_segments(path.join(base_directory, 'engine', 'data', 'features.csv'))
-    diacritics = load_diacritics(path.join(base_directory, 'engine', 'data', 'diacritics.yaml'))
+    segments = load_segments(path.join(base_directory, 'engine', 'data',
+                                       'features.csv'))
+    diacritics = load_diacritics(path.join(base_directory, 'engine', 'data',
+                                           'diacritics.yaml'))
 
-    datasets = ['feature-strings']
+    datasets = ['feature-strings', 'full-feature-strings']
 
     print('Beginning benchmark\n===================\n')
 
@@ -53,12 +55,15 @@ def main():
         print('Running dataset: {0}'.format(dataset))
         filename = '{0}.csv'.format(dataset)
 
-        accuracy = benchmark_match_accuracy(segments, diacritics, filename)
+        base_accuracy, accuracy = benchmark_match_accuracy(segments,
+                                                           diacritics,
+                                                           filename)
 
-        results.append([dataset, accuracy])
+        results.append([dataset, base_accuracy, accuracy])
 
     print('Finished!\n')
-    print(tabulate(results, headers=['Dataset', 'Accuracy']))
+    print(tabulate(results, headers=['Dataset', 'Base Accuracy',
+                                     'Diacritic Accuracy']))
 
 
 def benchmark_match_accuracy(segments, diacritics, filename):
@@ -70,14 +75,21 @@ def benchmark_match_accuracy(segments, diacritics, filename):
     feature_strings = load_feature_strings(path.join(base_directory, 'engine',
                                                      'data', filename))
 
+    print('Loaded {0} feature strings'.format(len(feature_strings)))
+
+    base_matches = []
     matches = []
 
     deparse.initialise_cache()
 
     for segment in segments:
         base_segment = Segment.from_dictionary(segment)
-        matches.append((segment['IPA'],
-                        deparse.segment_match(feature_strings, base_segment)))
+
+        base_matches.append((segment['IPA'],
+                             deparse.segment_match(feature_strings,
+                                                   base_segment)))
+        matches.append((segment['IPA'], deparse.segment_match(feature_strings,
+                                                              base_segment)))
 
         for diacritic in diacritics:
             IPA_representation = segment['IPA'] + diacritic['IPA']
@@ -90,9 +102,18 @@ def benchmark_match_accuracy(segments, diacritics, filename):
                                 deparse.segment_match(feature_strings,
                                                       diacritic_segment)))
 
+    print('Calculating base accuracy...')
+    base_successes = 0
+    for match in base_matches:
+        if match[0] == match[1]:
+            base_successes += 1
+        else:
+            print('\tExpected {0}, deparsed {1}'.format(match[0], match[1]))
+
+    print('Calculating diacritic accuracy...')
     successes = len([match for match in matches if match[0] == match[1]])
 
-    return (successes / len(matches))
+    return (base_successes / len(base_matches)), (successes / len(matches))
 
 
 if __name__ == '__main__':
