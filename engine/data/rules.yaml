@@ -33,6 +33,7 @@
       - continuant
       - delayedrelease
       - sonorant
+      - dorsal
   applies:
     positive:
       - dorsal
