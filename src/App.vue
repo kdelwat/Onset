@@ -225,8 +225,9 @@ export default {
         metric: this.metricFunction };
 
       // Signal to the user that something is happening.
-
+      this.displayModal = false;
       this.isComputing = true;
+
       // Call the Flask API
       axios.get('http://127.0.0.1:5000/evolve',
                 { params: parameters })
