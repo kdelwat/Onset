@@ -69,3 +69,8 @@ General information on the linguistics underpinning the app is from:
 + [Trask's Historical Linguistics](https://www.amazon.com/Trasks-Historical-Linguistics-Larry-Trask/dp/0340927658) by Larry Trask.
 + [Introductory Phonology](https://www.amazon.com/Introductory-Phonology-Bruce-Hayes/dp/1405184116) by Bruce Hayes.
 + Wikipedia
+
+A lot of technical inspiration was taken from the source code
+of [panphon](https://github.com/dmort27/panphon/). In particular, the deparsing
+algorithm and YAML data files were inspired by panphon's approach. Please check
+it out!
