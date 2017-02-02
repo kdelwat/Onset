@@ -9,24 +9,20 @@ class Word:
     def __init__(self, segments):
         self.segments = segments
 
+    def __key(self):
+        '''The key of a Word is a tuple containing a tuple for each segment,
+        where the first item is the set of segment.positive and the second is
+        the set of segment.negative. The function is necessary to use in both
+        equality testing and hashing; for this reason the hashable frozenset
+        is used.
+
+        '''
+        return tuple((frozenset(segment.positive), frozenset(segment.negative))
+                     for segment in self.segments)
+
     def __eq__(self, other):
         '''Compares Word objects by ensuring each segment is equal.'''
-
-        # If the two words aren't the same length, they are automatically
-        # inequal.
-        if len(self.segments) != len(other.segments):
-            return False
-
-        for own_segment, other_segment in zip(self.segments, other.segments):
-            positive_match = (set(own_segment.positive) ==
-                              set(other_segment.positive))
-            negative_match = (set(own_segment.negative) ==
-                              set(other_segment.negative))
-
-            if not positive_match or not negative_match:
-                return False
-
-        return True
+        return self.__key() == other.__key()
 
     def index_applicable(self, index, rule):
         '''Given an index and a rule, check if the segment at the given index
