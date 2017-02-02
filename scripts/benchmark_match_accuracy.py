@@ -73,6 +73,8 @@ def benchmark_match_accuracy(segments, diacritics, filename):
 
     matches = []
 
+    deparse.initialise_cache()
+
     for segment in segments:
         base_segment = Segment.from_dictionary(segment)
         matches.append((segment['IPA'],
