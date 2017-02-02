@@ -12,12 +12,16 @@ def filter_rules(words, rules):
             if any(word.applicable(rule) for word in words)]
 
 
-def get_metric_from_words(words, rule, metric):
+def get_metric_from_changed_words(words, rule, metric):
     '''Given a list of words and a rule, apply the rule to the words. Return the
-    value of the metric applied to the new rules.'''
+    value of the metric applied to the list of all words that changed. This
+    produces the same result as applying the metric to all words, in terms of
+    comparison to other rules, but it's faster.'''
 
-    return average_metric_value([word.apply_rule(rule) for word in words],
-                                metric)
+    changed_words = [word.apply_rule(rule) for word in words if
+                     word.applicable(rule)]
+
+    return average_metric_value(changed_words, metric)
 
 
 def average_metric_value(words, metric):
@@ -39,12 +43,12 @@ def evolve(words, rules, metric, optimisation_function):
     # Establish a baseline for evolution effectiveness using the first
     # available rule.
     best_rule = rules[0]
-    best_metric = get_metric_from_words(words, rules[0], metric)
+    best_metric = get_metric_from_changed_words(words, rules[0], metric)
 
     # Loop through the rest of the rules. If a rule is better than the
     # current best, it becomes the new best.
     for rule in rules[1:]:
-        new_metric = get_metric_from_words(words, rule, metric)
+        new_metric = get_metric_from_changed_words(words, rule, metric)
 
         if optimisation_function(new_metric, best_metric) == new_metric:
             best_metric = new_metric
