@@ -27,7 +27,10 @@ def index():
 
 def sanitise(string):
     '''Remove all whitespace from a string and lowercase it.'''
-    return string.strip().replace(' ', '').lower()
+    banned_characters = "'.- "
+
+    return ''.join([c for c in string.strip().lower() if c not in
+                    banned_characters])
 
 
 def format_transcriptions(transcriptions):
