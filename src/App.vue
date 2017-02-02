@@ -77,9 +77,12 @@
                 <div class="card-content">
                 <form>
 
-                  <label class="label">Generations&nbsp;
+                  <label class="label">Maximum Generations&nbsp;
                     <i class="fa fa-question-circle">
-                      <div class="box content">The number of sound change rules to apply during evolution.</div>
+                      <div class="box content">The maximum number of sound
+                      change rules to apply during evolution. If the rule
+                      selector goal is achieved early, evolution will
+                      end.</div>
                     </i>
                   </label>
                   <p class="control">
@@ -88,7 +91,9 @@
 
                   <label class="label">Transcriptions&nbsp;
                     <i class="fa fa-question-circle">
-                      <div class="box content">A list of plain text to IPA transcriptions, separated by colons.</div>
+                      <div class="box content">A list of plain text to IPA
+                        transcriptions, separated by colons. The transcriptions
+                        will be made from top-to-bottom.</div>
                     </i>
                   </label>
                   <p class="control">
