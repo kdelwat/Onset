@@ -38,14 +38,17 @@ def phonetic_product(word):
     estimators" (1988).
 
     '''
-    phonetic_count = Counter()
 
+    # Count all applicable features in the word.
+    features = []
     for segment in word.segments:
-        phonetic_count.update(classify_segment(segment))
+        features.extend(classify_segment(segment))
+
+    feature_count = Counter(features)
 
     # Multiply the counts together, adding one to each count. The initial value
     # is one in case of words with no special features.
-    return reduce(operator.mul, map(lambda x: x + 1, phonetic_count.values()),
+    return reduce(operator.mul, map(lambda x: x + 1, feature_count.values()),
                   1)
 
 
@@ -57,19 +60,22 @@ def weighted_phonetic_product(word):
     and Tables" (1974).
 
     '''
-    phonetic_count = Counter()
 
+    # Count all applicable features in the word.
+    features = []
     for segment in word.segments:
-        phonetic_count.update(classify_segment(segment))
+        features.extend(classify_segment(segment))
 
-    segment_types = [phonetic_count[0] * 0.1658 + 1,
-                     phonetic_count[1] * 0.3149 + 1,
-                     phonetic_count[2] * 0.01129 + 1,
-                     phonetic_count[3] * 0.04945 + 1,
-                     phonetic_count[4] * 0.04945 + 1,
-                     phonetic_count[5] * 0.18 + 1,
-                     phonetic_count[6] * 0.1431 + 1,
-                     phonetic_count[7] * 0.0709 + 1]
+    feature_count = Counter(features)
+
+    segment_types = [feature_count[0] * 0.1658 + 1,
+                     feature_count[1] * 0.3149 + 1,
+                     feature_count[2] * 0.01129 + 1,
+                     feature_count[3] * 0.04945 + 1,
+                     feature_count[4] * 0.04945 + 1,
+                     feature_count[5] * 0.18 + 1,
+                     feature_count[6] * 0.1431 + 1,
+                     feature_count[7] * 0.0709 + 1]
 
     return reduce(operator.mul, segment_types)
 
