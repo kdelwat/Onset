@@ -48,28 +48,6 @@ class Segment:
 
             self._negative.append(feature)
 
-    @property
-    def diacritics(self):
-        '''Return all diacritic features on the segment.'''
-        diacritic_features = {'dsyllabic',
-                              'creaky',
-                              'breathy',
-                              'voiceless',
-                              'dental',
-                              'frontedvelar',
-                              'backedvelar',
-                              'lengthened',
-                              'aspirated',
-                              'palatalized',
-                              'labialized',
-                              'velarized',
-                              'pharyngealized',
-                              'nasalized',
-                              'rhotic',
-                              'ejective'}
-
-        return set(self._positive).intersection(diacritic_features)
-
     def meets_conditions(self, conditions):
         '''Takes a dictionary of features, in the format:
 
