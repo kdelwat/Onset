@@ -129,8 +129,6 @@
                       </select>
                     </span>
                   </p>
-
-                  {{ optimisationFunction }}: {{ metricFunction }}
                 </form>
                 </div>
               </div>
