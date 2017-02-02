@@ -10,6 +10,15 @@
     positive:
       - syllabic
 
+- name: non-syllabic
+  IPA: "\u032F"
+  conditions:
+    positive:
+      - syllabic
+  applies:
+    negative:
+      - syllabic
+
 - name: creaky
   IPA: "\u0330"
   conditions:
@@ -43,12 +52,41 @@
     negative:
       - voice
 
+- name: voiced
+  IPA: "\u032C"
+  conditions:
+    negative:
+      - voice
+  applies:
+    positive:
+      - voice
+
 - name: dental
   IPA: "\u032A"
   conditions:
     positive:
       - coronal
       - anterior
+  applies:
+    positive:
+      - distributed
+
+- name: apical
+  IPA: "\u033A"
+  conditions:
+    positive:
+      - consonantal
+      - coronal
+  applies:
+    negative:
+      - distributed
+
+- name: laminal
+  IPA: "\u033B"
+  conditions:
+    positive:
+      - consonantal
+      - coronal
   applies:
     positive:
       - distributed
@@ -98,6 +136,20 @@
       - spreadglottis
     negative:
       - constrictedglottis
+
+- name: no audible release
+  IPA: "\u031A"
+  conditions:
+    positive:
+      - consonantal
+    negative:
+      - continuant
+      - delayedrelease
+      - sonorant
+      - constrictedglottis
+  applies:
+    negative:
+      - spreadglottis
 
 - name: palatalized
   IPA: "\u02B2"
