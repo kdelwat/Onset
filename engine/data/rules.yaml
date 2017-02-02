@@ -42,16 +42,6 @@
       - low
       - back
 
-- name: Consonant Apheresis
-  description: Consonants are lost at the beginning of words.
-  first: true
-  conditions:
-    positive:
-      - consonantal
-  applies:
-    positive:
-      - deletion
-
 - name: Velarization
   description: Liquids are velarized after back vowels.
   before:
@@ -607,16 +597,3 @@
   applies:
     negative:
       - syllabic
-
-- name: Vowel Apheresis
-  description: Vowels are lost at the beginning of words if they are followed by a consonant.
-  first: true
-  conditions:
-    positive:
-      - syllabic
-  after:
-    positive:
-      - consonantal
-  applies:
-    positive:
-      - deletion
