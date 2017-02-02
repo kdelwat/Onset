@@ -31,11 +31,15 @@
                         <p><b>Evolve:</b> Generate new evolutions for the list of words to the right, according to the settings.</p>
                         <p><b>Save:</b> Save the current sound change rules under the given name (to browser storage).</p>
                         <p><b>Load:</b> Load sound change rules from the given name and apply them to the current list of words.</p>
+                        <a
+                          class="button is-fullwidth is-success"
+                          v-bind:class="{ 'is-loading': isComputing }"
+                          v-on:click="evolve">
+                            Evolve
+                        </a>
                       </div>
                     </div>
                     <footer class="card-footer">
-                        <a class="card-footer-item" v-on:click="evolve">Evolve</a>
-
                         <input v-model="filename" class="input" type="text" style="margin: 5px;" placeholder="filename"></input>
 
                         <a class="card-footer-item"
@@ -191,6 +195,7 @@ export default {
       direction: 'Forward',
       optimisationFunction: 'Minimise',
       metricFunction: 'weighted phonetic product',
+      isComputing: false,
       evolvedWords: [],
       evolutionRules: [],
       filename: '',
@@ -214,6 +219,9 @@ export default {
         optimisationFunction: this.optimisationFunction,
         metric: this.metricFunction };
 
+      // Signal to the user that something is happening.
+
+      this.isComputing = true;
       // Call the Flask API
       axios.get('http://127.0.0.1:5000/evolve',
                 { params: parameters })
@@ -224,6 +232,7 @@ export default {
             this.showError(response.data.error);
           } else {
             // Otherwise, update data from request result
+            this.isComputing = false;
             this.evolvedWords = response.data.words;
             this.evolutionRules = response.data.rules;
           }
@@ -234,6 +243,7 @@ export default {
     // Display an error
     showError(error) {
       console.log(error);
+      this.isComputing = false;
       this.modalMessage = error;
       this.modalType = 'is-danger';
       this.displayModal = true;
