@@ -243,8 +243,14 @@ export default {
     // Display an error
     showError(error) {
       console.log(error);
+
+      if (Object.prototype.hasOwnProperty.call(error, 'message')) {
+        this.modalMessage = error.message;
+      } else {
+        this.modalMessage = error;
+      }
+
       this.isComputing = false;
-      this.modalMessage = error;
       this.modalType = 'is-danger';
       this.displayModal = true;
     },
