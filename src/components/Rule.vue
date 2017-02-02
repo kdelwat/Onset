@@ -82,6 +82,11 @@ export default {
       const features = featureObject || {};
       const negative = features.negative || [];
       const positive = features.positive || [];
+
+      if (positive.includes('deletion')) {
+        return ['Ø'];
+      }
+
       return negative.map(x => `–${x}`).concat(positive.map(x => `+${x}`));
     },
   },
