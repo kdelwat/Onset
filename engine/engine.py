@@ -155,6 +155,7 @@ def evolve_words_reverse(words, available_rules, generations, metric,
             rule, words = evolve.evolve(words, reverse_rules, metric,
                                         optimisation_function)
             applied_rules.append(rule)
+            reverse_rules.remove(rule)
 
     # StopIteration is raised when there are no more applicable rules
     except StopIteration:
