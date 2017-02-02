@@ -28,6 +28,10 @@
 
         <span class="rule-definition-separator">/</span>
 
+        <span v-if="hasBoundaryFirst" class="boundary">
+          Utterance [
+        </span>
+
         <span v-if="ruleBefore.length !== 0" class="feature-matrix">
           <div v-for="feature in ruleBefore">
             {{feature}}
@@ -40,6 +44,10 @@
           <div v-for="feature in ruleAfter">
             {{feature}}
           </div>
+        </span>
+
+        <span v-if="hasBoundaryLast" class="boundary">
+          ] Utterance
         </span>
 
       </div>
@@ -57,6 +65,12 @@ export default {
     };
   },
   computed: {
+    hasBoundaryFirst() {
+      return Object.prototype.hasOwnProperty.call(this.rule, 'first');
+    },
+    hasBoundaryLast() {
+      return Object.prototype.hasOwnProperty.call(this.rule, 'last');
+    },
     ruleConditions() {
       return this.formatFeatures(this.rule.conditions);
     },
