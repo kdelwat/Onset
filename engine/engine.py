@@ -33,16 +33,29 @@ with open(feature_strings_path, 'r') as f:
 def rewrite(words, rules, to='ipa'):
     '''Rewrite a list of words according to a list of tuple rules of form
     (plain, ipa), in direction given by target.'''
+
     if len(rules) == 0:
         return words
 
+    rewritten_words = []
+
+    # The code duplication here, however ugly, is faster because it limits
+    # the amount of conditionals.
     if to == 'ipa':
-        return [word.replace(rule[0], rule[1]) for rule in rules
-                for word in words]
+        for word in words:
+            for rule in rules:
+                word = word.replace(rule[0], rule[1])
+
+            rewritten_words.append(word)
 
     elif to == 'plain':
-        return [word.replace(rule[1], rule[0]) for rule in rules
-                for word in words]
+        for word in words:
+            for rule in rules:
+                word = word.replace(rule[1], rule[0])
+
+            rewritten_words.append(word)
+
+    return rewritten_words
 
 
 def run_engine(words, generations=5, rewrite_rules=[], reverse=False,

@@ -87,3 +87,15 @@ def test_reverse_rule():
               'description': 'A description.'}
 
     assert rules_equal(engine.reverse_rule(rule), target)
+
+
+def test_rewrite():
+    rules = [('rr', 'ɾ'), ('rl', 'ɭ'), ('rn', 'ɳ'), ('rt', 'ʈ'), ('r', 'ɻ'),
+             ('ng', 'ŋ'), ('y', 'j'), ('j', 'ʒ'), ('nn', 'n'), ('aa', 'aː'),
+             ('uu', 'uː'), ('ii', 'iː'), ('dd', 'x')]
+
+    plain_word = 'buurl'
+    ipa_word = 'buːɭ'
+
+    assert engine.rewrite([plain_word], rules, to='ipa')[0] == ipa_word
+    assert engine.rewrite([ipa_word], rules, to='plain')[0] == plain_word
