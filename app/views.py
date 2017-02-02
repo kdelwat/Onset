@@ -82,7 +82,7 @@ def apply():
         reverse: if True, apply in reverse order (used when applying rules
                  created by reverse evolution)
     '''
-    words = request.args['words'].split()
+    words = [sanitise(word) for word in request.args['words'].split()]
     rules = json.loads(request.args['rules'])
 
     if request.args['direction'] == 'Reverse':
