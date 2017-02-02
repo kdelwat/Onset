@@ -103,8 +103,7 @@ def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
     return deparsed_words, applied_rules
 
 
-def evolve_words(words, available_rules, generations, metric,
-                 optimisation_function):
+def evolve_words(words, rules, generations, metric, optimisation_function):
     '''Evolves the given list of words according to the given list of rules, for a
     number of generations. If no more applicable rules are available, the
     evolution will stop early. Returns the evolved list of words and a list of
@@ -113,11 +112,17 @@ def evolve_words(words, available_rules, generations, metric,
     '''
     applied_rules = []
 
+    # Create a mutable copy of the global rules list, from which rules
+    # are deleted to ensure they run only once.
+    available_rules = copy.deepcopy(rules)
+
     try:
         for _ in range(generations):
             rule, words = evolve.evolve(words, available_rules, metric,
                                         optimisation_function)
+
             applied_rules.append(rule)
+            available_rules.remove(rule)
 
     # StopIteration is raised when there are no more applicable rules
     except StopIteration:
