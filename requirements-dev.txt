@@ -3,3 +3,4 @@ py==1.4.32
 pykwalify==1.6.0
 pytest==3.0.6
 python-dateutil==2.6.0
+tabulate==0.7.7

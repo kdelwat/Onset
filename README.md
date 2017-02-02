@@ -33,13 +33,21 @@ npm run build
 
 # run using Flask's development server
 python run.py
+
+# or use PyPy for a speed boost
+pypy3 run.py
+```
+
+To install development requirements, which will allow testing, validation, and
+script usage:
+
+```bash
+pip install -r requirements-dev.txt
 ```
 
 To validate the YAML data:
 
 ``` bash
-pip install -r requirements-dev.txt
-
 pykwalify -d engine/data/rules.yaml -s engine/data/rules.schema.yaml
 pykwalify -d engine/data/diacritics.yaml -s engine/data/diacritics.schema.yaml
 ```
@@ -47,8 +55,6 @@ pykwalify -d engine/data/diacritics.yaml -s engine/data/diacritics.schema.yaml
 To run the tests:
 
 ```bash
-pip install -r requirements-dev.txt
-
 py.test
 ```
 
