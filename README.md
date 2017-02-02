@@ -54,7 +54,18 @@ py.test
 
 ## Sources
 
-Information on the phonological processes that underpin the app is from
-Wikipedia
-and
-[Trask's Historical Linguistics](https://www.amazon.com/Trasks-Historical-Linguistics-Larry-Trask/dp/0340927658).
+A variety of sources were used for the information needed to build this app.
+Please see the `LICENCE.md` file in the `engine/data` directory for specific
+data sources.
+
+The following papers were used when implementing the algorithms:
+
++ Harold R. Bauer (1988) *The ethologic model of phonetic development: I. Phonetic contrast estimators*, Clinical Linguistics & Phonetics, 2:4, 347-380, DOI: 10.3109/02699208808985265
++ Carol Stoel-Gammon (2010) *The Word Complexity Measure: Description and application to developmental phonology and disorders*, Clinical Linguistics & Phonetics, 24:4-5, 271-282, DOI: 10.3109/02699200903581059
++ Carterette, E. and Jones, M. (1974) *Informal Speech: Alphabetic and Phonetic Texts with Statistical Analyses and Tables* (Berkeley: University of California Press).
+
+General information on the linguistics underpinning the app is from:
+
++ [Trask's Historical Linguistics](https://www.amazon.com/Trasks-Historical-Linguistics-Larry-Trask/dp/0340927658) by Larry Trask.
++ [Introductory Phonology](https://www.amazon.com/Introductory-Phonology-Bruce-Hayes/dp/1405184116) by Bruce Hayes.
++ Wikipedia
