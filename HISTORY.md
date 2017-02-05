@@ -1,5 +1,11 @@
 # History #
 
+## 2.0.1 ##
+
+- Added example to transcriptions tooltip, thanks to Reddit user [KILL3RTACO](https://www.reddit.com/user/KILL3RTACO).
+- Fixed the Unicode stress diacritic not being filtered properly on input, thanks to Reddit user [opipik](https://www.reddit.com/user/opipik).
+- Fix issue #7 by adding lengthened vowel data to the deparser.
+
 ## 2.0.0 ##
 
 - Completely rewrote the evolution algorithm, using phonetic features rather
