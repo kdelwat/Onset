@@ -6,3 +6,6 @@ app/static/
 __pycache__/
 npm-debug.log
 .vscode
+*.md
+*.sh
+engine/benchmark.py
