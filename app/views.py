@@ -27,7 +27,7 @@ def index():
 
 def sanitise(string):
     '''Remove all whitespace from a string and lowercase it.'''
-    banned_characters = "'.-–—‒ "
+    banned_characters = "'.-–—‒ \u02C8"
 
     return ''.join([c for c in string.strip().lower() if c not in
                     banned_characters])
