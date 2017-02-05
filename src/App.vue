@@ -93,7 +93,10 @@
                     <i class="fa fa-question-circle">
                       <div class="box content">A list of plain text to IPA
                         transcriptions, separated by colons. The transcriptions
-                        will be made from top-to-bottom.</div>
+                        will be made from top-to-bottom. For example, the pair
+                        <em>sh:ʃ</em> will convert all <em>sh</em> occurences
+                        in the input to <em>ʃ</em>, evolve the result, and then
+                        convert back before displaying the evolved words.</div>
                     </i>
                   </label>
                   <p class="control">
