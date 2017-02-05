@@ -88,6 +88,13 @@ def main():
                 feature_strings.append((IPA_representation,
                                         deparse.feature_string(diacritic_segment)))
 
+                if base_segment.meets_conditions({'positive': ['syllabic']}) and not diacritic_segment.meets_conditions({'positive': ['long']}):
+                    long_segment = base_segment + Segment(diacritic['applies'].get('positive', []),
+                                                           diacritic['applies'].get('negative', [])) + Segment(['long'], [])
+
+                    feature_strings.append((IPA_representation + 'ː',
+                                            deparse.feature_string(long_segment)))
+
                 if IPA_representation in diagnostic_targets:
                     print('Target found: {0}'.format(IPA_representation))
                     print('\tPositive: {0}'.format(diacritic_segment.positive))
