@@ -1,3 +1,6 @@
+from deparse import feature_order
+
+
 class Segment:
     '''A representation of a phonetic segment, stored in terms of features.'''
 
@@ -91,3 +94,8 @@ class Segment:
     def __repr__(self):
         return '<Segment> Positive: {0}, Negative: {1}'.format(self._positive,
                                                                self._negative)
+
+
+# A pseudo-segment that has all negative features, representing
+# a word boundary
+boundary = Segment(positive=[], negative=feature_order)

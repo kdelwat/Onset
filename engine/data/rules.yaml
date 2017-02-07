@@ -372,6 +372,23 @@
     positive:
       - deletion
 
+- name: Nasal Elision
+  description: Nasal consonants are lost after nasal vowels.
+  before:
+    positive:
+      - syllabic
+      - nasal
+  after:
+    negative:
+      - syllabic
+  conditions:
+    positive:
+      - consonantal
+      - nasal
+  applies:
+    positive:
+      - deletion
+
 ##############################################################################
 ## CONSONANTS - FORTITION
 ##############################################################################
@@ -443,7 +460,7 @@
 ##############################################################################
 ## VOWELS
 ##############################################################################
-- name: Vowel Nasalization
+- name: Progressive Vowel Nasalization
   description: Vowels become nasalized after nasal consonants.
   conditions:
     positive:
@@ -451,6 +468,20 @@
     negative:
       - nasal
   before:
+    positive:
+      - nasal
+  applies:
+    positive:
+      - nasal
+
+- name: Regressive Vowel Nasalization
+  description: Vowels become nasalized before nasal consonants.
+  conditions:
+    positive:
+      - syllabic
+    negative:
+      - nasal
+  after:
     positive:
       - nasal
   applies:
