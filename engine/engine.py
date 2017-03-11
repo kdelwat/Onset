@@ -13,20 +13,21 @@ base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, 'engine'))
 
 segments_path = path.join(base_directory, 'engine', 'data', 'features.csv')
-with open(segments_path, 'r') as f:
+with open(segments_path, 'r', encoding='utf-8') as f:
     segments = [segment for segment in csv.DictReader(f)]
 
-diacritics_path = path.join(base_directory, 'engine', 'data', 'diacritics.yaml')
-with open(diacritics_path, 'r') as f:
+diacritics_path = path.join(base_directory, 'engine', 'data',
+                            'diacritics.yaml')
+with open(diacritics_path, 'r', encoding='utf-8') as f:
     diacritics = yaml.load(f)
 
 rules_path = path.join(base_directory, 'engine', 'data', 'rules.yaml')
-with open(rules_path, 'r') as f:
+with open(rules_path, 'r', encoding='utf-8') as f:
     rules = yaml.load(f)
 
 feature_strings_path = path.join(base_directory, 'engine', 'data',
                                  'feature-strings.csv')
-with open(feature_strings_path, 'r') as f:
+with open(feature_strings_path, 'r', encoding='utf-8') as f:
     feature_strings = [line for line in csv.reader(f)]
 
 
@@ -58,8 +59,12 @@ def rewrite(words, rules, to='ipa'):
     return rewritten_words
 
 
-def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
-               metric=metrics.phonetic_product, optimisation_function=min):
+def run_engine(words,
+               generations=5,
+               rewrite_rules=[],
+               reverse=False,
+               metric=metrics.phonetic_product,
+               optimisation_function=min):
     '''Evolves the language specified by a list of word strings according to
     parameters:
 
@@ -88,9 +93,8 @@ def run_engine(words, generations=5, rewrite_rules=[], reverse=False,
         evolution_function = evolve_words
 
     # Evolve the words for the given number of generations
-    evolved_words, applied_rules = evolution_function(parsed_words, rules,
-                                                      generations, metric,
-                                                      optimisation_function)
+    evolved_words, applied_rules = evolution_function(
+        parsed_words, rules, generations, metric, optimisation_function)
 
     # Deparse the evolved words into strings
     deparsed_words = deparse.deparse_words(evolved_words, segments,
@@ -190,8 +194,9 @@ def reverse_rule(rule):
     new_conditions = copy.deepcopy(rule['applies'])
 
     # Construct set containing all features present in the new conditions.
-    new_conditions_set = set(new_conditions.get('positive', []) +
-                             new_conditions.get('negative', []))
+    new_conditions_set = set(
+        new_conditions.get('positive', []) + new_conditions.get('negative',
+                                                                []))
 
     # For each feature in the old conditions, if it isn't in the new conditions
     # add it, keeping the same polarity. This catches conditions that aren't
