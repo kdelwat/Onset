@@ -232,7 +232,7 @@ export default {
       this.isComputing = true;
 
       // Call the Flask API
-      axios.get('https://onset.cadelwatson.com/evolve',
+      axios.get('http://localhost:5000/evolve',
                 { params: parameters })
       // Handle a valid response
         .then((response) => {
@@ -290,7 +290,7 @@ export default {
           direction: this.direction };
 
         // Call the Flask API
-        axios.get('https://onset.cadelwatson.com/apply',
+        axios.get('http://localhost:5000/apply',
                   { params: parameters })
         // Handle a valid response
           .then((response) => {
