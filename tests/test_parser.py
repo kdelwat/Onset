@@ -17,7 +17,7 @@ with open(path.join(base_directory, 'engine', 'data', 'features.csv'), 'r') as f
 with open(path.join(base_directory, 'engine', 'data', 'diacritics.yaml'), 'r') as f:
     diacritics = yaml.load(f)
 
-with open(path.join(base_directory, 'engine', 'data', 'feature-strings-with-diacritics.csv'), 'r') as f:
+with open(path.join(base_directory, 'engine', 'data', 'feature-strings.csv'), 'r') as f:
     feature_strings = list(csv.reader(f))
 
 available_segments = [segment['IPA'] for segment in segments]

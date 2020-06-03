@@ -9,3 +9,5 @@ npm-debug.log
 *.md
 *.sh
 engine/benchmark.py
+venv
+.idea
