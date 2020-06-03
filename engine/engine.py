@@ -18,11 +18,11 @@ with open(segments_path, "r", encoding="utf-8") as f:
 
 diacritics_path = path.join(base_directory, "engine", "data", "diacritics.yaml")
 with open(diacritics_path, "r", encoding="utf-8") as f:
-    diacritics = yaml.load(f)
+    diacritics = yaml.safe_load(f)
 
 rules_path = path.join(base_directory, "engine", "data", "rules.yaml")
 with open(rules_path, "r", encoding="utf-8") as f:
-    rules = yaml.load(f)
+    rules = yaml.safe_load(f)
 
 feature_strings_path = path.join(
     base_directory, "engine", "data", "feature-strings.csv"

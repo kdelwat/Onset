@@ -11,7 +11,7 @@ from engine.evolve import filter_rules
 
 # Load rules
 with open(path.join(base_directory, "engine", "data", "rules.yaml"), "r") as f:
-    rules = yaml.load(f)
+    rules = yaml.safe_load(f)
 
 
 def test_filter_rules():
