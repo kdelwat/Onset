@@ -5,7 +5,7 @@ import os.path as path
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
 
-import engine
+import engine.engine as engine
 
 
 def rules_equal(first, second):

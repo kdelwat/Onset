@@ -7,8 +7,8 @@ from app import app
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
-import engine
-import metrics
+import engine.engine as engine
+import engine.metrics as metrics
 
 optimisation_functions = {"Maximise": max, "Minimise": min}
 metric_functions = {

@@ -1,4 +1,4 @@
-from segment import Segment
+from engine.segment import Segment
 
 
 class Word:

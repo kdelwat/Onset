@@ -1,5 +1,5 @@
-from segment import Segment
-from word import Word
+from engine.segment import Segment
+from engine.word import Word
 
 
 def parse_words(strings, segments, diacritics):

@@ -4,10 +4,10 @@ import sys
 import os.path as path
 import copy
 
-import parse
-import deparse
-import evolve
-import metrics
+import engine.parse as parse
+import engine.deparse as deparse
+import engine.evolve as evolve
+import engine.metrics as metrics
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))

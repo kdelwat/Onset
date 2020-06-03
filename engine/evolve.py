@@ -1,6 +1,3 @@
-import metrics
-
-
 def filter_rules(words, rules):
     """Given a list of words and a list of rules, return only those rules which are
     applicable to the given words.

@@ -6,9 +6,9 @@ base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 
 sys.path.append(path.join(base_directory, "engine"))
 
-from metrics import phonetic_product, weighted_phonetic_product
-from segment import Segment
-from word import Word
+from engine.metrics import phonetic_product, weighted_phonetic_product
+from engine.segment import Segment
+from engine.word import Word
 
 
 def test_phonetic_product():

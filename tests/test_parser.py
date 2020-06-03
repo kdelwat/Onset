@@ -6,9 +6,9 @@ import os.path as path
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
 
-from parse import tokenise, valid_subword, token_to_segment, parse_words
-from deparse import deparse_words
-from word import Word
+from engine.parse import tokenise, valid_subword, token_to_segment, parse_words
+from engine.deparse import deparse_words
+from engine.word import Word
 
 # Load data
 with open(path.join(base_directory, "engine", "data", "features.csv"), "r") as f:
