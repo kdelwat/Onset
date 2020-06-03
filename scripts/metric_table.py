@@ -7,9 +7,8 @@ import os.path as path
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
 
-import parse
-import deparse
-import metrics
+import engine.parse as parse
+import engine.metrics as metrics
 
 
 def main():

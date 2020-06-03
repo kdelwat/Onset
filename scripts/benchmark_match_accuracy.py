@@ -7,8 +7,8 @@ import os.path as path
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
 
-import deparse
-from segment import Segment
+import engine.deparse as deparse
+from engine.segment import Segment
 
 
 def load_segments(filename):
@@ -47,7 +47,7 @@ def main():
         path.join(base_directory, "engine", "data", "diacritics.yaml")
     )
 
-    datasets = ["feature-strings", "full-feature-strings"]
+    datasets = ["feature-strings"]
 
     print("Beginning benchmark\n===================\n")
 
