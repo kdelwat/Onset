@@ -10,30 +10,30 @@ import evolve
 import metrics
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(path.join(base_directory, 'engine'))
+sys.path.append(path.join(base_directory, "engine"))
 
-segments_path = path.join(base_directory, 'engine', 'data', 'features.csv')
-with open(segments_path, 'r', encoding='utf-8') as f:
+segments_path = path.join(base_directory, "engine", "data", "features.csv")
+with open(segments_path, "r", encoding="utf-8") as f:
     segments = [segment for segment in csv.DictReader(f)]
 
-diacritics_path = path.join(base_directory, 'engine', 'data',
-                            'diacritics.yaml')
-with open(diacritics_path, 'r', encoding='utf-8') as f:
+diacritics_path = path.join(base_directory, "engine", "data", "diacritics.yaml")
+with open(diacritics_path, "r", encoding="utf-8") as f:
     diacritics = yaml.load(f)
 
-rules_path = path.join(base_directory, 'engine', 'data', 'rules.yaml')
-with open(rules_path, 'r', encoding='utf-8') as f:
+rules_path = path.join(base_directory, "engine", "data", "rules.yaml")
+with open(rules_path, "r", encoding="utf-8") as f:
     rules = yaml.load(f)
 
-feature_strings_path = path.join(base_directory, 'engine', 'data',
-                                 'feature-strings.csv')
-with open(feature_strings_path, 'r', encoding='utf-8') as f:
+feature_strings_path = path.join(
+    base_directory, "engine", "data", "feature-strings.csv"
+)
+with open(feature_strings_path, "r", encoding="utf-8") as f:
     feature_strings = [line for line in csv.reader(f)]
 
 
-def rewrite(words, rules, to='ipa'):
-    '''Rewrite a list of words according to a list of tuple rules of form
-    (plain, ipa), in direction given by target.'''
+def rewrite(words, rules, to="ipa"):
+    """Rewrite a list of words according to a list of tuple rules of form
+    (plain, ipa), in direction given by target."""
 
     if len(rules) == 0:
         return words
@@ -42,14 +42,14 @@ def rewrite(words, rules, to='ipa'):
 
     # The code duplication here, however ugly, is faster because it limits
     # the amount of conditionals.
-    if to == 'ipa':
+    if to == "ipa":
         for word in words:
             for rule in rules:
                 word = word.replace(rule[0], rule[1])
 
             rewritten_words.append(word)
 
-    elif to == 'plain':
+    elif to == "plain":
         for word in words:
             for rule in rules:
                 word = word.replace(rule[1], rule[0])
@@ -59,13 +59,15 @@ def rewrite(words, rules, to='ipa'):
     return rewritten_words
 
 
-def run_engine(words,
-               generations=5,
-               rewrite_rules=[],
-               reverse=False,
-               metric=metrics.phonetic_product,
-               optimisation_function=min):
-    '''Evolves the language specified by a list of word strings according to
+def run_engine(
+    words,
+    generations=5,
+    rewrite_rules=[],
+    reverse=False,
+    metric=metrics.phonetic_product,
+    optimisation_function=min,
+):
+    """Evolves the language specified by a list of word strings according to
     parameters:
 
         generations: the maximum number of rules to apply during evolution.
@@ -80,9 +82,9 @@ def run_engine(words,
 
     Returns a list of evolved word strings and a list of applied rules.
 
-    '''
+    """
     # Apply the given transcription rules
-    words = rewrite(words, rewrite_rules, to='ipa')
+    words = rewrite(words, rewrite_rules, to="ipa")
 
     # Parse the word strings into Word objects
     parsed_words = parse.parse_words(words, segments, diacritics)
@@ -94,26 +96,26 @@ def run_engine(words,
 
     # Evolve the words for the given number of generations
     evolved_words, applied_rules = evolution_function(
-        parsed_words, rules, generations, metric, optimisation_function)
+        parsed_words, rules, generations, metric, optimisation_function
+    )
 
     # Deparse the evolved words into strings
-    deparsed_words = deparse.deparse_words(evolved_words, segments,
-                                           feature_strings)
+    deparsed_words = deparse.deparse_words(evolved_words, segments, feature_strings)
 
     # Convert back to orthographic representation using the given transcription
     # rules
-    deparsed_words = rewrite(deparsed_words, rewrite_rules, to='plain')
+    deparsed_words = rewrite(deparsed_words, rewrite_rules, to="plain")
 
     return deparsed_words, applied_rules
 
 
 def evolve_words(words, rules, generations, metric, optimisation_function):
-    '''Evolves the given list of words according to the given list of rules, for a
+    """Evolves the given list of words according to the given list of rules, for a
     number of generations. If no more applicable rules are available, the
     evolution will stop early. Returns the evolved list of words and a list of
     rule which were applied.
 
-    '''
+    """
     applied_rules = []
 
     # Create a mutable copy of the global rules list, from which rules
@@ -122,8 +124,9 @@ def evolve_words(words, rules, generations, metric, optimisation_function):
 
     try:
         for _ in range(generations):
-            rule, words = evolve.evolve(words, available_rules, metric,
-                                        optimisation_function)
+            rule, words = evolve.evolve(
+                words, available_rules, metric, optimisation_function
+            )
 
             applied_rules.append(rule)
             available_rules.remove(rule)
@@ -135,14 +138,15 @@ def evolve_words(words, rules, generations, metric, optimisation_function):
     return words, applied_rules
 
 
-def evolve_words_reverse(words, available_rules, generations, metric,
-                         optimisation_function):
-    '''Evolves the given list of words in reverse, according to the given list of
+def evolve_words_reverse(
+    words, available_rules, generations, metric, optimisation_function
+):
+    """Evolves the given list of words in reverse, according to the given list of
     rules, for a number of generations. If no more applicable rules are
     available, the evolution will stop early. Returns the evolved list of words
     and a list of rule which were applied.
 
-    '''
+    """
     # Transform each rule to its reversed equivalent
     reverse_rules = list(map(reverse_rule, available_rules))
 
@@ -156,8 +160,9 @@ def evolve_words_reverse(words, available_rules, generations, metric,
 
     try:
         for _ in range(generations):
-            rule, words = evolve.evolve(words, reverse_rules, metric,
-                                        optimisation_function)
+            rule, words = evolve.evolve(
+                words, reverse_rules, metric, optimisation_function
+            )
             applied_rules.append(rule)
             reverse_rules.remove(rule)
 
@@ -171,61 +176,61 @@ def evolve_words_reverse(words, available_rules, generations, metric,
 
 
 def reverse_rule(rule):
-    '''Given a rule dictionary, transform it so that it applies the rule in
-    reverse.'''
-    reversed_rule = {'name': rule['name'], 'description': rule['description']}
+    """Given a rule dictionary, transform it so that it applies the rule in
+    reverse."""
+    reversed_rule = {"name": rule["name"], "description": rule["description"]}
 
     # Before and after conditions are unchanged
-    if 'before' in rule:
-        reversed_rule['before'] = rule['before']
-    if 'after' in rule:
-        reversed_rule['after'] = rule['after']
+    if "before" in rule:
+        reversed_rule["before"] = rule["before"]
+    if "after" in rule:
+        reversed_rule["after"] = rule["after"]
 
     # Invert application
     new_applies = {}
-    if 'positive' in rule['applies']:
-        new_applies['negative'] = list(set(rule['applies']['positive']))
+    if "positive" in rule["applies"]:
+        new_applies["negative"] = list(set(rule["applies"]["positive"]))
 
-    if 'negative' in rule['applies']:
-        new_applies['positive'] = list(set(rule['applies']['negative']))
+    if "negative" in rule["applies"]:
+        new_applies["positive"] = list(set(rule["applies"]["negative"]))
 
     # The new conditions are the same as the old application features.
     # We must use a deep copy to prevent in-place modification.
-    new_conditions = copy.deepcopy(rule['applies'])
+    new_conditions = copy.deepcopy(rule["applies"])
 
     # Construct set containing all features present in the new conditions.
     new_conditions_set = set(
-        new_conditions.get('positive', []) + new_conditions.get('negative',
-                                                                []))
+        new_conditions.get("positive", []) + new_conditions.get("negative", [])
+    )
 
     # For each feature in the old conditions, if it isn't in the new conditions
     # add it, keeping the same polarity. This catches conditions that aren't
     # changed by the rule.
-    for feature in rule['conditions'].get('positive', []):
+    for feature in rule["conditions"].get("positive", []):
         if feature not in new_conditions_set:
-            if 'positive' in new_conditions:
-                new_conditions['positive'].append(feature)
+            if "positive" in new_conditions:
+                new_conditions["positive"].append(feature)
             else:
-                new_conditions['positive'] = [feature]
-    for feature in rule['conditions'].get('negative', []):
+                new_conditions["positive"] = [feature]
+    for feature in rule["conditions"].get("negative", []):
         if feature not in new_conditions_set:
-            if 'negative' in new_conditions:
-                new_conditions['negative'].append(feature)
+            if "negative" in new_conditions:
+                new_conditions["negative"].append(feature)
             else:
-                new_conditions['negative'] = [feature]
+                new_conditions["negative"] = [feature]
 
-    reversed_rule['conditions'] = new_conditions
-    reversed_rule['applies'] = new_applies
+    reversed_rule["conditions"] = new_conditions
+    reversed_rule["applies"] = new_applies
 
     return reversed_rule
 
 
 def apply_rules(words, rules, rewrite_rules=[], reverse=False):
-    '''Given a list of word strings and a list of rules, apply each rule to the
-    words and return the new word strings.'''
+    """Given a list of word strings and a list of rules, apply each rule to the
+    words and return the new word strings."""
 
     # Apply the given transcription rules
-    words = rewrite(words, rewrite_rules, to='ipa')
+    words = rewrite(words, rewrite_rules, to="ipa")
 
     # Parse the word strings into Word objects
     parsed_words = parse.parse_words(words, segments, diacritics)
@@ -239,11 +244,10 @@ def apply_rules(words, rules, rewrite_rules=[], reverse=False):
         parsed_words = [word.apply_rule(rule) for word in parsed_words]
 
     # Deparse the evolved words into strings
-    deparsed_words = deparse.deparse_words(parsed_words, segments,
-                                           feature_strings)
+    deparsed_words = deparse.deparse_words(parsed_words, segments, feature_strings)
 
     # Convert back to orthographic representation using the given transcription
     # rules
-    deparsed_words = rewrite(deparsed_words, rewrite_rules, to='plain')
+    deparsed_words = rewrite(deparsed_words, rewrite_rules, to="plain")
 
     return deparsed_words

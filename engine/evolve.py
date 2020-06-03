@@ -2,35 +2,33 @@ import metrics
 
 
 def filter_rules(words, rules):
-    '''Given a list of words and a list of rules, return only those rules which are
+    """Given a list of words and a list of rules, return only those rules which are
     applicable to the given words.
 
-    '''
-    return [rule for rule in rules
-            if any(word.applicable(rule) for word in words)]
+    """
+    return [rule for rule in rules if any(word.applicable(rule) for word in words)]
 
 
 def get_metric_from_changed_words(words, rule, metric):
-    '''Given a list of words and a rule, apply the rule to the words. Return the
+    """Given a list of words and a rule, apply the rule to the words. Return the
     value of the metric applied to the list of all words that changed. This
     produces the same result as applying the metric to all words, in terms of
-    comparison to other rules, but it's faster.'''
+    comparison to other rules, but it's faster."""
 
-    changed_words = [word.apply_rule(rule) for word in words if
-                     word.applicable(rule)]
+    changed_words = [word.apply_rule(rule) for word in words if word.applicable(rule)]
 
     return average_metric_value(changed_words, metric)
 
 
 def average_metric_value(words, metric):
-    '''Apply the metric function to each word in words, returning the average
-    result.'''
+    """Apply the metric function to each word in words, returning the average
+    result."""
     return sum(map(metric, words)) / len(words)
 
 
 def evolve(words, rules, metric, optimisation_function):
-    '''Evolve a list of Words, returning the applied rule and the new list of
-    Words.'''
+    """Evolve a list of Words, returning the applied rule and the new list of
+    Words."""
 
     rules = filter_rules(words, rules)
 
