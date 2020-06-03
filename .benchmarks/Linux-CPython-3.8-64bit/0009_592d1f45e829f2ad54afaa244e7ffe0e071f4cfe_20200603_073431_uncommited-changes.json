@@ -1,0 +1,104 @@
+{
+    "machine_info": {
+        "node": "cadel-XPS-15-9560",
+        "processor": "x86_64",
+        "machine": "x86_64",
+        "python_compiler": "GCC 9.3.0",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.8.2",
+        "python_version": "3.8.2",
+        "python_build": [
+            "default",
+            "Apr 27 2020 15:53:34"
+        ],
+        "release": "5.4.0-33-generic",
+        "system": "Linux",
+        "cpu": {
+            "vendor_id": "GenuineIntel",
+            "hardware": "unknown",
+            "brand": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz"
+        }
+    },
+    "commit_info": {
+        "id": "592d1f45e829f2ad54afaa244e7ffe0e071f4cfe",
+        "time": "2020-06-03T16:46:12+10:00",
+        "author_time": "2020-06-03T16:46:12+10:00",
+        "dirty": true,
+        "project": "Onset",
+        "branch": "optimise"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_engine_fast",
+            "fullname": "benchmarks/test_engine.py::test_engine_fast",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.00709272099629743,
+                "max": 0.008111872004519682,
+                "mean": 0.0074067031889608476,
+                "stddev": 0.0002122065570754267,
+                "rounds": 127,
+                "median": 0.007344596000621095,
+                "iqr": 0.000202526254724944,
+                "q1": 0.007270878499184619,
+                "q3": 0.007473404753909563,
+                "iqr_outliers": 14,
+                "stddev_outliers": 35,
+                "outliers": "35;14",
+                "ld15iqr": 0.00709272099629743,
+                "hd15iqr": 0.007778854000207502,
+                "ops": 135.01283560146265,
+                "total": 0.9406513049980276,
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_engine_slow",
+            "fullname": "benchmarks/test_engine.py::test_engine_slow",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 32.09496298300655,
+                "max": 33.38211071299884,
+                "mean": 32.92847305025134,
+                "stddev": 0.5696194163439968,
+                "rounds": 4,
+                "median": 33.11840925249999,
+                "iqr": 0.6625627475004876,
+                "q1": 32.5971916765011,
+                "q3": 33.259754424001585,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 32.09496298300655,
+                "hd15iqr": 33.38211071299884,
+                "ops": 0.030368854288321367,
+                "total": 131.71389220100536,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2020-06-03T07:37:43.906304",
+    "version": "3.2.3"
+}
