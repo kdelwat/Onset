@@ -59,9 +59,3 @@ def test_engine_slow(benchmark):
         input_words = [word.strip() for word in words_in]
 
     words, rules = benchmark(engine.run_engine, input_words, generations=50)
-
-    with open("benchmark_expected_words.txt") as words_out:
-        words_out.writelines(words)
-
-    with open("benchmark_expected_rules.text") as rules_out:
-        rules_out.write(rules)

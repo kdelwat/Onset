@@ -140,3 +140,16 @@ def test_rewrite():
 
     assert engine.rewrite([plain_word], rules, to="ipa")[0] == ipa_word
     assert engine.rewrite([ipa_word], rules, to="plain")[0] == plain_word
+
+
+def test_run():
+    with open("tests/data/engine_input_1.txt", "r") as words_in:
+        input_words = [word.strip() for word in words_in]
+
+    words, rules = engine.run_engine(input_words, generations=20)
+
+    with open("tests/expected/engine_input_1_expected_words.txt") as words_expected:
+        assert "".join(words) == words_expected.readline().strip()
+
+    with open("tests/expected/engine_input_1_expected_rules.txt") as rules_expected:
+        assert str(rules) == rules_expected.readline().strip()
