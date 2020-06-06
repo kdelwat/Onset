@@ -1,6 +1,23 @@
 from engine.segment import Segment
 from engine.word import Word
 
+import re
+
+
+# Construct a regex to match an IPA segment.
+#
+# The regex will match a phoneme, zero or more diacritics, and then optionally a phoneme and diacritics joined with the
+# Unicode overhead combining mark (which captures digraphs).
+#
+# Precompiling the regex once allows us to match in O(n) time.
+def create_segment_regex(segments, diacritics):
+    all_segments = "".join([segment for segment in segments if len(segment) == 1])
+    all_diacritics = "".join(diacritics)
+
+    return re.compile(
+        f"[{all_segments}][{all_diacritics}]*(?:\u0361[{all_segments}][{all_diacritics}])?"
+    )
+
 
 def parse_words(strings, segments, diacritics):
     """Given a list of word strings (in IPA), return a list of Word objects
@@ -9,15 +26,16 @@ def parse_words(strings, segments, diacritics):
 
     """
 
-    # Create two lists of available segments and diacritics
-    segment_strings = [segment["IPA"] for segment in segments]
-    diacritic_strings = [diacritic["IPA"] for diacritic in diacritics]
+    r = create_segment_regex(
+        [segment["IPA"] for segment in segments],
+        [diacritic["IPA"] for diacritic in diacritics],
+    )
 
     words = []
 
     for word in strings:
         try:
-            tokens = tokenise(word, segment_strings, diacritic_strings)
+            tokens = r.findall(word)
         except ValueError as subword:
             error = (
                 "Error parsing word: {0}. There was an unknown character "
@@ -31,50 +49,6 @@ def parse_words(strings, segments, diacritics):
         words.append(Word(parsed_segments))
 
     return words
-
-
-def valid_subword(subword, segment_strings, diacritic_strings):
-    """Determines whether a string is a valid IPA segment."""
-
-    # If it's a simple IPA sequence, return True
-    if subword in segment_strings:
-        return True
-
-    # Iterate through the string, slicing at each index. If the first part is
-    # an IPA sequence and the second half is entirely made up of diacritics,
-    # it's valid.
-    for i in range(1, len(subword)):
-        if subword[:i] in segment_strings and all(
-            [x in diacritic_strings for x in subword[i:]]
-        ):
-            return True
-    else:
-        return False
-
-
-def tokenise(word, segment_strings, diacritic_strings):
-    """Recursively tokenise a string of IPA characters, with support for diacritics
-    and digraphs. Example: bok͡piʰ becomes ["b", "o", "k͡p", "iʰ"].
-
-    """
-
-    # The end condition for the recursion: an empty string.
-    if len(word) == 0:
-        return []
-
-    # Iterate through substrings of the word, removing one letter at a time
-    # from the end
-    for length in range(len(word), -1, -1):
-        subword = word[:length]
-
-        # If the current substring is a valid sequence in IPA, add it to the
-        # results list and recur
-        if valid_subword(subword, segment_strings, diacritic_strings):
-            return [subword] + tokenise(
-                word[length:], segment_strings, diacritic_strings
-            )
-
-    raise ValueError(word)
 
 
 def find_segment(string, segment_strings):
