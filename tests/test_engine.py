@@ -4,6 +4,7 @@ import os.path as path
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
+sys.path.append(path.join(base_directory, "tests"))
 
 import engine.engine as engine
 
@@ -143,13 +144,13 @@ def test_rewrite():
 
 
 def test_run():
-    with open("tests/data/engine_input_1.txt", "r") as words_in:
+    with open("./data/engine_input_1.txt", "r") as words_in:
         input_words = [word.strip() for word in words_in]
 
     words, rules = engine.run_engine(input_words, generations=20)
 
-    with open("tests/expected/engine_input_1_expected_words.txt") as words_expected:
+    with open("./expected/engine_input_1_expected_words.txt") as words_expected:
         assert "".join(words) == words_expected.readline().strip()
 
-    with open("tests/expected/engine_input_1_expected_rules.txt") as rules_expected:
+    with open("./expected/engine_input_1_expected_rules.txt") as rules_expected:
         assert str(rules) == rules_expected.readline().strip()
