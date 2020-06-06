@@ -1,4 +1,4 @@
-# Use like python generate_benchmark_input.py n benchmark_input.txt
+# Use like python generate_benchmark_input.py n benchmark_engine_input.txt
 # Generates a file containing one IPA word per line, totalling n words,
 # with each word randomly generated
 import csv

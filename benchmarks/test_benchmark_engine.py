@@ -55,7 +55,7 @@ def test_engine_fast(benchmark):
 
 
 def test_engine_slow(benchmark):
-    with open("benchmarks/benchmark_input.txt", "r") as words_in:
+    with open("benchmarks/data/benchmark_engine_input.txt", "r") as words_in:
         input_words = [word.strip() for word in words_in]
 
-    words, rules = benchmark(engine.run_engine, input_words, generations=50)
+    benchmark(engine.run_engine, input_words, generations=50)
