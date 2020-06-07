@@ -1,7 +1,8 @@
-from engine.segment import Segment
-from engine.word import Word
-
+from engine.data import Segments, Diacritics
+from engine.feature_vector import fv_sum
+import numpy as np
 import re
+from typing import List, Pattern, AnyStr
 
 
 # Construct a regex to match an IPA segment.
@@ -10,77 +11,67 @@ import re
 # Unicode overhead combining mark (which captures digraphs).
 #
 # Precompiling the regex once allows us to match in O(n) time.
-def create_segment_regex(segments, diacritics):
-    all_segments = "".join([segment for segment in segments if len(segment) == 1])
-    all_diacritics = "".join(diacritics)
+def create_segment_regex(segments: Segments, diacritics: Diacritics) -> Pattern[AnyStr]:
+    all_segments = "".join(
+        [segment for segment in segments.keys() if len(segment) == 1]
+    )
+    all_diacritics = "".join(diacritics.keys())
 
     return re.compile(
         f"[{all_segments}][{all_diacritics}]*(?:\u0361[{all_segments}][{all_diacritics}])?"
     )
 
 
-def parse_words(strings, segments, diacritics):
+def parse_words(
+    strings: List[str], segments: Segments, diacritics: Diacritics
+) -> List[np.ndarray]:
     """Given a list of word strings (in IPA), return a list of Word objects
-    containing parsed segments. Use the given list of segment dictionaries and
-    diacritic rules.
+    containing parsed segments. Use the given segment and diacritic dictionaries.
 
     """
 
-    r = create_segment_regex(
-        [segment["IPA"] for segment in segments],
-        [diacritic["IPA"] for diacritic in diacritics],
-    )
+    r = create_segment_regex(segments, diacritics,)
 
     words = []
 
     for word in strings:
-        try:
-            tokens = r.findall(word)
-        except ValueError as subword:
-            error = (
-                "Error parsing word: {0}. There was an unknown character "
-                "in the subword: {1}"
-            )
-            raise ValueError(error.format(word, subword))
+        tokens = r.findall(word)
 
-        parsed_segments = [
-            token_to_segment(token, segments, diacritics) for token in tokens
-        ]
-        words.append(Word(parsed_segments))
+        parsed_word = np.array(
+            [token_to_segment(token, segments, diacritics) for token in tokens],
+            dtype=np.int8,
+        )
+
+        words.append(parsed_word)
 
     return words
 
 
-def find_segment(string, segment_strings):
-    """Search the segment dictionary for the segment with the correct IPA
-    string."""
-    return [segment for segment in segment_strings if segment["IPA"] == string][0]
-
-
-def token_to_segment(token, segment_list, diacritic_list):
+def token_to_segment(
+    token: str, segments: Segments, diacritics: Diacritics
+) -> np.ndarray:
     """Converts a string token in IPA to Segment object, given
     a list of dictionaries representing segments and the same representing
     diacritics."""
 
-    diacritic_strings = [segment["IPA"] for segment in diacritic_list]
+    base_ipa_characters = []
+    diacritic_characters = []
+
+    for c in token:
+        if c in segments.keys():
+            base_ipa_characters.append(c)
+        elif c in diacritics.keys():
+            diacritic_characters.append(c)
+        else:
+            print(f"Warning: unrecognised character in token: {c}")
 
     # Isolate the base IPA segment string
-    base_string = "".join(filter(lambda x: x not in diacritic_strings, token))
+    base_ipa = "".join(base_ipa_characters)
 
-    # Isolate an iterable of diacritics present
-    diacritics = [
-        diacritic for diacritic in diacritic_list if diacritic["IPA"] in token
-    ]
+    feature_vectors = [segments.get(base_ipa, None)]
+    feature_vectors.extend(
+        [diacritics.get(diacritic, None) for diacritic in diacritic_characters]
+    )
+    feature_vectors = [v for v in feature_vectors if v is not None]
 
-    # Initialise the base Segment
-    segment = Segment.from_dictionary(find_segment(base_string, segment_list))
-
-    # Add each diacritic feature to the segment
-    for diacritic in diacritics:
-        diacritic_segment = Segment(
-            diacritic["applies"].get("positive", []),
-            diacritic["applies"].get("negative", []),
-        )
-        segment = segment + diacritic_segment
-
-    return segment
+    return fv_sum(feature_vectors)
