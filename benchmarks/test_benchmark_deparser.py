@@ -2,7 +2,7 @@ from engine.data import load_feature_strings, load_diacritics, load_segments
 from engine.deparse import deparse_words
 from engine.parse import parse_words
 
-# Currently sitting at 21.14 seconds (median)
+
 def test_deparse_words(benchmark):
     word_strings = ["bæd", "bɔɪ", "b\u02D0ɒtl"] * 100
 

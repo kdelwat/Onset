@@ -1,5 +1,7 @@
+from functools import lru_cache, wraps
 from typing import List
 
+import numpy as np
 from scipy.spatial.distance import hamming
 
 from engine.data import FeatureStrings
@@ -7,10 +9,34 @@ from engine.feature_vector import FeatureVector
 from engine.word import Word
 
 
+# Use as a decorator like lru_cache, except it supports caching feature vectors as input
+def fv_cache(*args, **kwargs):
+    """ Modified from https://gist.github.com/Susensio/61f4fee01150caaac1e10fc5f005eb75
+    """
+
+    def decorator(function):
+        @wraps(function)
+        def wrapper(np_array, *args, **kwargs):
+            hashable_array = tuple(np_array)
+            return cached_wrapper(hashable_array, *args, **kwargs)
+
+        @lru_cache(*args, **kwargs)
+        def cached_wrapper(hashable_array, *args, **kwargs):
+            array = np.array(hashable_array)
+            return function(array, *args, **kwargs)
+
+        # copy lru_cache attributes over too
+        wrapper.cache_info = cached_wrapper.cache_info
+        wrapper.cache_clear = cached_wrapper.cache_clear
+        return wrapper
+
+    return decorator
+
+
 def make_matcher(feature_strings: FeatureStrings):
     possible_matches = feature_strings.items()
 
-    # TODO: try lru_cache here
+    @fv_cache(maxsize=None)
     def match_segment(target_segment: FeatureVector) -> str:
         # Best match is decided first by hamming distance, then by resulting IPA
         # length (to find the simplest sequences)
