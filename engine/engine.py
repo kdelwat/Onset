@@ -1,34 +1,10 @@
-import csv
-import yaml
-import sys
-import os.path as path
 import copy
 
 import engine.parse as parse
 import engine.deparse as deparse
 import engine.evolve as evolve
 import engine.metrics as metrics
-
-base_directory = path.dirname(path.dirname(path.abspath(__file__)))
-sys.path.append(path.join(base_directory, "engine"))
-
-segments_path = path.join(base_directory, "engine", "data", "features.csv")
-with open(segments_path, "r", encoding="utf-8") as f:
-    segments = [segment for segment in csv.DictReader(f)]
-
-diacritics_path = path.join(base_directory, "engine", "data", "diacritics.yaml")
-with open(diacritics_path, "r", encoding="utf-8") as f:
-    diacritics = yaml.safe_load(f)
-
-rules_path = path.join(base_directory, "engine", "data", "rules.yaml")
-with open(rules_path, "r", encoding="utf-8") as f:
-    rules = yaml.safe_load(f)
-
-feature_strings_path = path.join(
-    base_directory, "engine", "data", "feature-strings.csv"
-)
-with open(feature_strings_path, "r", encoding="utf-8") as f:
-    feature_strings = [line for line in csv.reader(f)]
+from engine.data import load_segments, load_diacritics, load_rules, load_feature_strings
 
 
 def rewrite(words, rules, to="ipa"):
@@ -83,6 +59,12 @@ def run_engine(
     Returns a list of evolved word strings and a list of applied rules.
 
     """
+
+    segments = load_segments()
+    diacritics = load_diacritics()
+    rules = load_rules()
+    feature_strings = load_feature_strings()
+
     # Apply the given transcription rules
     words = rewrite(words, rewrite_rules, to="ipa")
 
@@ -228,6 +210,10 @@ def reverse_rule(rule):
 def apply_rules(words, rules, rewrite_rules=[], reverse=False):
     """Given a list of word strings and a list of rules, apply each rule to the
     words and return the new word strings."""
+
+    segments = load_segments()
+    diacritics = load_diacritics()
+    feature_strings = load_feature_strings()
 
     # Apply the given transcription rules
     words = rewrite(words, rewrite_rules, to="ipa")

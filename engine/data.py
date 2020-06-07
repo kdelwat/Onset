@@ -11,6 +11,7 @@ from engine.feature_vector import FeatureVector
 YAML = Union[Dict[Hashable, Any], list, None]
 Segments = Dict[str, FeatureVector]
 Diacritics = Dict[str, FeatureVector]
+FeatureStrings = Dict[str, FeatureVector]
 
 base_directory = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(path.join(base_directory, "engine"))
@@ -63,9 +64,22 @@ def segment_to_feature_vector(segment) -> FeatureVector:
 def diacritic_to_feature_vector(diacritic) -> FeatureVector:
     feature_values = []
     for feature in FEATURES:
-        if feature in diacritic["conditions"]["positive"]:
+        if feature in diacritic["applies"].get("positive", []):
             feature_values.append(1)
-        elif feature in diacritic["conditions"]["negative"]:
+        elif feature in diacritic["applies"].get("negative", []):
+            feature_values.append(-1)
+        else:
+            feature_values.append(0)
+
+    return np.array(feature_values, dtype=np.int8)
+
+
+def feature_string_to_feature_vector(fs: str) -> FeatureVector:
+    feature_values = []
+    for feature in fs:
+        if feature == "+":
+            feature_values.append(1)
+        elif feature == "-":
             feature_values.append(-1)
         else:
             feature_values.append(0)
@@ -99,11 +113,8 @@ def load_rules():
     return load_yaml("rules")
 
 
-def load_feature_strings():
-    feature_strings_path = path.join(
-        base_directory, "engine", "data", "feature-strings.csv"
-    )
-    with open(feature_strings_path, "r", encoding="utf-8") as f:
-        feature_strings = [line for line in csv.reader(f)]
-
-    return feature_strings
+def load_feature_strings() -> FeatureStrings:
+    return {
+        f["IPA"]: feature_string_to_feature_vector(f["feature_string"])
+        for f in load_csv("feature-strings")
+    }
