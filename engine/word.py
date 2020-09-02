@@ -1,4 +1,4 @@
-from segment import Segment
+from segment import Segment, boundary
 
 
 class Word:
@@ -44,17 +44,19 @@ class Word:
 
         if 'before' in rule:
             if index == 0:
-                return False
+                before_segment = boundary
+            else:
+                before_segment = self.segments[index - 1]
 
-            before_segment = self.segments[index - 1]
             if not before_segment.meets_conditions(rule['before']):
                 return False
 
         if 'after' in rule:
             if index == len(self.segments) - 1:
-                return False
+                after_segment = boundary
+            else:
+                after_segment = self.segments[index + 1]
 
-            after_segment = self.segments[index + 1]
             if not after_segment.meets_conditions(rule['after']):
                 return False
 
