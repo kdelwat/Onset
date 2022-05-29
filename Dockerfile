@@ -18,3 +18,4 @@ COPY --from=frontend /build/app/templates/index.html /app/templates/index.html
 COPY --from=frontend /build/app/static /app/static
 ENV STATIC_URL /static
 ENV STATIC_PATH /app/app/static
+EXPOSE 80
