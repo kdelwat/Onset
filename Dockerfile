@@ -14,8 +14,8 @@ COPY app /app/app
 COPY engine /app/engine
 COPY main.py /app/main.py
 COPY uwsgi.ini /app/uwsgi.ini
-COPY --from=frontend /build/app/templates/index.html /app/templates/index.html
-COPY --from=frontend /build/app/static /app/static
+COPY --from=frontend /build/app/templates/index.html /app/app/templates/index.html
+COPY --from=frontend /build/app/static /app/app/static
 ENV STATIC_URL /static
 ENV STATIC_PATH /app/app/static
 EXPOSE 80
